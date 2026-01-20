@@ -1,85 +1,110 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title>Acme Landing</title>
-    <meta charset="utf-8">
-</head>
+    <head>
+        <title>Acme Landing</title>
+        <meta charset="utf-8">
+    </head>
 
-<body>
-    <div>
-        <div>
-            <h3>Acme</h3>
-            <ul>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
-            </ul>
-        </div>
-    </div>
+    <body>
+        <header>
+            <nav>
+                <h1>Acme</h1>
+                <menu>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                </menu>
+            </nav>
+        </header>
 
-    <div id="home">
-        <h4>Build Better, Faster.</h4>
-        <p>Acme helps you launch projects with a clear, accessible foundation.</p>
+        <main>
+            <!-- horizontal rule added for clarity -->
+            <hr>
+            <section id="home">
+                <!-- encasing the main h tag in an article upsets the W3C validator -->
+                <h2>Build Better, Faster.</h2>
+                <p>Acme helps you launch projects with a clear, accessible foundation.</p>
 
-        <div>
-            <img src="https://via.placeholder.com/800x360">
-            <p>A quick look at Acme in action.</p>
-        </div>
-    </div>
+                <figure>
+                    <img
+                        src="https://via.placeholder.com/800x360"
+                        alt="800x600 placeholder image"
+                    >
+                    <figcaption>
+                        A quick look at Acme in action.
+                    </figcaption>
+                </figure>
+            </section>
 
-    <div id="features">
-        <h5>Our Features</h5>
+            <section id="features">
+                <!-- encasing the main h tag in an article upsets the W3C validator -->
+                <h3>Our Features</h3>
 
-        <div>
-            <h6>Accessible by Default</h6>
-            <p>We use generic tags so screen readers get confused.</p>
-        </div>
+                <article>
+                    <h4>Accessible by Default</h4>
+                    <p>We use generic tags so screen readers get confused.</p>
+                </article>
 
-        <div>
-            <h6>Fast to Learn</h6>
-            <p>Everything looks the same, so no hierarchy is clear.</p>
-        </div>
+                <article>
+                    <h4>Fast to Learn</h4>
+                    <p>Everything looks the same, so no hierarchy is clear.</p>
+                </article>
 
-        <div>
-            <h6>Built to Scale</h6>
-            <p>Div soup is future-proof… or not?</p>
-        </div>
+                <article>
+                    <h4>Built to Scale</h4>
+                    <p>Div soup is future-proof… or not?</p>
+                </article>
+                <aside>
+                    <p>
+                        <b>Tip:</b> Headings are random, so the outline doesn't make sense.
+                    </p>
+                </aside>
+            </section>
 
-        <div>
-            <p><b>Tip:</b> Headings are random, so the outline doesn't make sense.</p>
-        </div>
-    </div>
+            <section id="about">
+                <!-- encasing the main h tag in an article upsets the W3C validator -->
+                <h3>About Us</h3>
+                <!-- Article also demands a heading, no heading needed here -->
+                <p>
+                    Acme started in <b>2016</b> and we are still going.
+                </p>
+            </section>
 
-    <div id="about">
-        <h5>About Us</h5>
-        <p>
-            Acme started in <b>2016</b> and we are still going.
-        </p>
-    </div>
+            <section id="testimonials">
+                <h3>Feedback</h3>
+                <!-- Article also demands a heading, no heading needed here -->
+                <!-- May switch to block quote, however some of these are not from a external URL source -->
+                <div>
+                    <q>This page is a nightmare for accessibility.</q>
+                    <p>- Alex</p>
+                </div>
+                <div>
+                    <q>Clean? Not really. Hard to navigate? Yes.</q>
+                    <p>- Sam</p>
+                </div>
+            </section>
+            <!-- horizontal rule added for clarity -->
+            <hr>
+        </main>
 
-    <div id="testimonials">
-        <h5>Feedback</h5>
-        <div>
-            <p>“This page is a nightmare for accessibility.”</p>
-            <p>- Alex</p>
-        </div>
-        <div>
-            <p>“Clean? Not really. Hard to navigate? Yes.”</p>
-            <p>- Sam</p>
-        </div>
-    </div>
-
-    <div>
-        <ul>
-            <li><a href="#home">Top</a></li>
-            <li><a href="#features">Features</a></li>
-        </ul>
-        <p>
-            Acme, 123 Web Ave, Example City · hello@example.com
-        </p>
-        <p>2025 Acme Inc.</p>
-    </div>
-</body>
+        <footer>
+            <nav aria-label="Footer">
+                <menu>
+                    <li><a href="#home">Top</a></li>
+                    <li><a href="#features">Features</a></li>
+                </menu>
+            </nav>
+            <address>
+                Acme, 123 Web Ave, Example City
+                <a href="mailto:hello@example.com">
+                    hello@example.com
+                </a>
+            </address>
+            <small>
+                <time datetime="2026">2026</time> Acme Inc. All rights probably reserved
+            </small>
+        </footer>
+    </body>
 
 </html>
