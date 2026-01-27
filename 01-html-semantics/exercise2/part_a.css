@@ -1,0 +1,165 @@
+@keyframes leRainbow {
+  0%   {color:red}
+  12.5%  {color:orange}
+  25%  {color:yellow}
+  37.5%  {color:green}
+  50%  {color:teal}
+  62.5%  {color:blue}
+  75%  {color:purple}
+  100% {color:red}
+}
+
+@keyframes leRainbowStretching {
+  0%   {color:red; letter-spacing: 0.5px;}
+  12.5%  {color:orange; letter-spacing: 1.5px;}
+  25%  {color:yellow; letter-spacing: 2.5px;}
+  37.5%  {color:green; letter-spacing: 3.5px;}
+  50%  {color:teal; letter-spacing: 3.5px;}
+  62.5%  {color:blue; letter-spacing: 2.5px;}
+  75%  {color:purple; letter-spacing: 1.5px;}
+  100% {color:red; letter-spacing: 0.5px;}
+}
+
+@keyframes leRainbowPulsing {
+  0%   {color:red; font-weight: light;}
+  12.5%  {color:orange; font-weight: normal;}
+  25%  {color:yellow; font-weight: 700;}
+  37.5%  {color:green; font-weight: bold;}
+  50%  {color:teal; font-weight: bold;}
+  62.5%  {color:blue; font-weight: 700;}
+  75%  {color:purple; font-weight: normal;}
+  100% {color:red; font-weight: light;}
+}
+
+body {
+  background-color: lightblue;
+}
+
+h1 {
+  color: navy;
+  text-align: center;
+  text-decoration: underline;
+  animation-name: leRainbow;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+}
+
+h2 {
+  color: navy;
+  text-align: center;
+  text-decoration: underline;
+  animation-name: leRainbowStretching;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
+
+h3 {
+  color: navy;
+  text-align: center;
+  text-decoration: underline;
+  animation-name: leRainbowPulsing;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+}
+
+h4 {
+  color: navy;
+  text-align: center;
+  text-decoration: underline;
+  animation-name: leRainbow;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+#home p {
+  color: brown;
+  text-align: center;
+  background-color: cyan;
+}
+
+a {
+    color: navy;
+    text-decoration: underline;
+    font-style: italic;
+    transition: color 2s ease-in-out, background-color 2s ease-in-out;
+}
+
+a:hover {
+    color: orange;
+    background-color: green;
+}
+
+a:active {
+    text-decoration: line-through;
+}
+
+article p{
+    color: lime;
+    text-align: center;
+    background-color: orange;
+    transition: background-color 2s ease-in-out, color 2s ease-in-out;
+}
+
+article p:hover{
+    color: orange;
+    text-align: center;
+    background-color: lime;
+}
+
+#about p{
+    color: red;
+    background-color: green;
+    font-style: oblique;
+    text-shadow: 2px 2px 5px cyan;
+    transition: background-color 4s ease-in-out, color 4s ease-in-out, text-shadow 4s ease-in-out;
+}
+
+#about p:hover{
+    color: green;
+    background-color: red;
+    font-style: oblique;
+    text-shadow: 2px 2px 5px orange;
+}
+
+.container{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 200px));
+    grid-template-rows: auto;
+    gap: 1rem;
+    padding: 1rem;
+    margin: auto;
+    width: 75%;
+}
+
+.item{
+    background-color: #2ecc71;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.item:hover{
+    background-color: green;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px white;
+    padding: 1rem;
+}
+
+.item:active{
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+figure{
+    background-color: #2ecc71;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    padding: 1rem;
+}

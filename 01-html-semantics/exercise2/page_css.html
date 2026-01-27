@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!-- If anything this page is more of an eye-sore now-->
+<html>
+
+    <head>
+        <title>Acme Landing</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="part_a.css">
+    </head>
+
+    <body>
+        <header>
+            <nav>
+                <h1>Acme</h1>
+                <menu>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                </menu>
+            </nav>
+        </header>
+
+        <main>
+            <!-- horizontal rule added for clarity -->
+            <hr>
+            <section id="home">
+                <!-- encasing the main h tag in an article upsets the W3C validator -->
+                <h2>Build Better, Faster.</h2>
+                <p>Acme helps you launch projects with a clear, accessible foundation.</p>
+
+                <figure>
+                    <img
+                        src="https://via.placeholder.com/800x360"
+                        alt="800x600 placeholder image"
+                    >
+                    <figcaption>
+                        A quick look at Acme in action.
+                    </figcaption>
+                </figure>
+            </section>
+
+            <section id="features">
+                <!-- encasing the main h tag in an article upsets the W3C validator -->
+                <h3>Our Features</h3>
+
+                <article>
+                    <h4>Accessible by Default</h4>
+                    <p>We use generic tags so screen readers get confused.</p>
+                </article>
+
+                <article>
+                    <h4>Fast to Learn</h4>
+                    <p>Everything looks the same, so no hierarchy is clear.</p>
+                </article>
+
+                <article>
+                    <h4>Built to Scale</h4>
+                    <p>Div soup is future-proof… or not?</p>
+                </article>
+                <aside>
+                    <p>
+                        <b>Tip:</b> Headings are random, so the outline doesn't make sense.
+                    </p>
+                </aside>
+            </section>
+
+            <section id="about">
+                <!-- encasing the main h tag in an article upsets the W3C validator -->
+                <h3>About Us</h3>
+                <!-- Article also demands a heading, no heading needed here -->
+                <p>
+                    Acme started in <b>2016</b> and we are still going.
+                </p>
+            </section>
+
+            <section id="testimonials">
+                <h3>Feedback</h3>
+                <!-- Article also demands a heading, no heading needed here -->
+                <!-- May switch to block quote, however some of these are not from a external URL source -->
+                <div class="container">
+                    <div class="item">
+                        <q>This page is a nightmare for accessibility.</q>
+                        <p>- Alex</p>
+                    </div>
+                    <div class="item">
+                        <q>Clean? Not really. Hard to navigate? Yes.</q>
+                        <p>- Sam</p>
+                    </div>
+                </div>
+            </section>
+            <!-- horizontal rule added for clarity -->
+            <hr>
+        </main>
+
+        <footer>
+            <nav aria-label="Footer">
+                <menu>
+                    <li><a href="#home">Top</a></li>
+                    <li><a href="#features">Features</a></li>
+                </menu>
+            </nav>
+            <address>
+                Acme, 123 Web Ave, Example City
+                <a href="mailto:hello@example.com">
+                    hello@example.com
+                </a>
+            </address>
+            <small>
+                <time datetime="2026">2026</time> Acme Inc. All rights probably reserved
+            </small>
+        </footer>
+    </body>
+
+</html>
