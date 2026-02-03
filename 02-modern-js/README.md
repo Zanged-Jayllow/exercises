@@ -52,9 +52,9 @@ You are building a **Library Management System** that demonstrates modern JavaSc
 Complete the following tasks by finding and implementing all `TODO` comments:
 
 ### Data Layer (`data.js`) - 3 tasks
-- [ ] **Task 1:** Create Map for book categories and Set for unique authors using constructors and spread operator
+- [✅] **Task 1:** Create Map for book categories and Set for unique authors using constructors and spread operator
 - [ ] **Task 2:** Implement `filterBooksByStatus()` and `groupBooksByGenre()` functions using array methods and optional chaining
-- [ ] **Task 3:** Create generator function `bookTitleGenerator()` and `createBookSummary()` with destructuring and template literals
+- [🔍] **Task 3:** Create generator function `bookTitleGenerator()` and `createBookSummary()` with destructuring and template literals
 
 ### Library Management (`library.js`) - 3 tasks
 - [ ] **Task 1:** Implement `addBooks()` method using rest parameters and `searchBooks()` with destructuring parameters

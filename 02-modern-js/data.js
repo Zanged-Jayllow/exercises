@@ -43,8 +43,8 @@ export const books = [
 // Map: "Programming" -> "Books about programming languages and techniques"
 //      "Software Engineering" -> "Books about software design and architecture"
 // Set: Extract all unique author names from the books array using spread operator
-export const categoryDescriptions = null; // Replace with your Map
-export const uniqueAuthors = null; // Replace with your Set
+export const categoryDescriptions = new Map([["Programming", "Books about programming languages and techniques"],["Software Engineering","Books about software design and architecture"]]);
+export const uniqueAuthors = new Set([...books.map(book => book.author)]);
 
 /**
  * TODO: Implement filterBooksByStatus and groupBooksByGenre functions
@@ -71,4 +71,28 @@ export function* bookTitleGenerator(bookArray) {
 
 export function createBookSummary(book) {
     // Destructure book properties and create formatted summary
+
+    // Preliminary checks for broken inputs
+    if (!book || typeof book !== "object") {
+        return "Unknown Title by Unknown Author (Unknown Year) - Status: Unknown";
+    }
+
+    // Fetches availability info
+    let availInfo = "";
+    let availStatus = book.availability?.status?.toLowerCase() ?? "Unknown";
+
+    if (availStatus === "available"){
+        availInfo += " - Status: Available at " + (book.availability?.location ?? "Unknown Location");
+    }
+    else if (availStatus === "checked_out"){
+        availInfo += " - Status: Checked Out And Due at " + (book.availability?.dueDate ?? "Unknown Time");
+    }
+    else{
+        availInfo += " - Status: " + availStatus;
+    }
+
+    // Fetches the easier info
+    let output = (book.title ?? "Unknown Title") + " by " +  (book.author ?? "Unknown Author") + " (" + (book.year ?? "Unknown Year") + ")" + availInfo;
+
+    return output;
 }
