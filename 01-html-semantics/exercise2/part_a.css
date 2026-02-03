@@ -126,17 +126,16 @@ figure{
 }
 
 section{
-    background-color: #cce9fd;
     color: rgb(70, 70, 70);
     text-align: center;
     border-radius: 16px;
     gap: 1rem;
-    border: white 2px solid;
+    border: rgb(194, 225, 255) 2px solid;
 }
 
 .container{
     display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 200px));
+    grid-template-columns: repeat(auto-fit, minmax(100px, 200px));
     grid-template-rows: auto;
     gap: 1rem;
     padding: 1rem;
@@ -148,16 +147,16 @@ section{
 }
 
 .container_3c{
-    display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 100px));
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     grid-template-rows: auto;
     gap: 1rem;
-    padding: 1rem;
     margin: auto;
-    width: 75%;
+    width: 95%;
     align-items: center;
     align-content: center;
     justify-content: center;
+    max-width: 1000px;
 }
 
 .container_3c article{

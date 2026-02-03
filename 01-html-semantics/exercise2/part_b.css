@@ -1,0 +1,112 @@
+body {
+  background-color: lightblue;
+}
+
+h1 {
+  color: navy;
+  text-align: center;
+  text-decoration: underline
+}
+
+h2 {
+  color: navy;
+  text-align: center;
+  text-decoration: underline
+}
+
+a {
+    color: navy;
+    text-decoration: underline;
+    font-style: italic;
+    transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
+}
+
+a:hover {
+    color: white;
+    background-color: rgb(0, 60, 128);
+}
+
+footer{
+    color: rgb(70, 70, 70);
+    text-align: center;
+}
+
+.img_cards {
+  border-radius: 20%;
+  border: 5px solid #ffffff;
+  box-shadow: 0px 5px 10px rgb(58, 58, 86);
+  width: 85%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center;
+}
+
+.section_cards {
+    background-color: #cce9fd;
+    color: rgb(70, 70, 70);
+    text-align: center;
+    border-radius: 16px;
+    border: white 2px solid;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.section_cards:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+.price_cards{
+    color: rgb(0, 0, 0);
+    font-size: x-large;
+    text-align: center;
+}
+
+.button_cards{
+    background-color: #024979;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: large;
+    border-radius: 16px;
+    gap: 1rem;
+    border: rgb(255, 255, 255) 2px solid;
+    transition: background-color 0.25s ease-in-out;
+}
+
+.button_cards:hover{
+    background-color: #006db5;
+    transition: background-color 0.25s ease-in-out;
+}
+
+.button_cards:active{
+    background-color: #002035;
+    transition: background-color 0.05s ease-in-out;
+}
+
+.container_3c{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 120px));
+    grid-template-rows: auto;
+    gap: 1rem;
+    padding: 1rem;
+    margin: auto;
+    width: 75%;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.container_3c_large{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-rows: auto;
+    gap: 1rem;
+    margin: auto;
+    width: 95%;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    max-width: 1000px;
+}
