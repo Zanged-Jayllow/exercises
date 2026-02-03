@@ -1,4 +1,4 @@
-@keyframes leRainbow {
+@keyframes theRainbow {
   0%   {color:red}
   12.5%  {color:orange}
   25%  {color:yellow}
@@ -9,7 +9,7 @@
   100% {color:red}
 }
 
-@keyframes leRainbowStretching {
+@keyframes theRainbowStretching {
   0%   {color:red; letter-spacing: 0.5px;}
   12.5%  {color:orange; letter-spacing: 1.5px;}
   25%  {color:yellow; letter-spacing: 2.5px;}
@@ -20,17 +20,6 @@
   100% {color:red; letter-spacing: 0.5px;}
 }
 
-@keyframes leRainbowPulsing {
-  0%   {color:red; font-weight: light;}
-  12.5%  {color:orange; font-weight: normal;}
-  25%  {color:yellow; font-weight: 700;}
-  37.5%  {color:green; font-weight: bold;}
-  50%  {color:teal; font-weight: bold;}
-  62.5%  {color:blue; font-weight: 700;}
-  75%  {color:purple; font-weight: normal;}
-  100% {color:red; font-weight: light;}
-}
-
 body {
   background-color: lightblue;
 }
@@ -39,7 +28,7 @@ h1 {
   color: navy;
   text-align: center;
   text-decoration: underline;
-  animation-name: leRainbow;
+  animation-name: theRainbow;
   animation-duration: 10s;
   animation-iteration-count: infinite;
 }
@@ -48,7 +37,7 @@ h2 {
   color: navy;
   text-align: center;
   text-decoration: underline;
-  animation-name: leRainbowStretching;
+  animation-name: theRainbowStretching;
   animation-duration: 5s;
   animation-iteration-count: infinite;
 }
@@ -57,7 +46,7 @@ h3 {
   color: navy;
   text-align: center;
   text-decoration: underline;
-  animation-name: leRainbowPulsing;
+  animation-name: theRainbow;
   animation-duration: 10s;
   animation-iteration-count: infinite;
 }
@@ -66,27 +55,27 @@ h4 {
   color: navy;
   text-align: center;
   text-decoration: underline;
-  animation-name: leRainbow;
-  animation-duration: 2s;
+  animation-name: theRainbow;
+  animation-duration: 5s;
   animation-iteration-count: infinite;
 }
 
 #home p {
-  color: brown;
+  color: rgb(5, 21, 105);
   text-align: center;
-  background-color: cyan;
+  background-color: rgb(67, 220, 244);
 }
 
 a {
     color: navy;
     text-decoration: underline;
     font-style: italic;
-    transition: color 2s ease-in-out, background-color 2s ease-in-out;
+    transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
 }
 
 a:hover {
-    color: orange;
-    background-color: green;
+    color: white;
+    background-color: rgb(0, 60, 128);
 }
 
 a:active {
@@ -94,31 +83,55 @@ a:active {
 }
 
 article p{
-    color: lime;
+    color: rgb(255, 255, 255);
     text-align: center;
-    background-color: orange;
-    transition: background-color 2s ease-in-out, color 2s ease-in-out;
+    background-color: #2eaacc;
+    border-radius: 8px;
+    margin: auto;
+    width: 75%;
+    transition: background-color 1s ease-in-out, color 1s ease-in-out;
 }
 
 article p:hover{
-    color: orange;
+    color: white;
     text-align: center;
-    background-color: lime;
+    background-color: rgb(0, 60, 128);
 }
 
 #about p{
-    color: red;
-    background-color: green;
+    color: rgb(0, 0, 0);
+    background-color: lightblue;
     font-style: oblique;
-    text-shadow: 2px 2px 5px cyan;
-    transition: background-color 4s ease-in-out, color 4s ease-in-out, text-shadow 4s ease-in-out;
+    text-shadow: 2px 2px 5px navy;
+    text-align: center;
+    border-radius: 8px;
+    margin: auto;
+    width: 75%;
+    transition: background-color 1s ease-in-out, color 1s ease-in-out, text-shadow 4s ease-in-out;
 }
 
 #about p:hover{
-    color: green;
-    background-color: red;
+    color: white;
+    background-color: rgb(0, 60, 128);
+    text-shadow: 2px 2px 5px cyan;
     font-style: oblique;
-    text-shadow: 2px 2px 5px orange;
+}
+
+figure{
+    background-color: #2eaacc;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+section{
+    background-color: #cce9fd;
+    color: rgb(70, 70, 70);
+    text-align: center;
+    border-radius: 16px;
+    gap: 1rem;
+    border: white 2px solid;
 }
 
 .container{
@@ -129,10 +142,32 @@ article p:hover{
     padding: 1rem;
     margin: auto;
     width: 75%;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.container_3c{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 100px));
+    grid-template-rows: auto;
+    gap: 1rem;
+    padding: 1rem;
+    margin: auto;
+    width: 75%;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.container_3c article{
+  border-radius: 16px;
+  border: white 2px solid;
+  background-color: #a9e3fc;
 }
 
 .item{
-    background-color: #2ecc71;
+    background-color: #2eaacc;
     color: white;
     text-align: center;
     border-radius: 8px;
@@ -140,7 +175,7 @@ article p:hover{
 }
 
 .item:hover{
-    background-color: green;
+    background-color: rgb(0, 60, 128);
     color: white;
     text-align: center;
     border-radius: 8px;
@@ -156,10 +191,3 @@ article p:hover{
     padding: 1rem;
 }
 
-figure{
-    background-color: #2ecc71;
-    color: white;
-    text-align: center;
-    border-radius: 8px;
-    padding: 1rem;
-}
