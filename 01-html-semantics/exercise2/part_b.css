@@ -1,5 +1,14 @@
 body {
   background-color: lightblue;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+main {
+  flex: 1;
+  padding-bottom: 2rem;
 }
 
 h1 {
@@ -39,6 +48,9 @@ footer{
   aspect-ratio: 1 / 1;
   object-fit: cover;
   object-position: center;
+
+  display: block;
+  margin: 0 auto 1rem auto;
 }
 
 .section_cards {
@@ -51,6 +63,13 @@ footer{
     cursor: pointer;
     
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    padding: 0.5rem;
+    gap: 1rem;
 }
 
 .section_cards:hover {
@@ -105,8 +124,17 @@ footer{
     gap: 1rem;
     margin: auto;
     width: 95%;
-    align-items: center;
+    align-items: stretch;
     align-content: center;
     justify-content: center;
     max-width: 1000px;
+}
+
+.section_cards > .container_3c {
+    margin-top: auto;
+}
+
+.section_cards > p {
+    flex: 1;
+    margin: 0;
 }

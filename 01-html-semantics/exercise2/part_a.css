@@ -130,7 +130,6 @@ section{
     text-align: center;
     border-radius: 16px;
     gap: 1rem;
-    border: rgb(194, 225, 255) 2px solid;
 }
 
 .container{
@@ -153,7 +152,7 @@ section{
     gap: 1rem;
     margin: auto;
     width: 95%;
-    align-items: center;
+    align-items: stretch;
     align-content: center;
     justify-content: center;
     max-width: 1000px;
