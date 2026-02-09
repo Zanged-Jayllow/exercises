@@ -57,9 +57,9 @@ Complete the following tasks by finding and implementing all `TODO` comments:
 - [✅] **Task 3:** Create generator function `bookTitleGenerator()` and `createBookSummary()` with destructuring and template literals
 
 ### Library Management (`library.js`) - 3 tasks
-- [ ] **Task 1:** Implement `addBooks()` method using rest parameters and `searchBooks()` with destructuring parameters
-- [ ] **Task 2:** Implement `getStatistics()` and `updateBook()` methods using computed properties and logical assignment operators
-- [ ] **Task 3:** Create higher-order functions `createBookFormatter()` and `memoize()` for functional programming patterns
+- [🔧] **Task 1:** Implement `addBooks()` method using rest parameters and `searchBooks()` with destructuring parameters
+- [🔧] **Task 2:** Implement `getStatistics()` and `updateBook()` methods using computed properties and logical assignment operators
+- [🔧] **Task 3:** Create higher-order functions `createBookFormatter()` and `memoize()` for functional programming patterns
 
 ### User Interface (`ui.js`) - 3 tasks
 - [ ] **Task 1:** Implement `displayStatistics()` and `displayBooks()` using destructuring and template literals for formatted output

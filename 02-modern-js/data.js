@@ -52,6 +52,13 @@ export const uniqueAuthors = new Set([...books.map(book => book.author)]);
  * groupBooksByGenre: Return Map with genre as key, array of books as value
  */
 export function filterBooksByStatus(bookArray, status) {
+
+    // Handles unexpected inputs
+    if (!Array.isArray(bookArray)) {
+        console.warn('filterBooksByStatus: Expected array, received', typeof bookArray);
+        return [];
+    }
+    
     // Filter books by availability status, handle undefined availability
     return bookArray.filter(book => book?.availability?.status === status);
 }
