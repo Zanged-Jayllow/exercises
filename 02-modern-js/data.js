@@ -53,10 +53,30 @@ export const uniqueAuthors = new Set([...books.map(book => book.author)]);
  */
 export function filterBooksByStatus(bookArray, status) {
     // Filter books by availability status, handle undefined availability
+    return bookArray.filter(book => book?.availability?.status === status);
 }
 
 export function groupBooksByGenre(bookArray) {
     // Group books into Map by genre
+    const genreMap = new Map();
+    
+    bookArray.forEach(book => {
+        // Get the genre from the book, use optional chaining to handle undefined
+        const genre = book?.genre;
+        
+        if (genre) {
+            // If genre already exists in Map, add book to its array
+            // If not, create new array with the book
+            if (genreMap.has(genre)) {
+                genreMap.get(genre).push(book);
+            }
+            else {
+                genreMap.set(genre, [book]);
+            }
+        }
+    });
+    
+    return genreMap;
 }
 
 /**
@@ -66,33 +86,49 @@ export function groupBooksByGenre(bookArray) {
  * Example: "The Clean Coder by Robert C. Martin (2011) - Available at A1-23"
  */
 export function* bookTitleGenerator(bookArray) {
-    // Yield book titles one by one
+    for (const book of bookArray) {
+        yield book.title;
+    }
 }
 
 export function createBookSummary(book) {
     // Destructure book properties and create formatted summary
-
+    
     // Preliminary checks for broken inputs
     if (!book || typeof book !== "object") {
         return "Unknown Title by Unknown Author (Unknown Year) - Status: Unknown";
     }
 
-    // Fetches availability info
+    // Destructure book properties
+    const {
+        title = "Unknown Title",
+        author = "Unknown Author",
+        year = "Unknown Year",
+        availability = {}
+    } = book;
+    
+    // Destructure availability properties
+    const {
+        status: availStatus = "Unknown",
+        location,
+        dueDate
+    } = availability;
+    
+    const statusLower = availStatus.toLowerCase();
+    
+    // Use template literals for string interpolation
     let availInfo = "";
-    let availStatus = book.availability?.status?.toLowerCase() ?? "Unknown";
-
-    if (availStatus === "available"){
-        availInfo += " - Status: Available at " + (book.availability?.location ?? "Unknown Location");
-    }
-    else if (availStatus === "checked_out"){
-        availInfo += " - Status: Checked Out And Due at " + (book.availability?.dueDate ?? "Unknown Time");
-    }
-    else{
-        availInfo += " - Status: " + availStatus;
+    
+    if (statusLower === "available") {
+        availInfo = ` - Status: Available at ${location || "Unknown Location"}`;
+    } else if (statusLower === "checked_out") {
+        availInfo = ` - Status: Checked Out And Due at ${dueDate || "Unknown Time"}`;
+    } else {
+        availInfo = ` - Status: ${availStatus}`;
     }
 
-    // Fetches the easier info
-    let output = (book.title ?? "Unknown Title") + " by " +  (book.author ?? "Unknown Author") + " (" + (book.year ?? "Unknown Year") + ")" + availInfo;
+    // Create the final output using template literals
+    const output = `${title} by ${author} (${year})${availInfo}`;
 
     return output;
 }

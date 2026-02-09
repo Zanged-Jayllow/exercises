@@ -53,8 +53,8 @@ Complete the following tasks by finding and implementing all `TODO` comments:
 
 ### Data Layer (`data.js`) - 3 tasks
 - [✅] **Task 1:** Create Map for book categories and Set for unique authors using constructors and spread operator
-- [ ] **Task 2:** Implement `filterBooksByStatus()` and `groupBooksByGenre()` functions using array methods and optional chaining
-- [🔍] **Task 3:** Create generator function `bookTitleGenerator()` and `createBookSummary()` with destructuring and template literals
+- [✅] **Task 2:** Implement `filterBooksByStatus()` and `groupBooksByGenre()` functions using array methods and optional chaining
+- [✅] **Task 3:** Create generator function `bookTitleGenerator()` and `createBookSummary()` with destructuring and template literals
 
 ### Library Management (`library.js`) - 3 tasks
 - [ ] **Task 1:** Implement `addBooks()` method using rest parameters and `searchBooks()` with destructuring parameters
@@ -73,7 +73,7 @@ Complete the following tasks by finding and implementing all `TODO` comments:
 
 ### Code Quality Requirements
 - [ ] Use `const` for values that won't be reassigned, `let` for variables that change
-- [ ] Avoid `var` declarations entirely
+- [✅] Avoid `var` declarations entirely
 - [ ] Apply destructuring in function parameters and assignments where possible
 - [ ] Use template literals instead of string concatenation
 - [ ] Use optional chaining when accessing potentially undefined properties
