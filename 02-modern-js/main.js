@@ -26,9 +26,12 @@ async function runLibraryDemo() {
         // Show filtering, grouping, search, and analysis features
 
         // === STATISTICS ===
-        console.log('\n=== LIBRARY STATISTICS ===');
+        console.log('\n📊 === LIBRARY STATISTICS ===');
         const stats = library.getStatistics?.() ?? {};
         displayStatistics(stats);
+
+        // === DESTRUCTURING ===
+        showDestructuringExample();
 
         // === DISPLAY ALL BOOKS ===
         console.log('\n=== ALL BOOKS ===');
@@ -77,6 +80,8 @@ async function runLibraryDemo() {
 
         // === ERROR HANDLING ===
         demonstrateErrorHandling(library);
+
+        
         
     } catch (error) {
         console.error('Application error:', error.message);
@@ -90,12 +95,17 @@ function demonstrateScoping() {
     // Show const/let behavior, block scoping, temporal dead zone
 
     // Const behavior
-    const config = { maxBooks: 5 };
     // Constant Containing An Object: Object Mutation Is Allowed
-    console.log('Current config constant:', config);
-    console.log('Attempting To Mutate maxBooks inside config constant');
-    config.maxBooks = 10;
-    console.log('Updated config constant:', config);
+    try {
+        const config = { maxBooks: 5 };
+        console.log('Current config constant:', config);
+        console.log('Attempting To Mutate maxBooks inside config constant');
+        config.maxBooks = 10;
+        console.log('Updated config constant:', config);
+    } catch (error) {
+        console.log('Error occurred (likely running code multiple times):', error.message);
+        console.log('Refresh the page/console and try again!');
+    }
     // Constant Reassignment: Not Allowed
     try {
         const config = { maxBooks: 5 };
@@ -299,17 +309,22 @@ function showGeneratorExample() {
     console.log('Generator finished:', result.done);
 }
 
-/**
- * TODO: Start the application and demonstrate array destructuring
- * Call runLibraryDemo() when module loads
- * Show destructuring with first book, second book, and rest pattern
- */
-// Start application and show destructuring example
-console.log('\n📖 === DESTRUCTURING DEMO ===');
-const [firstBook, secondBook, ...remainingBooks] = books;
-// Display destructured results
-console.log('First book:', firstBook?.title ?? 'N/A');
-console.log('Second book:', secondBook?.title ?? 'N/A');
-console.log('Remaining count:', remainingBooks.length);
+// wrapped inside to port it
+function showDestructuringExample() {
+    /**
+     * TODO: Start the application and demonstrate array destructuring
+     * Call runLibraryDemo() when module loads
+     * Show destructuring with first book, second book, and rest pattern
+     */
+    // Start application and show destructuring example
+    console.log('\n📖 === DESTRUCTURING DEMO ===');
+    const [firstBook, secondBook, ...remainingBooks] = books;
+    // Display destructured results
+    console.log('First book:', firstBook?.title ?? 'N/A');
+    console.log('Second book:', secondBook?.title ?? 'N/A');
+    console.log('Remaining count:', remainingBooks.length);
+}
+
+
 
 runLibraryDemo();
