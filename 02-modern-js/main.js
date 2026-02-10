@@ -42,7 +42,7 @@ function demonstrateScoping() {
         config.maxBooks = 10;
         console.log('Updated config constant:', config);
     } catch (error) {
-        console.log('⚠️ Error occurred (likely running code multiple times):', error.message);
+        console.log('Error caught:', error.message);
         console.log('Refresh the page/console and try again!');
     }
     // Constant Reassignment: Not Allowed
@@ -54,7 +54,7 @@ function demonstrateScoping() {
         config = 23;
         console.log('Updated config constant:', config);
     } catch (error) {
-        console.log('⚠️ Error caught:', error.message);
+        console.log('Error caught:', error.message);
     }
     // Constant Redeclaration: Not Allowed Within Same Block
     try {
@@ -68,7 +68,7 @@ function demonstrateScoping() {
             console.log('Updated config constant:', config);
         `)
     } catch (error) {
-        console.log('⚠️ Error caught:', error.message);
+        console.log('Error caught:', error.message);
     }
     // Constant Redeclaration: Not Allowed Within Same Block
     try {
@@ -81,7 +81,7 @@ function demonstrateScoping() {
             console.log('Updated config constant:', config);
         `)
     } catch (error) {
-        console.log('⚠️ Error caught:', error.message);
+        console.log('Error caught:', error.message);
     }
 
     //let Behavior
@@ -95,7 +95,7 @@ function demonstrateScoping() {
         configvar = 23;
         console.log('Updated config variable:', configvar);
     } catch (error) {
-        console.log('⚠️ Error caught:', error.message);
+        console.log('Error caught:', error.message);
     }
     // Variable Redeclaration: Not Allowed Within Same Block
     try {
@@ -109,7 +109,7 @@ function demonstrateScoping() {
             console.log('Updated config variable:', configvar);
         `)
     } catch (error) {
-        console.log('⚠️ Error caught:', error.message);
+        console.log('Error caught:', error.message);
     }
     // Variable Redeclaration: Not Allowed Within Same Block
     try {
@@ -122,7 +122,7 @@ function demonstrateScoping() {
             console.log('Updated config variable:', configvar);
         `)
     } catch (error) {
-        console.log('⚠️ Error caught:', error.message);
+        console.log('Error caught:', error.message);
     }
 
     // Block Scoping - Present Both For let And const
@@ -149,9 +149,9 @@ function demonstrateScoping() {
         console.log("Referencing: ", blockScoped);
     }
     catch(error){
-        console.log('⚠️ Error caught:', error.message);
+        console.log('Error caught:', error.message);
     }
-    
+
     // Redeclaring const inside a block is allowed
     console.log("--- Redeclaring Constant Inside A Block ---");
     {
@@ -175,7 +175,7 @@ function demonstrateScoping() {
         console.log("Variable", tdzVar2); // This causes TDZ Error
         let tdzVar2 = 'Initialized After';
     } catch (error) {
-        console.log('⚠️ Error caught:', error.message);
+        console.log('Error caught:', error.message);
     }
 
     
@@ -197,14 +197,14 @@ function demonstrateErrorHandling(library) {
         const firstBookTitle = library.books?.[0]?.title ?? 'Unknown Title';
         console.log('First Book Title:', firstBookTitle);
 
-        // TODO: Safe array operation
+        // Safe array operation
         console.log('\n--- Demonstrating Safe Array Operation ---');
         const safeArray = library.books || [];
         const availableCount = safeArray.filter(book => book.status === 'available').length;
         console.log('Available books (safe array operation):', availableCount);
 
-        // TODO: Availability formatting
-        console.log('\n--- Demonstrating Availability formatting ---');
+        // Availability formatting
+        console.log('\n--- Demonstrating Availability formatting (With ui Layer) ---');
 
         const testAvailability1 = { status: 'available', location: 'A-101' };
         const testAvailability2 = { status: 'checked_out', dueDate: '2024-12-31' };
@@ -223,7 +223,7 @@ function demonstrateErrorHandling(library) {
         }
 
     } catch (error) {
-        console.log('⚠️ Handled error:', error.message);
+        console.log('Error caught:', error.message);
     }
 
     console.log('\n--- Demonstrating Try-Catch Handling ---');
@@ -234,7 +234,7 @@ function demonstrateErrorHandling(library) {
         const firstBookDOI = library.badbooks[0].doi;
         console.log('First Book Genre:', firstBookDOI);
     } catch (error) {
-        console.log('⚠️ Handled error:', error.message);
+        console.log('Error caught:', error.message);
     }
     try {
         // Without Nullish coalescing
@@ -242,7 +242,7 @@ function demonstrateErrorHandling(library) {
         const firstBookSlogan = library.books?.[0]?.slogan;
         console.log('Title uppercase:', firstBookSlogan.toUpperCase());
     } catch (error) {
-        console.log('⚠️ Handled error:', error.message);
+        console.log('Error caught:', error.message);
     }
 
     // TODO: Try-Catch Block For Safe Array Opertions
@@ -258,18 +258,19 @@ function demonstrateErrorHandling(library) {
         const emptyResult = emptyArray.map(book => book.title);
         console.log('Map on empty array:', emptyResult);
     } catch (error) {
-        console.log('⚠️ Array operation error:', error.message);
+        console.log('Error caught:', error.message);
     }
 
     // This Try Catch Block Demonstrates How The Formatter
-    // Already handles invalid inputs!
+    // Already handles invalid inputs, so technically it won't
+    // get triggered.
     try {
         console.log('\n--- Availability Formatting ---');
         const invalidStatus = 'unknown_status';
         const formatted = formatAvailability(invalidStatus);
         console.log('Formatting invalid status:', formatted);
     } catch (error) {
-        console.log('⚠️ Formatting error:', error.message);
+        console.log('Error caught:', error.message);
         console.log('Using fallback formatting...');
         const fallbackResult = invalidStatus === 'available' ? 'Available' : 
                               invalidStatus === 'checked_out' ? 'Checked Out' : 
@@ -284,9 +285,9 @@ function showGeneratorExample() {
 
     const generator = bookTitleGenerator(books);
 
-    console.log('Iterating through book titles using generator:');
+    console.log('Iterating through books using generator:');
     for (const title of generator) {
-        console.log('📚 Book:', title);
+        console.log('Book:', title);
     }
 
     // Demonstrating manual iteration
@@ -303,7 +304,6 @@ function showGeneratorExample() {
 /**
  * TODO: Implement main application function and variable scoping demonstration
  * runLibraryDemo(): Coordinate all modules, handle null default export, show library features
- * demonstrateScoping(): Show let/const behavior, block scoping, temporal dead zone awareness
  */
 async function runLibraryDemo() {
     console.log('🚀 Starting Library Management System Demo');
@@ -323,27 +323,28 @@ async function runLibraryDemo() {
         const stats = library.getStatistics?.() ?? {};
         displayStatistics(stats);
 
-        // === DESTRUCTURING ===
+        // Destructuring Demo
         showDestructuringExample();
 
-        // === Functionality DEMOS ===
+        // Functionality Demo
         console.log('\n🔧 === FUNCTIONALITY DEMOS ===');
 
-        // === DISPLAY ALL BOOKS ===
-        displayBooks(books, "📚 === ALL BOOKS ===");
+        // Display Books Demo
+        displayBooks(books, "=== ALL BOOKS ===");
 
-        // === FILTERING ===
-        console.log('\n✅ === AVAILABLE BOOKS ===');
+        // Filter By Status Demo
         const availableBooks = filterBooksByStatus(books, 'available');
-        displayBooks(availableBooks);
+        displayBooks(availableBooks, '=== AVAILABLE BOOKS ===');
+        const borrowedBooks = filterBooksByStatus(books, 'checked_out');
+        displayBooks(borrowedBooks, '=== CHECKED OUT BOOKS ===');
 
-        // === GROUPING ===
-        console.log('\n📚 === BOOKS BY GENRE ===');
+        // Group by Genre Demo
+        console.log('\n=== BOOKS BY GENRE ===');
         const grouped = groupBooksByGenre(books);
         console.log(grouped);
 
-        // === SEARCH ===
-        console.log('\n🔍 === SEARCH RESULTS ("Design Patterns") ===');
+        // Searching Demo
+        console.log('\n=== SEARCH RESULTS ("Design Patterns") ===');
         // Debug Code
         // console.log('Library object:', library);
         // console.log('Search method exists:', typeof library.searchBooks);
@@ -353,30 +354,34 @@ async function runLibraryDemo() {
         // console.log('Search results exists:', typeof results);
         displaySearchResults(results, { title: 'Design Patterns' });
 
-        // === BOOK ANALYSIS ===
+        // Book Analysis Demo
         if (books.length > 0) {
-            // console.log('\n=== BOOK ANALYSIS ===');
             showBookAnalysis(books);
         }
+        else{
+            console.log('\n🔍 === BOOK ANALYSIS ===');
+            console.log('Cannot Proceed: No Books Available');
+        }
 
-        // === FORMATTER + MEMOIZE ===
-        console.log('\n⚙️ === FORMATTER & MEMOIZATION ===');
+        // Formatter + Memoize Demo
+        console.log('\n=== FORMATTER & MEMOIZATION ===');
 
-        const formatter = createBookFormatter('${book.title.toUpperCase()}');
+        const lowercaseTitleFunc = (book) => book.title?.toLowerCase() || '';
+
+        const formatter = createBookFormatter(lowercaseTitleFunc);
         console.log(formatter([books[0]]));
 
         const memoizedSummary = memoize(createBookSummary);
         console.log(memoizedSummary(books[0]));
-        console.log('(Cached call)');
+        console.log('Try With Cached call');
+        // This should return the cached value without re-computing things
         console.log(memoizedSummary(books[0]));
 
-        // === GENERATOR ===
+        // Generator Demo
         showGeneratorExample();
 
-        // === ERROR HANDLING ===
+        // Error Handling Demo
         demonstrateErrorHandling(library);
-
-        
         
     } catch (error) {
         console.error('Application error:', error.message);

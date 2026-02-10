@@ -172,6 +172,8 @@ export const createBookFormatter = (formatter) => {
 
     // handles when the formatter is not a function
     if (typeof formatter !== 'function') {
+        // Debug Code
+        console.log("Provided Formatter Is Not A Function")
         // Default formatter if none provided
         formatter = (book) => `${book.title} by ${book.author} (${book.genre})`;
     }
@@ -194,7 +196,7 @@ export const createBookFormatter = (formatter) => {
 };
 
 export const memoize = (fn) => {
-    // Use Map to cache expensive function results
+    // Use Map to cache function results
     const cache = new Map();
     
     return function(...args) {
