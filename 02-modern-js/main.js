@@ -37,21 +37,20 @@ async function runLibraryDemo() {
         console.log('\n🔧 === FUNCTIONALITY DEMOS ===');
 
         // === DISPLAY ALL BOOKS ===
-        console.log('\n=== ALL BOOKS ===');
-        displayBooks(books);
+        displayBooks(books, "📚 === ALL BOOKS ===");
 
         // === FILTERING ===
-        console.log('\n=== AVAILABLE BOOKS ===');
+        console.log('\n✅ === AVAILABLE BOOKS ===');
         const availableBooks = filterBooksByStatus(books, 'available');
         displayBooks(availableBooks);
 
         // === GROUPING ===
-        console.log('\n=== BOOKS BY GENRE ===');
+        console.log('\n📚 === BOOKS BY GENRE ===');
         const grouped = groupBooksByGenre(books);
         console.log(grouped);
 
         // === SEARCH ===
-        console.log('\n=== SEARCH RESULTS ("Design Patterns") ===');
+        console.log('\n🔍 === SEARCH RESULTS ("Design Patterns") ===');
         // Debug Code
         // console.log('Library object:', library);
         // console.log('Search method exists:', typeof library.searchBooks);
@@ -63,12 +62,12 @@ async function runLibraryDemo() {
 
         // === BOOK ANALYSIS ===
         if (books.length > 0) {
-            console.log('\n=== BOOK ANALYSIS ===');
+            // console.log('\n=== BOOK ANALYSIS ===');
             showBookAnalysis(books);
         }
 
         // === FORMATTER + MEMOIZE ===
-        console.log('\n=== FORMATTER & MEMOIZATION ===');
+        console.log('\n⚙️ === FORMATTER & MEMOIZATION ===');
 
         const formatter = createBookFormatter('** ');
         console.log(formatter([books[0]]));
@@ -106,7 +105,7 @@ function demonstrateScoping() {
         config.maxBooks = 10;
         console.log('Updated config constant:', config);
     } catch (error) {
-        console.log('Error occurred (likely running code multiple times):', error.message);
+        console.log('⚠️ Error occurred (likely running code multiple times):', error.message);
         console.log('Refresh the page/console and try again!');
     }
     // Constant Reassignment: Not Allowed
@@ -117,7 +116,7 @@ function demonstrateScoping() {
         config = 23;
         console.log('Updated config constant:', config);
     } catch (error) {
-        console.log('Error caught:', error.message);
+        console.log('⚠️ Error caught:', error.message);
     }
     // Constant Redeclaration: Not Allowed Within Same Block
     try {
@@ -129,7 +128,7 @@ function demonstrateScoping() {
             console.log('Updated config constant:', config);
         `)
     } catch (error) {
-        console.log('Error caught:', error.message);
+        console.log('⚠️ Error caught:', error.message);
     }
     // Constant Redeclaration: Not Allowed Within Same Block
     try {
@@ -141,7 +140,7 @@ function demonstrateScoping() {
             console.log('Updated config constant:', config);
         `)
     } catch (error) {
-        console.log('Error caught:', error.message);
+        console.log('⚠️ Error caught:', error.message);
     }
 
     //let Behavior
@@ -153,7 +152,7 @@ function demonstrateScoping() {
         configvar = 23;
         console.log('Updated config variable:', configvar);
     } catch (error) {
-        console.log('Error caught:', error.message);
+        console.log('⚠️ Error caught:', error.message);
     }
     // Variable Redeclaration: Not Allowed Within Same Block
     try {
@@ -165,7 +164,7 @@ function demonstrateScoping() {
             console.log('Updated config variable:', configvar);
         `)
     } catch (error) {
-        console.log('Error caught:', error.message);
+        console.log('⚠️ Error caught:', error.message);
     }
     // Variable Redeclaration: Not Allowed Within Same Block
     try {
@@ -177,7 +176,7 @@ function demonstrateScoping() {
             console.log('Updated config variable:', configvar);
         `)
     } catch (error) {
-        console.log('Error caught:', error.message);
+        console.log('⚠️ Error caught:', error.message);
     }
 
     // Block Scoping - Present Both For let And const
@@ -200,7 +199,7 @@ function demonstrateScoping() {
         console.log("Using Variable", tdzVar2); // This causes TDZ Error
         let tdzVar2 = 'Initialized After';
     } catch (error) {
-        console.log('TDZ error caught:', error.message);
+        console.log('⚠️ TDZ error caught:', error.message);
     }
 
     
@@ -218,49 +217,53 @@ function demonstrateErrorHandling(library) {
     // Try Catch Block
     try {
         // Optional chaining + Nullish coalescing
+        console.log('\n--- Demonstrating Optional Chaining + Nullish Coalescing ---');
         const firstBookTitle = library.books?.[0]?.title ?? 'Unknown Title';
         console.log('First Book Title:', firstBookTitle);
 
         // TODO: Safe array operation
+        console.log('\n--- Demonstrating Safe Array Operation ---');
         const safeArray = library.books || [];
         const availableCount = safeArray.filter(book => book.status === 'available').length;
         console.log('Available books (safe array operation):', availableCount);
 
         // TODO: Availability formatting
+        console.log('\n--- Demonstrating Availability formatting ---');
         const formattedAvailability = formatAvailability?.() ?? 'Availability formatter not available';
         console.log('Formatted availability:', formattedAvailability);
 
         // Test formatting with a specific book
         if (books[0]) {
-            const bookAvailability = formatAvailability?.(books[0].status) ?? 'Unknown';
+            const bookAvailability = formatAvailability?.(books?.[0]?.availability?.status) ?? 'Unknown';
             console.log('Book 1 availability:', bookAvailability);
         }
 
     } catch (error) {
-        console.error('Handled error:', error.message);
+        console.log('⚠️ Handled error:', error.message);
     }
 
+    console.log('\n--- Demonstrating Try-Catch Handling ---');
     // Try Catch Blocks - Intentional Error Triggering
     try {
         // Without Optional chaining
-        console.log('Property Access Without Optional Chaining')
+        console.log('\nProperty Access Without Optional Chaining');
         const firstBookDOI = library.badbooks[0].doi;
         console.log('First Book Genre:', firstBookDOI);
     } catch (error) {
-        console.error('Handled error:', error.message);
+        console.log('⚠️ Handled error:', error.message);
     }
     try {
         // Without Nullish coalescing
-        console.log('String Operation Without Nullish Coalescing')
+        console.log('\nString Operation Without Nullish Coalescing');
         const firstBookSlogan = library.books?.[0]?.slogan;
         console.log('Title uppercase:', firstBookSlogan.toUpperCase());
     } catch (error) {
-        console.error('Handled error:', error.message);
+        console.log('⚠️ Handled error:', error.message);
     }
 
     // TODO: Try-Catch Block For Safe Array Opertions
     try {
-        console.log('\n=== Safe Array Operations ===');
+        console.log('\n--- Safe Array Operations ---');
         const undefinedArray = undefined;
         // This would normally throw an error
         const mapResult = undefinedArray?.map?.(book => book.title) ?? [];
@@ -271,17 +274,17 @@ function demonstrateErrorHandling(library) {
         const emptyResult = emptyArray.map(book => book.title);
         console.log('Map on empty array:', emptyResult);
     } catch (error) {
-        console.error('Array operation error:', error.message);
+        console.log('⚠️ Array operation error:', error.message);
     }
 
     // TODO: Try-Catch Block For Availability Formatting
     try {
-        console.log('\n=== Availability Formatting ===');
+        console.log('\n--- Availability Formatting ---');
         const invalidStatus = 'unknown_status';
         const formatted = formatAvailability(invalidStatus);
         console.log('Formatting invalid status:', formatted);
     } catch (error) {
-        console.error('Formatting error:', error.message);
+        console.log('⚠️ Formatting error:', error.message);
         console.log('Using fallback formatting...');
         const fallbackResult = invalidStatus === 'available' ? 'Available' : 
                               invalidStatus === 'checked_out' ? 'Checked Out' : 
