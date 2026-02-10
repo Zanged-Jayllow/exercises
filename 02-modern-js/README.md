@@ -57,14 +57,14 @@ Complete the following tasks by finding and implementing all `TODO` comments:
 - [✅] **Task 3:** Create generator function `bookTitleGenerator()` and `createBookSummary()` with destructuring and template literals
 
 ### Library Management (`library.js`) - 3 tasks
-- [🔧] **Task 1:** Implement `addBooks()` method using rest parameters and `searchBooks()` with destructuring parameters
-- [🔧] **Task 2:** Implement `getStatistics()` and `updateBook()` methods using computed properties and logical assignment operators
-- [🔧] **Task 3:** Create higher-order functions `createBookFormatter()` and `memoize()` for functional programming patterns
+- [✅] **Task 1:** Implement `addBooks()` method using rest parameters and `searchBooks()` with destructuring parameters
+- [✅] **Task 2:** Implement `getStatistics()` and `updateBook()` methods using computed properties and logical assignment operators
+- [✅] **Task 3:** Create higher-order functions `createBookFormatter()` and `memoize()` for functional programming patterns
 
 ### User Interface (`ui.js`) - 3 tasks
-- [🔧] **Task 1:** Implement `displayStatistics()` and `displayBooks()` using destructuring and template literals for formatted output
-- [🔧] **Task 2:** Implement `displaySearchResults()` and `formatAvailability()` with dynamic titles and optional chaining
-- [🔧] **Task 3:** Create `showBookAnalysis()` function demonstrating array method combinations (map, filter, reduce)
+- [✅] **Task 1:** Implement `displayStatistics()` and `displayBooks()` using destructuring and template literals for formatted output
+- [✅] **Task 2:** Implement `displaySearchResults()` and `formatAvailability()` with dynamic titles and optional chaining
+- [✅] **Task 3:** Create `showBookAnalysis()` function demonstrating array method combinations (map, filter, reduce)
 
 ### Main Application (`main.js`) - 3 tasks
 - [🔧] **Task 1:** Implement `runLibraryDemo()` main function and `demonstrateScoping()` showing let/const behavior

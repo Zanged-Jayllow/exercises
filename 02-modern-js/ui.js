@@ -76,19 +76,14 @@ export function displaySearchResults(searchResults, searchCriteria) {
             ? criteriaParts.join(" | ")
             : "All Books";
 
-    console.log(`
-    Search Results
-    =========================
-    Criteria: ${criteriaText}
-    Matches Found: ${searchResults.length}
-    `);
+    console.log(`Search Results With [Criteria: ${criteriaText} | Matches Found: ${searchResults.length}]`);
 
     // Display results
-    searchResults.forEach((book, index) => {
+    searchResults.forEach((book) => {
         const { title, author, year, availability } = book;
 
         console.log(
-            `${index + 1}. "${title}" by ${author} (${year}) — ${formatAvailability(availability)}`
+            `"${title}" by ${author} (${year}) — ${formatAvailability(availability)}`
         );
     });
 

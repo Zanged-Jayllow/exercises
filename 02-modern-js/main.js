@@ -201,22 +201,39 @@ function demonstrateErrorHandling(library) {
         console.log('\n--- Demonstrating Safe Array Operation ---');
         const safeArray = library.books || [];
         const availableCount = safeArray.filter(book => book.status === 'available').length;
-        console.log('Available books (safe array operation):', availableCount);
+        console.log('Available books:', availableCount);
 
         // Availability formatting
-        console.log('\n--- Demonstrating Availability formatting (With ui Layer) ---');
+        console.log('\n--- Demonstrating Availability Formatting (UI Layer) ---');
 
         const testAvailability1 = { status: 'available', location: 'A-101' };
         const testAvailability2 = { status: 'checked_out', dueDate: '2024-12-31' };
         const testAvailability3 = { status: 'unknown' };
         const testAvailability4 = undefined;
+        const testAvailability5 = { status: 'available' };
+        const testAvailability6 = { status: 'checked_out' };
+        const testAvailability7 = { status: 'adfhiahdf' };
+        const testAvailability8 = { status: 'available', location: 'asdasdf' };
+        const testAvailability9 = { status: 'checked_out', dueDate: 'adfasdf' };
+        const testAvailability10 = 234;
+        const testAvailability11 = { status: 'available', dueDate: 'adfasdf' };
+        const testAvailability12 = { status: 'checked_out', location: 'adfasdf' };
 
-        console.log('Test 1 (available):', formatAvailability?.(testAvailability1) ?? 'Formatter not available');
-        console.log('Test 2 (checked out):', formatAvailability?.(testAvailability2) ?? 'Formatter not available');
-        console.log('Test 3 (unknown):', formatAvailability?.(testAvailability3) ?? 'Formatter not available');
-        console.log('Test 4 (undefined):', formatAvailability?.(testAvailability4) ?? 'Formatter not available');
+        console.log('Test 1 (status: available with location):', formatAvailability?.(testAvailability1) ?? 'Formatter not available');
+        console.log('Test 2 (status: checked out with due dates):', formatAvailability?.(testAvailability2) ?? 'Formatter not available');
+        console.log('Test 3 (status: unknown):', formatAvailability?.(testAvailability3) ?? 'Formatter not available');
+        console.log('Test 4 (status is undefined):', formatAvailability?.(testAvailability4) ?? 'Formatter not available');
+        console.log('Test 5 (status: available with missing location):', formatAvailability?.(testAvailability5) ?? 'Formatter not available');
+        console.log('Test 6 (status: checked out with missing due dates):', formatAvailability?.(testAvailability6) ?? 'Formatter not available');
+        console.log('Test 7 (status is broken values):', formatAvailability?.(testAvailability7) ?? 'Formatter not available');
+        console.log('Test 10 (status is not valid):', formatAvailability?.(testAvailability10) ?? 'Formatter not available');
+        console.log('Test 11 (status: available with invalid date parameter):', formatAvailability?.(testAvailability11) ?? 'Formatter not available');
+        console.log('Test 12 (status: checked out with invalid location parameter):', formatAvailability?.(testAvailability12) ?? 'Formatter not available');
+        console.log("Cannot Catch These Errors However")
+        console.log('Test 8 (status: available with broken location):', formatAvailability?.(testAvailability8) ?? 'Formatter not available');
+        console.log('Test 9 (status: checked out with broken due dates):', formatAvailability?.(testAvailability9) ?? 'Formatter not available');
 
-        // Also test with a real book if available
+        // Test with real book that is available
         if (books[0]?.availability) {
             const bookAvailability = formatAvailability(books[0].availability);
             console.log('Book 1 availability:', bookAvailability);
@@ -226,7 +243,7 @@ function demonstrateErrorHandling(library) {
         console.log('Error caught:', error.message);
     }
 
-    console.log('\n--- Demonstrating Try-Catch Handling ---');
+    console.log('\n--- Demonstrating The Effect Of Try-Catch Handling ---');
     // Try Catch Blocks - Intentional Error Triggering
     try {
         // Without Optional chaining
@@ -301,6 +318,29 @@ function showGeneratorExample() {
     console.log('Generator finished:', result.done);
 }
 
+function showFormatterExample(formatterFunc = (book) => book.title?.toLowerCase() || '') {
+    console.log('\n=== Formatter Demo ===');
+    console.log("Attempting Creating Book Formatter With", formatterFunc);
+    const formatter = createBookFormatter(formatterFunc);
+    console.log("Attempting To Use Formatter On One Book");
+    console.log("Before:", [books[0]]);
+    console.log("Result:", formatter([books[0]]));
+    console.log("Attempting To Use Formatter Book Array");
+    console.log("Before:", books);
+    console.log("Result:", formatter(books));
+}
+
+function showMemoExample() {
+    console.log('\n=== Memoization Demo ===');
+
+    console.log('Initial Call');
+    const memoizedSummary = memoize(createBookSummary);
+    console.log(memoizedSummary(books[0]));
+    console.log('Try With Cached call');
+    // This should return the cached value
+    console.log(memoizedSummary(books[0]));
+}
+
 /**
  * TODO: Implement main application function and variable scoping demonstration
  * runLibraryDemo(): Coordinate all modules, handle null default export, show library features
@@ -364,7 +404,9 @@ async function runLibraryDemo() {
         }
 
         // Formatter + Memoize Demo
-        console.log('\n=== FORMATTER & MEMOIZATION ===');
+        showFormatterExample();
+        showMemoExample();
+        /* console.log('\n=== FORMATTER & MEMOIZATION ===');
 
         const lowercaseTitleFunc = (book) => book.title?.toLowerCase() || '';
 
@@ -375,7 +417,7 @@ async function runLibraryDemo() {
         console.log(memoizedSummary(books[0]));
         console.log('Try With Cached call');
         // This should return the cached value without re-computing things
-        console.log(memoizedSummary(books[0]));
+        console.log(memoizedSummary(books[0])); */
 
         // Generator Demo
         showGeneratorExample();
