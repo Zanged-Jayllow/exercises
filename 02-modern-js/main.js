@@ -7,89 +7,20 @@ import { books, filterBooksByStatus, groupBooksByGenre, bookTitleGenerator, crea
 import libraryManager, { LibraryManager, createBookFormatter, memoize } from './library.js';
 import { displayStatistics, displayBooks, displaySearchResults, showBookAnalysis, formatAvailability } from './ui.js';
 
-/**
- * TODO: Implement main application function and variable scoping demonstration
- * runLibraryDemo(): Coordinate all modules, handle null default export, show library features
- * demonstrateScoping(): Show let/const behavior, block scoping, temporal dead zone awareness
- */
-async function runLibraryDemo() {
-    console.log('🚀 Starting Library Management System Demo');
-    console.log('='.repeat(50));
-
-    try {
-        // Handle case where default export might be null
-        const library = libraryManager || new LibraryManager(books);
-
-        demonstrateScoping();
-
-        // Display library statistics and demonstrate book operations
-        // Show filtering, grouping, search, and analysis features
-
-        // === STATISTICS ===
-        console.log('\n📊 === LIBRARY STATISTICS ===');
-        const stats = library.getStatistics?.() ?? {};
-        displayStatistics(stats);
-
-        // === DESTRUCTURING ===
-        showDestructuringExample();
-
-        // === Functionality DEMOS ===
-        console.log('\n🔧 === FUNCTIONALITY DEMOS ===');
-
-        // === DISPLAY ALL BOOKS ===
-        displayBooks(books, "📚 === ALL BOOKS ===");
-
-        // === FILTERING ===
-        console.log('\n✅ === AVAILABLE BOOKS ===');
-        const availableBooks = filterBooksByStatus(books, 'available');
-        displayBooks(availableBooks);
-
-        // === GROUPING ===
-        console.log('\n📚 === BOOKS BY GENRE ===');
-        const grouped = groupBooksByGenre(books);
-        console.log(grouped);
-
-        // === SEARCH ===
-        console.log('\n🔍 === SEARCH RESULTS ("Design Patterns") ===');
-        // Debug Code
-        // console.log('Library object:', library);
-        // console.log('Search method exists:', typeof library.searchBooks);
-
-        const results = library.searchBooks?.({ title: 'Design Patterns' }) ?? [];
-
-        // console.log('Search results exists:', typeof results);
-        displaySearchResults(results, { title: 'Design Patterns' });
-
-        // === BOOK ANALYSIS ===
-        if (books.length > 0) {
-            // console.log('\n=== BOOK ANALYSIS ===');
-            showBookAnalysis(books);
-        }
-
-        // === FORMATTER + MEMOIZE ===
-        console.log('\n⚙️ === FORMATTER & MEMOIZATION ===');
-
-        const formatter = createBookFormatter('** ');
-        console.log(formatter([books[0]]));
-
-        const memoizedSummary = memoize(createBookSummary);
-        console.log(memoizedSummary(books[0]));
-        console.log('(Cached call)');
-        console.log(memoizedSummary(books[0]));
-
-        // === GENERATOR ===
-        showGeneratorExample();
-
-        // === ERROR HANDLING ===
-        demonstrateErrorHandling(library);
-
-        
-        
-    } catch (error) {
-        console.error('Application error:', error.message);
-    } finally {
-        console.log('\n✅ Demo completed!');
-    }
+// wrapped inside to port it
+function showDestructuringExample() {
+    /**
+     * TODO: Start the application and demonstrate array destructuring
+     * Call runLibraryDemo() when module loads
+     * Show destructuring with first book, second book, and rest pattern
+     */
+    // Start application and show destructuring example
+    console.log('\n📖 === DESTRUCTURING DEMO ===');
+    const [firstBook, secondBook, ...remainingBooks] = books;
+    // Display destructured results
+    console.log('First book:', firstBook?.title ?? 'N/A');
+    console.log('Second book:', secondBook?.title ?? 'N/A');
+    console.log('Remaining count:', remainingBooks.length);
 }
 
 function demonstrateScoping() {
@@ -229,12 +160,20 @@ function demonstrateErrorHandling(library) {
 
         // TODO: Availability formatting
         console.log('\n--- Demonstrating Availability formatting ---');
-        const formattedAvailability = formatAvailability?.() ?? 'Availability formatter not available';
-        console.log('Formatted availability:', formattedAvailability);
 
-        // Test formatting with a specific book
-        if (books[0]) {
-            const bookAvailability = formatAvailability?.(books?.[0]?.availability?.status) ?? 'Unknown';
+        const testAvailability1 = { status: 'available', location: 'A-101' };
+        const testAvailability2 = { status: 'checked_out', dueDate: '2024-12-31' };
+        const testAvailability3 = { status: 'unknown' };
+        const testAvailability4 = undefined;
+
+        console.log('Test 1 (available):', formatAvailability?.(testAvailability1) ?? 'Formatter not available');
+        console.log('Test 2 (checked out):', formatAvailability?.(testAvailability2) ?? 'Formatter not available');
+        console.log('Test 3 (unknown):', formatAvailability?.(testAvailability3) ?? 'Formatter not available');
+        console.log('Test 4 (undefined):', formatAvailability?.(testAvailability4) ?? 'Formatter not available');
+
+        // Also test with a real book if available
+        if (books[0]?.availability) {
+            const bookAvailability = formatAvailability(books[0].availability);
             console.log('Book 1 availability:', bookAvailability);
         }
 
@@ -277,7 +216,8 @@ function demonstrateErrorHandling(library) {
         console.log('⚠️ Array operation error:', error.message);
     }
 
-    // TODO: Try-Catch Block For Availability Formatting
+    // This Try Catch Block Demonstrates How The Formatter
+    // Already handles invalid inputs!
     try {
         console.log('\n--- Availability Formatting ---');
         const invalidStatus = 'unknown_status';
@@ -315,22 +255,89 @@ function showGeneratorExample() {
     console.log('Generator finished:', result.done);
 }
 
-// wrapped inside to port it
-function showDestructuringExample() {
-    /**
-     * TODO: Start the application and demonstrate array destructuring
-     * Call runLibraryDemo() when module loads
-     * Show destructuring with first book, second book, and rest pattern
-     */
-    // Start application and show destructuring example
-    console.log('\n📖 === DESTRUCTURING DEMO ===');
-    const [firstBook, secondBook, ...remainingBooks] = books;
-    // Display destructured results
-    console.log('First book:', firstBook?.title ?? 'N/A');
-    console.log('Second book:', secondBook?.title ?? 'N/A');
-    console.log('Remaining count:', remainingBooks.length);
+/**
+ * TODO: Implement main application function and variable scoping demonstration
+ * runLibraryDemo(): Coordinate all modules, handle null default export, show library features
+ * demonstrateScoping(): Show let/const behavior, block scoping, temporal dead zone awareness
+ */
+async function runLibraryDemo() {
+    console.log('🚀 Starting Library Management System Demo');
+    console.log('='.repeat(50));
+
+    try {
+        // Handle case where default export might be null
+        const library = libraryManager || new LibraryManager(books);
+
+        demonstrateScoping();
+
+        // Display library statistics and demonstrate book operations
+        // Show filtering, grouping, search, and analysis features
+
+        // === STATISTICS ===
+        console.log('\n📊 === LIBRARY STATISTICS ===');
+        const stats = library.getStatistics?.() ?? {};
+        displayStatistics(stats);
+
+        // === DESTRUCTURING ===
+        showDestructuringExample();
+
+        // === Functionality DEMOS ===
+        console.log('\n🔧 === FUNCTIONALITY DEMOS ===');
+
+        // === DISPLAY ALL BOOKS ===
+        displayBooks(books, "📚 === ALL BOOKS ===");
+
+        // === FILTERING ===
+        console.log('\n✅ === AVAILABLE BOOKS ===');
+        const availableBooks = filterBooksByStatus(books, 'available');
+        displayBooks(availableBooks);
+
+        // === GROUPING ===
+        console.log('\n📚 === BOOKS BY GENRE ===');
+        const grouped = groupBooksByGenre(books);
+        console.log(grouped);
+
+        // === SEARCH ===
+        console.log('\n🔍 === SEARCH RESULTS ("Design Patterns") ===');
+        // Debug Code
+        // console.log('Library object:', library);
+        // console.log('Search method exists:', typeof library.searchBooks);
+
+        const results = library.searchBooks?.({ title: 'Design Patterns' }) ?? [];
+
+        // console.log('Search results exists:', typeof results);
+        displaySearchResults(results, { title: 'Design Patterns' });
+
+        // === BOOK ANALYSIS ===
+        if (books.length > 0) {
+            // console.log('\n=== BOOK ANALYSIS ===');
+            showBookAnalysis(books);
+        }
+
+        // === FORMATTER + MEMOIZE ===
+        console.log('\n⚙️ === FORMATTER & MEMOIZATION ===');
+
+        const formatter = createBookFormatter('** ');
+        console.log(formatter([books[0]]));
+
+        const memoizedSummary = memoize(createBookSummary);
+        console.log(memoizedSummary(books[0]));
+        console.log('(Cached call)');
+        console.log(memoizedSummary(books[0]));
+
+        // === GENERATOR ===
+        showGeneratorExample();
+
+        // === ERROR HANDLING ===
+        demonstrateErrorHandling(library);
+
+        
+        
+    } catch (error) {
+        console.error('Application error:', error.message);
+    } finally {
+        console.log('\n✅ Demo completed!');
+    }
 }
-
-
 
 runLibraryDemo();

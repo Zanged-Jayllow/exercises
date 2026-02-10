@@ -76,7 +76,7 @@ Complete the following tasks by finding and implementing all `TODO` comments:
 - [✅] Avoid `var` declarations entirely
 - [🔧] Apply destructuring in function parameters and assignments where possible
 - [🔧] Use template literals instead of string concatenation
-- [🔧] Use optional chaining when accessing potentially undefined properties
+- [✅] Use optional chaining when accessing potentially undefined properties
 - [🔧] Use nullish coalescing for default value assignments
 
 **Total: 12 focused tasks across 4 files**
