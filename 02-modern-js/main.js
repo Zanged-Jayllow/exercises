@@ -95,8 +95,12 @@ function demonstrateScoping() {
 
     // Temporal Dead Zone demo
     try {
-        console.log(tdzVar); // This causes TDZ Error
-        let tdzVar = 'Variable Initialized';
+        console.log("\nVariable Initialized Before Being Referenced");
+        let tdzVar1 = "Initialized Before";
+        console.log("Using Variable: ", tdzVar1);
+        console.log("\nVariable Initialized After Being Referenced");
+        console.log("Using Variable", tdzVar2); // This causes TDZ Error
+        let tdzVar2 = 'Initialized After';
     } catch (error) {
         console.log('TDZ error caught:', error.message);
     }
@@ -122,6 +126,16 @@ function demonstrateScoping() {
     } catch (error) {
         console.log('Error caught:', error.message);
     }
+    // Constant Redeclaration: Not Allowed
+    try {
+        console.log('Current config:', config);
+        console.log('Attempting To Redeclare config as Variable')
+        let config = 23;
+    } catch (error) {
+        console.log('Error caught:', error.message);
+    }
+
+    //TODO: Variable Behavior
 }
 
 /**
@@ -173,6 +187,12 @@ function demonstrateErrorHandling(library) {
 function showGeneratorExample() {
     console.log('\n🔄 === GENERATOR DEMO ===');
     // Use bookTitleGenerator and show iteration
+
+    const generator = bookTitleGenerator(books);
+
+    for (const title of generator) {
+        console.log('Book: ', title);
+    }
 }
 
 /**
@@ -184,5 +204,8 @@ function showGeneratorExample() {
 console.log('\n📖 === DESTRUCTURING DEMO ===');
 const [firstBook, secondBook, ...remainingBooks] = books;
 // Display destructured results
+console.log('First book:', firstBook?.title ?? 'N/A');
+console.log('Second book:', secondBook?.title ?? 'N/A');
+console.log('Remaining count:', remainingBooks.length);
 
 runLibraryDemo();
