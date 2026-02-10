@@ -206,37 +206,42 @@ function demonstrateErrorHandling(library) {
         // Availability formatting
         console.log('\n--- Demonstrating Availability Formatting (UI Layer) ---');
 
-        const testAvailability1 = { status: 'available', location: 'A-101' };
-        const testAvailability2 = { status: 'checked_out', dueDate: '2024-12-31' };
-        const testAvailability3 = { status: 'unknown' };
-        const testAvailability4 = undefined;
-        const testAvailability5 = { status: 'available' };
-        const testAvailability6 = { status: 'checked_out' };
-        const testAvailability7 = { status: 'adfhiahdf' };
-        const testAvailability8 = { status: 'available', location: 'asdasdf' };
-        const testAvailability9 = { status: 'checked_out', dueDate: 'adfasdf' };
-        const testAvailability10 = 234;
-        const testAvailability11 = { status: 'available', dueDate: 'adfasdf' };
-        const testAvailability12 = { status: 'checked_out', location: 'adfasdf' };
+        const testCases = [
+            ['Test 1 (status: available with location)', { status: 'available', location: 'A-101' }],
+            ['Test 2 (status: checked out with due dates)', { status: 'checked_out', dueDate: '2024-12-31' }],
+            ['Test 3 (status: unknown)', { status: 'unknown' }],
+            ['Test 4 (status is undefined)', undefined],
+            ['Test 5 (status: available with missing location)', { status: 'available' }],
+            ['Test 6 (status: checked out with missing due dates)', { status: 'checked_out' }],
+            ['Test 7 (status is broken values)', { status: 'adfhiahdf' }],
+            ['Test 8 (status: available with broken location)', { status: 'available', location: 'asdasdf' }],
+            ['Test 9 (status: checked out with broken due dates)', { status: 'checked_out', dueDate: 'adfasdf' }],
+            ['Test 10 (status is not valid)', 234],
+            ['Test 11 (status: available with invalid date parameter)', { status: 'available', dueDate: 'adfasdf' }],
+            ['Test 12 (status: checked out with invalid location parameter)', { status: 'checked_out', location: 'adfasdf' }]
+        ];
 
-        console.log('Test 1 (status: available with location):', formatAvailability?.(testAvailability1) ?? 'Formatter not available');
-        console.log('Test 2 (status: checked out with due dates):', formatAvailability?.(testAvailability2) ?? 'Formatter not available');
-        console.log('Test 3 (status: unknown):', formatAvailability?.(testAvailability3) ?? 'Formatter not available');
-        console.log('Test 4 (status is undefined):', formatAvailability?.(testAvailability4) ?? 'Formatter not available');
-        console.log('Test 5 (status: available with missing location):', formatAvailability?.(testAvailability5) ?? 'Formatter not available');
-        console.log('Test 6 (status: checked out with missing due dates):', formatAvailability?.(testAvailability6) ?? 'Formatter not available');
-        console.log('Test 7 (status is broken values):', formatAvailability?.(testAvailability7) ?? 'Formatter not available');
-        console.log('Test 10 (status is not valid):', formatAvailability?.(testAvailability10) ?? 'Formatter not available');
-        console.log('Test 11 (status: available with invalid date parameter):', formatAvailability?.(testAvailability11) ?? 'Formatter not available');
-        console.log('Test 12 (status: checked out with invalid location parameter):', formatAvailability?.(testAvailability12) ?? 'Formatter not available');
-        console.log("Cannot Catch These Errors However")
-        console.log('Test 8 (status: available with broken location):', formatAvailability?.(testAvailability8) ?? 'Formatter not available');
-        console.log('Test 9 (status: checked out with broken due dates):', formatAvailability?.(testAvailability9) ?? 'Formatter not available');
+        // Run all tests
+        testCases.map(([description, input]) => {
+            const result = formatAvailability?.(input) ?? 'Formatter not available';
+            return { description, input, result };
+        }).forEach(test => {
+            console.log(`${test.description}: ${test.result}`);
+        });
 
         // Test with real book that is available
-        if (books[0]?.availability) {
-            const bookAvailability = formatAvailability(books[0].availability);
-            console.log('Book 1 availability:', bookAvailability);
+        console.log("Try To Run Format Availability On Real Library Books")
+        if (library?.books && Array.isArray(library.books)) {
+            library.books.forEach((book) => {
+                if (book?.availability) {
+                    const availability = formatAvailability?.(book.availability) ?? 'Formatter not available';
+                    console.log(`Book (${book.title || 'Untitled'}): ${availability}`);
+                } else {
+                    console.log(`Book (${book.title || 'Untitled'}): No availability data`);
+                }
+            });
+        } else {
+            console.log('No books found in library');
         }
 
     } catch (error) {
@@ -248,6 +253,7 @@ function demonstrateErrorHandling(library) {
     try {
         // Without Optional chaining
         console.log('\nProperty Access Without Optional Chaining');
+        console.log('Attempting To Access library.badbooks[0].doi (badbooks does not exist)');
         const firstBookDOI = library.badbooks[0].doi;
         console.log('First Book Genre:', firstBookDOI);
     } catch (error) {
@@ -256,6 +262,7 @@ function demonstrateErrorHandling(library) {
     try {
         // Without Nullish coalescing
         console.log('\nString Operation Without Nullish Coalescing');
+        console.log('Attempting To Do Operations With library.books?.[0]?.slogan (slogan does not exist)');
         const firstBookSlogan = library.books?.[0]?.slogan;
         console.log('Title uppercase:', firstBookSlogan.toUpperCase());
     } catch (error) {
