@@ -23,13 +23,19 @@ function showDestructuringExample() {
     console.log('Remaining count:', remainingBooks.length);
 }
 
+/**
+ * TODO: Implement main application function and variable scoping demonstration
+ * demonstrateScoping(): Show let/const behavior, block scoping, temporal dead zone awareness
+ */
 function demonstrateScoping() {
     console.log('\n🔍 === VARIABLE SCOPING DEMO ===');
     // Show const/let behavior, block scoping, temporal dead zone
 
     // Const behavior
+    console.log('\n--- Const Behavior ---');
     // Constant Containing An Object: Object Mutation Is Allowed
     try {
+        console.log('--- Mutation ---');
         const config = { maxBooks: 5 };
         console.log('Current config constant:', config);
         console.log('Attempting To Mutate maxBooks inside config constant');
@@ -41,6 +47,7 @@ function demonstrateScoping() {
     }
     // Constant Reassignment: Not Allowed
     try {
+        console.log('--- Reassignment ---');
         const config = { maxBooks: 5 };
         console.log('Current config constant:', config);
         console.log('Attempting To Reassign config constant');
@@ -51,6 +58,8 @@ function demonstrateScoping() {
     }
     // Constant Redeclaration: Not Allowed Within Same Block
     try {
+        console.log('--- Redeclaration ---');
+        console.log('Attempting To Redeclare config constant as constant');
         eval(`
             const config = { maxBooks: 5 };
             console.log('Current config constant:', config);
@@ -63,6 +72,7 @@ function demonstrateScoping() {
     }
     // Constant Redeclaration: Not Allowed Within Same Block
     try {
+        console.log('Attempting To Redeclare config constant as variable');
         eval(`
             const config = { maxBooks: 5 };
             console.log('Current config constant:', config);
@@ -75,8 +85,10 @@ function demonstrateScoping() {
     }
 
     //let Behavior
+    console.log('\n--- Let Behavior ---');
     // Variable Reassignment: Allowed
     try {
+        console.log('--- Reassignment ---');
         let configvar = {maxBooks: 5};
         console.log('Current config variable:', configvar);
         console.log('Attempting To Reassign config variable');
@@ -87,6 +99,8 @@ function demonstrateScoping() {
     }
     // Variable Redeclaration: Not Allowed Within Same Block
     try {
+        console.log('--- Redeclaration ---');
+        console.log('Attempting To Redeclare config variable as constant');
         eval(`
             let configvar = {maxBooks: 5};
             console.log('Current config variable:', configvar);
@@ -99,6 +113,7 @@ function demonstrateScoping() {
     }
     // Variable Redeclaration: Not Allowed Within Same Block
     try {
+        console.log('Attempting To Redeclare config variable as variable');
         eval(`
             let configvar = {maxBooks: 5};
             console.log('Current config variable:', configvar);
@@ -111,26 +126,56 @@ function demonstrateScoping() {
     }
 
     // Block Scoping - Present Both For let And const
-    const systemName = 'Constant Outside The Block';
-
-    if (true) {
-        let blockScoped = 'Variable Inside The Block';
-        console.log(systemName);
-        console.log(blockScoped);
+    console.log('\n--- Block Scoping ---');
+    // Referencing variable in upper level from lower is allowed
+    console.log("--- Referencing Outside Variables From Inside ---");
+    {
+        const systemName = 'Constant Outside The Block';
+        {
+            let blockScoped = 'Variable Inside The Block';
+            console.log("Refernecing: ", systemName);
+            console.log("Referencing: ", blockScoped);
+        }
+    }
+    
+    // Referencing varibale in lower level from upper is not allowed
+    console.log("--- Referencing Inside Variables From Outside ---");
+    try{
+        const systemName = 'Constant Outside The Block';
+        {
+            let blockScoped = 'Variable Inside The Block';
+        }
+        console.log("Refernecing: ", systemName);
+        console.log("Referencing: ", blockScoped);
+    }
+    catch(error){
+        console.log('⚠️ Error caught:', error.message);
+    }
+    
+    // Redeclaring const inside a block is allowed
+    console.log("--- Redeclaring Constant Inside A Block ---");
+    {
+        const systemName = 'Constant Outside The Block';
+        {
+            const systemName = 'Constant Inside The Block';
+            console.log("Refernecing: ", systemName);
+        }
+        console.log("Refernecing: ", systemName);
     }
 
-    // console.log(blockScoped); // This causes ReferenceError (block scoped)
-
     // Temporal Dead Zone demo
+    console.log('\n--- Temporal Dead Zone ---');
     try {
-        console.log("\nVariable Initialized Before Being Referenced");
+        console.log("Variable Initialized Before Being Referenced");
         let tdzVar1 = "Initialized Before";
-        console.log("Using Variable: ", tdzVar1);
-        console.log("\nVariable Initialized After Being Referenced");
-        console.log("Using Variable", tdzVar2); // This causes TDZ Error
+        console.log("Attempting to Use Variable");
+        console.log("Variable: ", tdzVar1);
+        console.log("Variable Initialized After Being Referenced");
+        console.log("Attempting to Use Variable");
+        console.log("Variable", tdzVar2); // This causes TDZ Error
         let tdzVar2 = 'Initialized After';
     } catch (error) {
-        console.log('⚠️ TDZ error caught:', error.message);
+        console.log('⚠️ Error caught:', error.message);
     }
 
     
@@ -317,7 +362,7 @@ async function runLibraryDemo() {
         // === FORMATTER + MEMOIZE ===
         console.log('\n⚙️ === FORMATTER & MEMOIZATION ===');
 
-        const formatter = createBookFormatter('** ');
+        const formatter = createBookFormatter('${book.title.toUpperCase()}');
         console.log(formatter([books[0]]));
 
         const memoizedSummary = memoize(createBookSummary);
