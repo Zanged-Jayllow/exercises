@@ -67,8 +67,8 @@ Complete the following tasks by finding and implementing all `TODO` comments:
 - [🔧] **Task 3:** Create `showBookAnalysis()` function demonstrating array method combinations (map, filter, reduce)
 
 ### Main Application (`main.js`) - 3 tasks
-- [ ] **Task 1:** Implement `runLibraryDemo()` main function and `demonstrateScoping()` showing let/const behavior
-- [ ] **Task 2:** Implement `demonstrateErrorHandling()` and `showGeneratorExample()` functions with modern error handling patterns
+- [🔧] **Task 1:** Implement `runLibraryDemo()` main function and `demonstrateScoping()` showing let/const behavior
+- [🔧] **Task 2:** Implement `demonstrateErrorHandling()` and `showGeneratorExample()` functions with modern error handling patterns
 - [ ] **Task 3:** Start the application and demonstrate array destructuring with first, second, and rest elements
 
 ### Code Quality Requirements

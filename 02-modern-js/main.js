@@ -24,6 +24,53 @@ async function runLibraryDemo() {
 
         // Display library statistics and demonstrate book operations
         // Show filtering, grouping, search, and analysis features
+
+        // === STATISTICS ===
+        console.log('\n=== LIBRARY STATISTICS ===');
+        const stats = library.getStatistics?.() ?? {};
+        displayStatistics(stats);
+
+        // === DISPLAY ALL BOOKS ===
+        console.log('\n=== ALL BOOKS ===');
+        displayBooks(books);
+
+        // === FILTERING ===
+        console.log('\n=== AVAILABLE BOOKS ===');
+        const availableBooks = filterBooksByStatus(books, 'available');
+        displayBooks(availableBooks);
+
+        // === GROUPING ===
+        console.log('\n=== BOOKS BY GENRE ===');
+        const grouped = groupBooksByGenre(books);
+        console.log(grouped);
+
+        // === SEARCH ===
+        console.log('\n=== SEARCH RESULTS ("JavaScript") ===');
+        const results = library.searchBooks?.('JavaScript') ?? [];
+        displaySearchResults(results);
+
+        // === BOOK ANALYSIS ===
+        if (books.length > 0) {
+            console.log('\n=== BOOK ANALYSIS ===');
+            showBookAnalysis(books[0]);
+        }
+
+        // === FORMATTER + MEMOIZE ===
+        console.log('\n=== FORMATTER & MEMOIZATION ===');
+
+        const formatter = createBookFormatter('** ');
+        console.log(formatter(books[0]));
+
+        const memoizedSummary = memoize(createBookSummary);
+        console.log(memoizedSummary(books[0]));
+        console.log('(Cached call)');
+        console.log(memoizedSummary(books[0]));
+
+        // === GENERATOR ===
+        showGeneratorExample();
+
+        // === ERROR HANDLING ===
+        demonstrateErrorHandling(library);
         
     } catch (error) {
         console.error('Application error:', error.message);
@@ -35,6 +82,46 @@ async function runLibraryDemo() {
 function demonstrateScoping() {
     console.log('\n🔍 === VARIABLE SCOPING DEMO ===');
     // Show const/let behavior, block scoping, temporal dead zone
+
+    const systemName = 'Constant Outside The Block';
+
+    if (true) {
+        let blockScoped = 'Variable Inside The Block';
+        console.log(systemName);
+        console.log(blockScoped);
+    }
+
+    // console.log(blockScoped); // This causes ReferenceError (block scoped)
+
+    // Temporal Dead Zone demo
+    try {
+        console.log(tdzVar); // This causes TDZ Error
+        let tdzVar = 'Variable Initialized';
+    } catch (error) {
+        console.log('TDZ error caught:', error.message);
+    }
+
+    // Const behavior
+    const config = { maxBooks: 5 };
+    // Constant Containing An Object: Object Mutation Is Allowed
+    config.maxBooks = 10;
+    console.log('Updated config:', config);
+    // Constant Reassignment: Not Allowed
+    try {
+        console.log('Current config:', config);
+        console.log('Attempting To Reassign config')
+        config = 23;
+    } catch (error) {
+        console.log('Error caught:', error.message);
+    }
+    // Constant Redeclaration: Not Allowed
+    try {
+        console.log('Current config:', config);
+        console.log('Attempting To Redeclare config')
+        const config = 23;
+    } catch (error) {
+        console.log('Error caught:', error.message);
+    }
 }
 
 /**
@@ -45,6 +132,42 @@ function demonstrateScoping() {
 function demonstrateErrorHandling(library) {
     console.log('\n⚠️  === ERROR HANDLING DEMO ===');
     // Test safe property access, array methods on potentially undefined values
+
+    // Try Catch Block
+    try {
+        // Optional chaining + Nullish coalescing
+        const firstBookTitle = library.books?.[0]?.title ?? 'Unknown Title';
+        console.log('First Book Title:', firstBookTitle);
+
+        // TODO: Safe array operation
+
+        // TODO: Availability formatting
+
+    } catch (error) {
+        console.error('Handled error:', error.message);
+    }
+
+    // Try Catch Blocks - Intentional Error Triggering
+    try {
+        // Without Optional chaining
+        console.log('Property Access Without Optional Chaining')
+        const firstBookGenre = library.books[0].genre;
+        console.log('First Book Genre:', firstBookGenre);
+    } catch (error) {
+        console.error('Handled error:', error.message);
+    }
+
+    try {
+        // Without Nullish coalescing
+        console.log('Property Access Without Nullish Coalescing')
+        const firstBookYear = library.books?.[0]?.year;
+        console.log('First Book Year:', firstBookYear);
+    } catch (error) {
+        console.error('Handled error:', error.message);
+    }
+
+    // TODO: Try-Catch Block For Safe Array Opertions
+    // TODO: Try-Catch Block For Availability Formatting
 }
 
 function showGeneratorExample() {
