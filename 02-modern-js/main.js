@@ -45,21 +45,27 @@ async function runLibraryDemo() {
         console.log(grouped);
 
         // === SEARCH ===
-        console.log('\n=== SEARCH RESULTS ("JavaScript") ===');
-        const results = library.searchBooks?.('JavaScript') ?? [];
-        displaySearchResults(results);
+        console.log('\n=== SEARCH RESULTS ("Design Patterns") ===');
+        // Debug Code
+        // console.log('Library object:', library);
+        // console.log('Search method exists:', typeof library.searchBooks);
+
+        const results = library.searchBooks?.({ title: 'Design Patterns' }) ?? [];
+
+        // console.log('Search results exists:', typeof results);
+        displaySearchResults(results, { title: 'Design Patterns' });
 
         // === BOOK ANALYSIS ===
         if (books.length > 0) {
             console.log('\n=== BOOK ANALYSIS ===');
-            showBookAnalysis(books[0]);
+            showBookAnalysis(books);
         }
 
         // === FORMATTER + MEMOIZE ===
         console.log('\n=== FORMATTER & MEMOIZATION ===');
 
         const formatter = createBookFormatter('** ');
-        console.log(formatter(books[0]));
+        console.log(formatter([books[0]]));
 
         const memoizedSummary = memoize(createBookSummary);
         console.log(memoizedSummary(books[0]));
@@ -203,8 +209,19 @@ function demonstrateErrorHandling(library) {
         console.log('First Book Title:', firstBookTitle);
 
         // TODO: Safe array operation
+        const safeArray = library.books || [];
+        const availableCount = safeArray.filter(book => book.status === 'available').length;
+        console.log('Available books (safe array operation):', availableCount);
 
         // TODO: Availability formatting
+        const formattedAvailability = formatAvailability?.() ?? 'Availability formatter not available';
+        console.log('Formatted availability:', formattedAvailability);
+
+        // Test formatting with a specific book
+        if (books[0]) {
+            const bookAvailability = formatAvailability?.(books[0].status) ?? 'Unknown';
+            console.log('Book 1 availability:', bookAvailability);
+        }
 
     } catch (error) {
         console.error('Handled error:', error.message);
@@ -229,7 +246,35 @@ function demonstrateErrorHandling(library) {
     }
 
     // TODO: Try-Catch Block For Safe Array Opertions
+    try {
+        console.log('\n=== Safe Array Operations ===');
+        const undefinedArray = undefined;
+        // This would normally throw an error
+        const mapResult = undefinedArray?.map?.(book => book.title) ?? [];
+        console.log('Safe map operation on undefined array:', mapResult);
+        
+        // Empty array case
+        const emptyArray = [];
+        const emptyResult = emptyArray.map(book => book.title);
+        console.log('Map on empty array:', emptyResult);
+    } catch (error) {
+        console.error('Array operation error:', error.message);
+    }
+
     // TODO: Try-Catch Block For Availability Formatting
+    try {
+        console.log('\n=== Availability Formatting ===');
+        const invalidStatus = 'unknown_status';
+        const formatted = formatAvailability(invalidStatus);
+        console.log('Formatting invalid status:', formatted);
+    } catch (error) {
+        console.error('Formatting error:', error.message);
+        console.log('Using fallback formatting...');
+        const fallbackResult = invalidStatus === 'available' ? 'Available' : 
+                              invalidStatus === 'checked_out' ? 'Checked Out' : 
+                              'Unknown Status';
+        console.log('Fallback formatting result:', fallbackResult);
+    }
 }
 
 function showGeneratorExample() {
@@ -238,9 +283,20 @@ function showGeneratorExample() {
 
     const generator = bookTitleGenerator(books);
 
+    console.log('Iterating through book titles using generator:');
     for (const title of generator) {
-        console.log('Book: ', title);
+        console.log('📚 Book:', title);
     }
+
+    // Demonstrating manual iteration
+    console.log('\nManual generator iteration:');
+    const manualGenerator = bookTitleGenerator(books);
+    let result = manualGenerator.next();
+    while (!result.done) {
+        console.log('Manual iteration:', result.value);
+        result = manualGenerator.next();
+    }
+    console.log('Generator finished:', result.done);
 }
 
 /**

@@ -40,6 +40,10 @@ export class LibraryManager {
             return this.#searchCache.get(cacheKey);
         }
 
+        // Debug Codes
+        // console.log("Is this the issue?")
+
+        // Filter Books
         const results = this.books.filter(book => {
             // Title search with optional chaining
             if (title) {
