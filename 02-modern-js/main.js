@@ -33,6 +33,9 @@ async function runLibraryDemo() {
         // === DESTRUCTURING ===
         showDestructuringExample();
 
+        // === Functionality DEMOS ===
+        console.log('\n🔧 === FUNCTIONALITY DEMOS ===');
+
         // === DISPLAY ALL BOOKS ===
         console.log('\n=== ALL BOOKS ===');
         displayBooks(books);
@@ -241,16 +244,16 @@ function demonstrateErrorHandling(library) {
     try {
         // Without Optional chaining
         console.log('Property Access Without Optional Chaining')
-        const firstBookGenre = library.books[0].genre;
-        console.log('First Book Genre:', firstBookGenre);
+        const firstBookDOI = library.badbooks[0].doi;
+        console.log('First Book Genre:', firstBookDOI);
     } catch (error) {
         console.error('Handled error:', error.message);
     }
     try {
         // Without Nullish coalescing
-        console.log('Property Access Without Nullish Coalescing')
-        const firstBookYear = library.books?.[0]?.year;
-        console.log('First Book Year:', firstBookYear);
+        console.log('String Operation Without Nullish Coalescing')
+        const firstBookSlogan = library.books?.[0]?.slogan;
+        console.log('Title uppercase:', firstBookSlogan.toUpperCase());
     } catch (error) {
         console.error('Handled error:', error.message);
     }
