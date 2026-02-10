@@ -83,6 +83,85 @@ function demonstrateScoping() {
     console.log('\n🔍 === VARIABLE SCOPING DEMO ===');
     // Show const/let behavior, block scoping, temporal dead zone
 
+    // Const behavior
+    const config = { maxBooks: 5 };
+    // Constant Containing An Object: Object Mutation Is Allowed
+    console.log('Current config constant:', config);
+    console.log('Attempting To Mutate maxBooks inside config constant');
+    config.maxBooks = 10;
+    console.log('Updated config constant:', config);
+    // Constant Reassignment: Not Allowed
+    try {
+        const config = { maxBooks: 5 };
+        console.log('Current config constant:', config);
+        console.log('Attempting To Reassign config constant');
+        config = 23;
+        console.log('Updated config constant:', config);
+    } catch (error) {
+        console.log('Error caught:', error.message);
+    }
+    // Constant Redeclaration: Not Allowed Within Same Block
+    try {
+        eval(`
+            const config = { maxBooks: 5 };
+            console.log('Current config constant:', config);
+            console.log('Attempting To Redeclare config constant as constant');
+            const config = 23;
+            console.log('Updated config constant:', config);
+        `)
+    } catch (error) {
+        console.log('Error caught:', error.message);
+    }
+    // Constant Redeclaration: Not Allowed Within Same Block
+    try {
+        eval(`
+            const config = { maxBooks: 5 };
+            console.log('Current config constant:', config);
+            console.log('Attempting To Redeclare config constant as variable');
+            let config = 23;
+            console.log('Updated config constant:', config);
+        `)
+    } catch (error) {
+        console.log('Error caught:', error.message);
+    }
+
+    //let Behavior
+    // Variable Reassignment: Allowed
+    try {
+        let configvar = {maxBooks: 5};
+        console.log('Current config variable:', configvar);
+        console.log('Attempting To Reassign config variable');
+        configvar = 23;
+        console.log('Updated config variable:', configvar);
+    } catch (error) {
+        console.log('Error caught:', error.message);
+    }
+    // Variable Redeclaration: Not Allowed Within Same Block
+    try {
+        eval(`
+            let configvar = {maxBooks: 5};
+            console.log('Current config variable:', configvar);
+            console.log('Attempting To Redeclare config variable as constant');
+            const configvar = 23;
+            console.log('Updated config variable:', configvar);
+        `)
+    } catch (error) {
+        console.log('Error caught:', error.message);
+    }
+    // Variable Redeclaration: Not Allowed Within Same Block
+    try {
+        eval(`
+            let configvar = {maxBooks: 5};
+            console.log('Current config variable:', configvar);
+            console.log('Attempting To Redeclare config variable as variable');
+            let configvar = 23;
+            console.log('Updated config variable:', configvar);
+        `)
+    } catch (error) {
+        console.log('Error caught:', error.message);
+    }
+
+    // Block Scoping - Present Both For let And const
     const systemName = 'Constant Outside The Block';
 
     if (true) {
@@ -105,37 +184,7 @@ function demonstrateScoping() {
         console.log('TDZ error caught:', error.message);
     }
 
-    // Const behavior
-    const config = { maxBooks: 5 };
-    // Constant Containing An Object: Object Mutation Is Allowed
-    config.maxBooks = 10;
-    console.log('Updated config:', config);
-    // Constant Reassignment: Not Allowed
-    try {
-        console.log('Current config:', config);
-        console.log('Attempting To Reassign config')
-        config = 23;
-    } catch (error) {
-        console.log('Error caught:', error.message);
-    }
-    // Constant Redeclaration: Not Allowed
-    try {
-        console.log('Current config:', config);
-        console.log('Attempting To Redeclare config')
-        const config = 23;
-    } catch (error) {
-        console.log('Error caught:', error.message);
-    }
-    // Constant Redeclaration: Not Allowed
-    try {
-        console.log('Current config:', config);
-        console.log('Attempting To Redeclare config as Variable')
-        let config = 23;
-    } catch (error) {
-        console.log('Error caught:', error.message);
-    }
-
-    //TODO: Variable Behavior
+    
 }
 
 /**
@@ -170,7 +219,6 @@ function demonstrateErrorHandling(library) {
     } catch (error) {
         console.error('Handled error:', error.message);
     }
-
     try {
         // Without Nullish coalescing
         console.log('Property Access Without Nullish Coalescing')
