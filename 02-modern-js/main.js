@@ -190,6 +190,8 @@ function demonstrateErrorHandling(library) {
     console.log('\n⚠️  === ERROR HANDLING DEMO ===');
     // Test safe property access, array methods on potentially undefined values
 
+    // Using library object?
+
     // Try Catch Block
     try {
         // Optional chaining + Nullish coalescing
@@ -199,8 +201,9 @@ function demonstrateErrorHandling(library) {
 
         // Safe array operation
         console.log('\n--- Demonstrating Safe Array Operation ---');
+        console.log("Filtering with optional chaining + Nullish Coalescing");
         const safeArray = library.books || [];
-        const availableCount = safeArray.filter(book => book.status === 'available').length;
+        const availableCount = safeArray.filter(book => book.availability?.status === 'available').length;
         console.log('Available books:', availableCount);
 
         // Availability formatting
@@ -269,18 +272,32 @@ function demonstrateErrorHandling(library) {
         console.log('Error caught:', error.message);
     }
 
-    // TODO: Try-Catch Block For Safe Array Opertions
+    // TODO: Try-Catch Block For Safe Array Operations
+    // Safe as in being non-mutating methods like map(), filter(), and reduce()?
+    // Is this what the question meant?
     try {
-        console.log('\n--- Safe Array Operations ---');
-        const undefinedArray = undefined;
-        // This would normally throw an error
-        const mapResult = undefinedArray?.map?.(book => book.title) ?? [];
-        console.log('Safe map operation on undefined array:', mapResult);
-        
-        // Empty array case
-        const emptyArray = [];
-        const emptyResult = emptyArray.map(book => book.title);
-        console.log('Map on empty array:', emptyResult);
+        console.log('\nSafe Array Operations (Map) Without Optional Chaining');
+        console.log('Attempt to map undefined array library.badbooks');
+        const mapResult = library.badbooks.map(book => book.title);
+        console.log('Result:', mapResult);
+    } catch (error) {
+        console.log('Error caught:', error.message);
+    }
+    try {
+        console.log('\nSafe Array Operations (Filter) Without Optional Chaining');
+        console.log('Attempt to filter undefined array library.badbooks');
+        const recentBooks = library.badbooks.filter(book => book.year > 2000);
+        console.log('Result:', recentBooks);
+    } catch (error) {
+        console.log('Error caught:', error.message);
+    }
+    try {
+        console.log('\nSafe Array Operations (Reduce) Without Optional Chaining');
+        console.log('Attempt to reduce undefined array library.badbooks');
+        const averageYear = library.badbooks.reduce((acc, book) => {
+            return acc + book.year;
+        }, 0) / library.badbooks.length;
+        console.log('Result:', averageYear);
     } catch (error) {
         console.log('Error caught:', error.message);
     }
@@ -292,7 +309,7 @@ function demonstrateErrorHandling(library) {
         console.log('\n--- Availability Formatting ---');
         const invalidStatus = 'unknown_status';
         const formatted = formatAvailability(invalidStatus);
-        console.log('Formatting invalid status:', formatted);
+        console.log('Result formatting invalid status:', formatted);
     } catch (error) {
         console.log('Error caught:', error.message);
         console.log('Using fallback formatting...');
