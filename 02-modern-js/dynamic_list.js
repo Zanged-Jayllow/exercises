@@ -33,15 +33,24 @@ document.addEventListener("DOMContentLoaded", function () {
         removeBtn.textContent = "Remove Item";
 
         // remove respecitve li when remove button is clicked
-        removeBtn.addEventListener("click", function () {
+        // legacy, moved to event delegation
+        /* removeBtn.addEventListener("click", function () {
             demoList.removeChild(addedLi);
-        });
+        }); */
 
         // append button to li
         addedLi.appendChild(removeBtn);
 
         // append li to ul
         demoList.appendChild(addedLi);        
+    });
+
+    demoList.addEventListener("click", function (event) {
+        // technically risky as the remove and add buttons are the same class
+        // however safe here as the only buttons inside ul are the remove buttons
+        if (event.target.matches(".addbutton")) {
+            event.target.parentElement.remove();
+        }
     });
 
     clearBtn.addEventListener("click", function () {
