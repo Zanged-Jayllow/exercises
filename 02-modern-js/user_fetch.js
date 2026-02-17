@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const clearPostsBtn = document.getElementById("clearPostsBtn");
     const userInput2 = document.getElementById("userIdInput2");
     const userPostList = document.getElementById("userPostList");
+    const userInfo = document.getElementById("userInfo");
 
     addUserBtn.addEventListener("click", function () {
 
@@ -164,20 +165,29 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // 🔹 clear the post list beforehand
+        // reset the user info
+        userInfo.textContent = "User Not Selected";
+
+        // clear the post list beforehand
         while (userPostList.hasChildNodes()) {
             userPostList.removeChild(userPostList.firstChild);
         }
 
-        // fetch posts and display them
-        getPosts(userId)
+        // fetch posts and display them, updates user info accordingly
+        getUser(userId)
+            .then(user => {
+
+                // Update the <p> with name + email
+                userInfo.textContent = `${user.name} (${user.email})`;
+
+                // Return posts fetch so we can chain
+                return getPosts(userId);
+            })
             .then(posts => {
 
                 posts.forEach(post => {
 
                     const li = document.createElement("li");
-
-                    // display post title (modify as needed)
                     li.textContent = post.title;
 
                     userPostList.appendChild(li);
@@ -185,13 +195,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
             })
             .catch(error => {
-                console.error("Post List Demo: Failed to fetch posts", error);
+
+                console.error("Post Lookup Failed", error);
+
+                userInfo.textContent = "User Not Found";
             });
     });
 
     clearPostsBtn.addEventListener("click", function () {
 
         userInput2.value = "";
+        // reset the user info
+        userInfo.textContent = "User Not Selected";
 
         while (userPostList.hasChildNodes()) {
             userPostList.removeChild(userPostList.firstChild);
