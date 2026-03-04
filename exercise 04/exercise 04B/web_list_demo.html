@@ -50,47 +50,21 @@
     </head>
     <body>
 
-        <todo-list></todo-list>
-
-        <div id="event-log">
-        <h3>List Log</h3>
-        </div>
-
-        <script>
-            class TodoList extends HTMLElement {
-            #items = [];
-
-            constructor() {
-                super();
-                this.attachShadow({ mode: 'open' });
-            }
-
-            connectedCallback() {
-                this.#render();
-                this.#bindEvents();
-            }
-
-            get items() {
-                return [...this.#items];
-            }
-
-            #render() {
-                this.shadowRoot.innerHTML = `
-                <style>
-                    :host {
+        <!-- template to avoid innerHTML in shadowDOM -->
+        <template id="todo-template">
+            <style>
+                :host {
                     display: block;
                     width: 420px;
                     font-family:'Roboto',system-ui,sans-serif;
-                    }
-
-                    .card {
+                }
+                .card {
                     background: #fff;
                     border: 1px solid #ddd;
                     border-radius: 8px;
                     padding: 24px;
-                    }
-
-                    h2 {
+                }
+                h2 {
                     margin: 0 0 16px;
                     font-size: 20px;
                     font-weight: 600;
@@ -98,9 +72,8 @@
                     display: flex;
                     align-items: center;
                     gap: 8px;
-                    }
-
-                    h2 .count {
+                }
+                h2 .count {
                     font-size: 13px;
                     font-weight: 500;
                     background: #555;
@@ -109,15 +82,13 @@
                     border-radius: 10px;
                     min-width: 18px;
                     text-align: center;
-                    }
-
-                    .input-row {
+                }
+                .input-row {
                     display: flex;
                     gap: 8px;
                     margin-bottom: 16px;
-                    }
-
-                    input {
+                }
+                input {
                     flex: 1;
                     padding: 8px 12px;
                     border: 1px solid #ccc;
@@ -126,15 +97,14 @@
                     color: #333;
                     font-size: 14px;
                     outline: none;
-                    }
-
-                    input:focus {
+                }
+                input:focus {
                     border-color: #888;
-                    }
-
-                    input::placeholder { color: #aaa; }
-
-                    button {
+                }
+                input::placeholder {
+                    color: #aaa;
+                }
+                button {
                     padding: 8px 16px;
                     border: none;
                     border-radius: 4px;
@@ -143,20 +113,19 @@
                     font-size: 14px;
                     font-weight: 500;
                     cursor: pointer;
-                    }
-
-                    button:hover { background: #444; }
-
-                    ul {
+                }
+                button:hover {
+                    background: #444;
+                }
+                ul {
                     list-style: none;
                     margin: 0;
                     padding: 0;
                     display: flex;
                     flex-direction: column;
                     gap: 4px;
-                    }
-
-                    li {
+                }
+                li {
                     display: flex;
                     align-items: center;
                     gap: 10px;
@@ -165,19 +134,18 @@
                     border-radius: 4px;
                     font-size: 14px;
                     color: #333;
-                    }
-
-                    li .index {
+                }
+                li .index {
                     font-size: 12px;
                     font-weight: 600;
                     color: #888;
                     min-width: 20px;
                     text-align: center;
-                    }
-
-                    li .text { flex: 1; }
-
-                    li .remove {
+                }
+                li .text {
+                    flex: 1;
+                }
+                li .remove {
                     background: none;
                     border: none;
                     color: #aaa;
@@ -185,96 +153,126 @@
                     font-size: 18px;
                     padding: 0 4px;
                     line-height: 1;
-                    }
-
-                    li .remove:hover { color: #e55; }
-
-                    .empty {
+                }
+                li .remove:hover {
+                    color: #e55;
+                }
+                .empty {
                     text-align: center;
                     padding: 20px;
                     color: #aaa;
                     font-size: 14px;
-                    }
-                </style>
+                }
+            </style>
 
-                <div class="card">
-                    <h2>
-                        Todo List
-                        <span class="count">0</span>
-                    </h2>
-                    <div class="input-row">
-                        <input type="text" placeholder="Input An Item" />
-                        <button id="add-btn">Add</button>
-                    </div>
-                    <ul></ul>
-                    <div class="empty">No Items Yet</div>
+            <div class="card">
+                <h2>
+                    Todo List
+                    <span class="count">0</span>
+                </h2>
+                <div class="input-row">
+                    <input type="text" placeholder="Input An Item" />
+                    <button id="add-btn">Add</button>
                 </div>
-                `;
-            }
+                <ul></ul>
+                <div class="empty">No Items Yet</div>
+            </div>
+        </template>
 
-            #bindEvents() {
-                const input = this.shadowRoot.querySelector('input');
-                const btn = this.shadowRoot.querySelector('#add-btn');
+        <template id="todo-item-tpl">
+            <li>
+                <span class="index"></span>
+                <span class="text"></span>
+                <button class="remove" title="Remove">×</button>
+            </li>
+        </template>
 
-                btn.addEventListener('click', () => this.#addFromInput(input));
-                input.addEventListener('keydown', e => {
-                    if (e.key === 'Enter') this.#addFromInput(input);
-                });
+        <todo-list></todo-list>
 
-                this.shadowRoot.querySelector('ul').addEventListener('click', e => {
-                    const rmBtn = e.target.closest('.remove');
-                    if (!rmBtn) return;
-                    const idx = Number(rmBtn.dataset.idx);
-                    this.#removeItem(idx);
-                });
-            }
+        <div id="event-log">
+            <h3>List Log</h3>
+        </div>
 
-            #addFromInput(input) {
-                const val = input.value.trim();
-                if (!val) return;
-                this.#items.push(val);
-                input.value = '';
-                input.focus();
-                this.#updateList();
-                this.#emitChange();
-            }
+        <script>
+            class TodoList extends HTMLElement {
+                #items = [];
 
-            #removeItem(idx) {
-                this.#items.splice(idx, 1);
-                this.#updateList();
-                this.#emitChange();
-            }
+                constructor() {
+                    super();
+                    this.attachShadow({ mode: 'open' });
+                }
 
-            #updateList() {
-                const ul = this.shadowRoot.querySelector('ul');
-                const empty = this.shadowRoot.querySelector('.empty');
-                const count = this.shadowRoot.querySelector('.count');
+                connectedCallback() {
+                    const rootTpl = document.getElementById('todo-template');
+                    // Cloning the template instead of using innerHTML and parsing
+                    this.shadowRoot.appendChild(rootTpl.content.cloneNode(true));
+                    this.#bindEvents();
+                }
 
-                count.textContent = this.#items.length;
-                empty.style.display = this.#items.length ? 'none' : 'block';
+                get items() {
+                    return [...this.#items];
+                }
 
-                ul.innerHTML = this.#items.map((item, i) => `
-                <li>
-                    <span class="index">${i + 1}</span>
-                    <span class="text">${this.#escapeHTML(item)}</span>
-                    <button class="remove" data-idx="${i}" title="Remove">×</button>
-                </li>
-                `).join('');
-            }
+                #bindEvents() {
+                    const input = this.shadowRoot.querySelector('input');
+                    const btn = this.shadowRoot.querySelector('#add-btn');
 
-            #emitChange() {
-                this.dispatchEvent(new CustomEvent('listChanged', {
-                bubbles: true,
-                composed: true,
-                detail: { items: this.items }
-                }));
-            }
+                    btn.addEventListener('click', () => this.#addFromInput(input));
+                    input.addEventListener('keydown', e => {
+                        if (e.key === 'Enter') this.#addFromInput(input);
+                    });
 
-            #escapeHTML(str) {
-                const d = document.createElement('div');
-                d.textContent = str;
-                return d.innerHTML;
-            }
+                    this.shadowRoot.querySelector('ul').addEventListener('click', e => {
+                        const rmBtn = e.target.closest('.remove');
+                        if (!rmBtn) return;
+                        const idx = Number(rmBtn.dataset.idx);
+                        this.#removeItem(idx);
+                    });
+                }
+
+                #addFromInput(input) {
+                    const val = input.value.trim();
+                    if (!val) return;
+                    this.#items.push(val);
+                    input.value = '';
+                    input.focus();
+                    this.#updateList();
+                    this.#emitChange();
+                }
+
+                #removeItem(idx) {
+                    this.#items.splice(idx, 1);
+                    this.#updateList();
+                    this.#emitChange();
+                }
+
+                #updateList() {
+                    const ul = this.shadowRoot.querySelector('ul');
+                    const empty = this.shadowRoot.querySelector('.empty');
+                    const count = this.shadowRoot.querySelector('.count');
+                    const itemTpl = document.getElementById('todo-item-tpl');
+
+                    count.textContent = this.#items.length;
+                    empty.style.display = this.#items.length ? 'none' : 'block';
+
+                    ul.replaceChildren();
+
+                    this.#items.forEach((item, i) => {
+                        const li = itemTpl.content.cloneNode(true);
+                        li.querySelector('.index').textContent = i + 1;
+                        li.querySelector('.text').textContent = item;
+                        li.querySelector('.remove').dataset.idx = i;
+                        ul.appendChild(li);
+                    });
+                }
+
+                #emitChange() {
+                    this.dispatchEvent(new CustomEvent('listChanged', {
+                        bubbles: true,
+                        composed: true,
+                        detail: { items: this.items }
+                    }));
+                }
             }
 
             customElements.define('todo-list', TodoList);
