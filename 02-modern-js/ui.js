@@ -11,23 +11,10 @@ export function displayStatistics(statistics) {
     // Use destructuring to extract statistics properties
     // Use template literals for formatted console output
 
-        const {
-            total,
-            available,
-            checkedOut,
-            percentageAvailable,
-            uniqueAuthors
-        } = statistics;
+    const {total, available, checkedOut, percentageAvailable, uniqueAuthors} = statistics;
 
-        console.log(`
-        Library Statistics
-        =========================
-        Total Books: ${total}
-        Available Books: ${available}
-        Checked Out Books: ${checkedOut}
-        Availability: ${percentageAvailable}%
-        Unique Authors: ${uniqueAuthors}
-        `);
+    console.log(`Library Statistics:[Total Books: ${total} | Available Books: ${available} | Checked Out Books: ${checkedOut} | Availability: ${percentageAvailable}% | Unique Authors: ${uniqueAuthors}]
+    `);
 }
 
 export function displayBooks(books, title = "Books") {
@@ -35,9 +22,8 @@ export function displayBooks(books, title = "Books") {
     // Handle undefined availability with optional chaining
 
     console.log(`\n${title}`);
-    console.log("=========================");
 
-    books.forEach((book, index) => {
+    books.forEach((book) => {
         // Destructure book properties
         const { title, author, year, availability } = book;
 
@@ -60,7 +46,7 @@ export function displayBooks(books, title = "Books") {
         }
 
         console.log(
-            `${index + 1}. "${title}" by ${author} (${year}) — ${availabilityText}`
+            `"${title}" by ${author} (${year}) — ${availabilityText}`
         );
     });
 }
@@ -90,19 +76,14 @@ export function displaySearchResults(searchResults, searchCriteria) {
             ? criteriaParts.join(" | ")
             : "All Books";
 
-    console.log(`
-    Search Results
-    =========================
-    Criteria: ${criteriaText}
-    Matches Found: ${searchResults.length}
-    `);
+    console.log(`Search Results With [Criteria: ${criteriaText} | Matches Found: ${searchResults.length}]`);
 
     // Display results
-    searchResults.forEach((book, index) => {
+    searchResults.forEach((book) => {
         const { title, author, year, availability } = book;
 
         console.log(
-            `${index + 1}. "${title}" by ${author} (${year}) — ${formatAvailability(availability)}`
+            `"${title}" by ${author} (${year}) — ${formatAvailability(availability)}`
         );
     });
 

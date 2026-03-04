@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <!-- <script src="dynamic_list.js"></script> -->
     <title>JavaScript Exercise: Library Management</title>
     <style>
         body {
@@ -28,6 +30,35 @@
             border-left: 4px solid #007bff;
             margin: 1rem 0;
         }
+        .dynamiclistdemo {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            margin: 1rem 0;
+        }
+        .userfetchdemo {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            margin: 1rem 0;
+        }
+        .buttonsection {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+        }
+        .addbutton {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            border-color: white;
+        }
     </style>
 </head>
 <body>
@@ -42,7 +73,63 @@
         <p><strong>Note:</strong> Make sure to complete all TODO items in the JavaScript files before running.</p>
     </div>
 
+    <div class="dynamiclistdemo">
+        <h3>Dynamic List Demo</h3>
+        <p>Clicking the button in this section should append a new li element with given input. Each li element will also have a respective remove button.</p>
+        <div class="buttonsection">
+            <input type="text" id="listInput" placeholder="Item To Add">
+            <button id="addBtn" class="addbutton">Add Item</button>
+            <button id="clearBtn" class="addbutton">Clear Items</button>
+            <ul id="demoList"></ul>
+        </div>
+    </div>
+
+    <div class="userfetchdemo">
+        <h3>User Fetch Demo (Promise Chaining)</h3>
+        <p>Fetches and displays user’s name, email, and their post titles in the DOM.</p>
+        <p>This will be done using promise chaining.</p>
+        <div class="buttonsection">
+            <input type="text" id="userIdInput" placeholder="User ID">
+            <button id="addUserBtn" class="addbutton">Look Up User</button>
+            <button id="clearUserBtn" class="addbutton">Clear Users</button>
+            <ul id="userList"></ul>
+        </div>
+        <div class="buttonsection">
+            <input type="text" id="userIdInput2" placeholder="User ID">
+            <button id="addUserPostsBtn" class="addbutton">Look Up Posts</button>
+            <button id="clearPostsBtn" class="addbutton">Clear Posts</button>
+            <hr>
+            <p id="userInfo">User Not Selected</p>
+            <hr>
+            <ul id="userPostList"></ul>
+        </div>
+    </div>
+
+    <div class="userfetchdemo">
+        <h3>User Fetch Demo (Async Methods)</h3>
+        <p>Fetches and displays user’s name, email, and their post titles in the DOM.</p>
+        <p>This will be done using async methods.</p>
+        <div class="buttonsection">
+            <input type="text" id="userIdInput3" placeholder="User ID">
+            <button id="addUserBtn3" class="addbutton">Look Up User</button>
+            <button id="clearUserBtn3" class="addbutton">Clear Users</button>
+            <ul id="userList3"></ul>
+        </div>
+        <div class="buttonsection">
+            <input type="text" id="userIdInput4" placeholder="User ID">
+            <button id="addUserPostsBtn4" class="addbutton">Look Up Posts</button>
+            <button id="clearPostsBtn4" class="addbutton">Clear Posts</button>
+            <hr>
+            <p id="userInfo4">User Not Selected</p>
+            <hr>
+            <ul id="userPostList4"></ul>
+        </div>
+    </div>
+
     <!-- Load the main module which will import other modules -->
-    <script type="module" src="main.js"></script>
+    <!-- Disabled for now to clean up the console logs -->
+    <!-- <script type="module" src="main.js"></script> -->
+    <script src="dynamic_list.js"></script>
+    <script src="user_fetch.js"></script>
 </body>
 </html>
