@@ -20,8 +20,8 @@ interface ProfileData {
 // Profile Card Component //
 
 const ProfileCard: FC<ProfileCardProps> = ({
-    name = "Jane Doe",
-    bio = "Creative developer who loves building delightful user experiences.",
+    name = "John Smith",
+    bio = "If you are seeing this something is wrong.",
     avatarUrl = null,
     accentColor = "#6366f1",
 }) => {
@@ -160,35 +160,35 @@ const ProfileCard: FC<ProfileCardProps> = ({
         <div style={bannerStyle} />
 
         <div style={avatarWrapperStyle}>
-        {avatarUrl ? (
-            <img src={avatarUrl} alt={name} style={avatarStyle} />
-        ) : (
-            <div style={initialsStyle}>{initials}</div>
-        )}
+            {avatarUrl ? (
+                <img src={avatarUrl} alt={name} style={avatarStyle} />
+            ) : (
+                <div style={initialsStyle}>{initials}</div>
+            )}
         </div>
 
         <div style={bodyStyle}>
-        <h3 style={nameStyle}>{name}</h3>
-        <p style={bioStyle}>{bio}</p>
+            <h3 style={nameStyle}>{name}</h3>
+            <p style={bioStyle}>{bio}</p>
 
-        <button
-            style={btnStyle}
-            onClick={() => setHighlighted((h: boolean) => !h)}
-            onMouseEnter={handleBtnEnter}
-            onMouseLeave={handleBtnLeave}
-        >
-            {highlighted ? (
-            <>
-                <span style={{ fontSize: 15 }}>★</span> Highlighted
-            </>
-            ) : (
-            <>
-                <span style={{ fontSize: 15 }}>☆</span> Highlight
-            </>
-            )}
-        </button>
+            <button
+                style={btnStyle}
+                onClick={() => setHighlighted((h: boolean) => !h)}
+                onMouseEnter={handleBtnEnter}
+                onMouseLeave={handleBtnLeave}
+            >
+                {highlighted ? (
+                <>
+                    <span style={{ fontSize: 15 }}>★</span> Highlighted
+                </>
+                ) : (
+                <>
+                    <span style={{ fontSize: 15 }}>☆</span> Highlight
+                </>
+                )}
+            </button>
 
-        <div style={tagStyle}>✦ FEATURED PROFILE</div>
+            <div style={tagStyle}>FEATURED PROFILE</div>
         </div>
     </div>
     );
@@ -197,96 +197,95 @@ const ProfileCard: FC<ProfileCardProps> = ({
 // ─── Demo Application ─── //
 
 const profiles: ProfileData[] = [
-  {
-    name: "Amara Chen",
-    bio: "Full-stack engineer passionate about accessible design and open source tooling.",
-    avatarUrl: "https://i.pravatar.cc/200?img=47",
-    accentColor: "#6366f1",
-  },
-  {
-    name: "Leo Martinez",
-    bio: "Product designer crafting intuitive interfaces for complex data systems.",
-    avatarUrl: "https://i.pravatar.cc/200?img=12",
-    accentColor: "#0ea5e9",
-  },
-  {
-    name: "Priya Kapoor",
-    bio: "ML researcher exploring the intersection of language models and creativity.",
-    avatarUrl: null,
-    accentColor: "#f43f5e",
-  },
+    {
+        name: "Amara Chen",
+        bio: "Full-stack engineer passionate about accessible design and open source tooling.",
+        avatarUrl: "https://i.pravatar.cc/200?img=47",
+        accentColor: "#6366f1",
+    },
+    {
+        name: "Leo Martinez",
+        bio: "Product designer crafting intuitive interfaces for complex data systems.",
+        avatarUrl: "https://i.pravatar.cc/200?img=12",
+        accentColor: "#0ea5e9",
+    },
+    {
+        name: "Priya Kapoor",
+        bio: "ML researcher exploring the intersection of language models and creativity.",
+        avatarUrl: null,
+        accentColor: "#f43f5e",
+    },
 ];
 
 export default function App(): React.ReactElement {
-  return (
-    <div
-      style={{
-        minHeight: "100vh",
-        padding: "48px 24px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 20,
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      }}
-    >
-      <div style={{ textAlign: "center", marginBottom: 12 }}>
-        <h1
-          style={{
-            fontSize: 26,
-            fontWeight: 800,
-            color: "#1f2937",
-            margin: 0,
-          }}
+    return (
+        <div
+            style={{
+                minHeight: "100vh",
+                padding: "48px 24px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 20,
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            }}
         >
-          ProfileCard Component
-        </h1>
-        <p
-          style={{
-            fontSize: 14,
-            color: "#6b7280",
-            marginTop: 6,
-          }}
-        >
-          Hover to elevate · Click <strong>Highlight</strong> to toggle dynamic
-          styling
-        </p>
-      </div>
+            <div style={{ textAlign: "center", marginBottom: 12 }}>
+                <h1
+                    style={{
+                    fontSize: 26,
+                    fontWeight: 800,
+                    color: "#1f2937",
+                    margin: 0,
+                    }}
+                >
+                    ProfileCard Component
+                </h1>
+                <p
+                    style={{
+                    fontSize: 14,
+                    color: "#6b7280",
+                    marginTop: 6,
+                    }}
+                >
+                    Hover to elevate · Click <strong>Highlight</strong> to toggle dynamic
+                    styling
+                </p>
+            </div>
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: 28,
-        }}
-      >
-        {profiles.map((p: ProfileData) => (
-          <ProfileCard key={p.name} {...p} />
-        ))}
-      </div>
+            <div
+                style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    gap: 28,
+                }}
+            >
+                {profiles.map((p: ProfileData) => (
+                    <ProfileCard key={p.name} {...p} />
+                ))}
+            </div>
 
-      <div
-        style={{
-          marginTop: 24,
-          padding: "16px 24px",
-          borderRadius: 14,
-          background: "#f9fafb",
-          border: "1px solid #e5e7eb",
-          maxWidth: 520,
-          fontSize: 13,
-          lineHeight: 1.7,
-          color: "#6b7280",
-        }}
-      >
-        <strong style={{ color: "#374151" }}>Props API</strong>
-        <br />
-        <code>name</code> — display name ·{" "}
-        <code>bio</code> — short description ·{" "}
-        <code>avatarUrl</code> — image URL or null (falls back to initials) ·{" "}
-        <code>accentColor</code> — theme color per card
-      </div>
-    </div>
-  );
+            <div
+                style={{
+                    marginTop: 24,
+                    padding: "16px 24px",
+                    borderRadius: 14,
+                    background: "#f9fafb",
+                    border: "1px solid #e5e7eb",
+                    maxWidth: 520,
+                    fontSize: 13,
+                    lineHeight: 1.7,
+                    color: "#6b7280",
+                }}
+            >
+                <strong style={{ color: "#374151" }}>Props API</strong>
+                <br />
+                <code>name</code> — display name ·{" "}
+                <code>bio</code> — short description ·{" "}
+                <code>avatarUrl</code> — image URL or null (falls back to initials) ·{" "}
+                <code>accentColor</code> — theme color per card
+            </div>
+        </div>
+    );
 }
