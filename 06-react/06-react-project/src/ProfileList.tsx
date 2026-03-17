@@ -1,0 +1,506 @@
+import { useState, useCallback } from "react";
+import type { CSSProperties, FC, SyntheticEvent } from "react";
+import profiles from "./profileData";
+import type { ProfileData } from "./ProfileCard";
+
+interface ProfileEntry extends ProfileData {
+    id: string;
+    highlighted: boolean;
+}
+
+interface CardProps {
+    profile: ProfileEntry;
+    onToggleHighlight: (id: string) => void;
+    onRemove: (id: string) => void;
+}
+
+const ProfileCard: FC<CardProps> = ({ profile, onToggleHighlight, onRemove }) => {
+    const { id, name, bio, avatarUrl, accentColor, highlighted } = profile;
+    const [hovered, setHovered] = useState(false);
+
+    const initials = name
+        .split(" ")
+        .map((w) => w[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2);
+
+    const card: CSSProperties = {
+        position: "relative",
+        width: 320,
+        borderRadius: 20,
+        overflow: "hidden",
+        background: highlighted
+            ? `linear-gradient(135deg, ${accentColor}11, ${accentColor}22)`
+            : "#ffffff",
+        border: `1.5px solid ${highlighted ? accentColor : "#e5e7eb"}`,
+        boxShadow: hovered
+        ? highlighted
+            ? `0 20px 40px ${accentColor}33, 0 0 0 2px ${accentColor}44`
+            : "0 16px 32px rgba(0,0,0,0.10)"
+        : highlighted
+            ? `0 8px 24px ${accentColor}22`
+            : "0 2px 8px rgba(0,0,0,0.06)",
+        transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+        transform: hovered ? "translateY(-4px)" : "translateY(0)",
+        cursor: "default",
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    };
+
+    const banner: CSSProperties = {
+        height: 80,
+        background: highlighted
+            ? `linear-gradient(135deg, ${accentColor}, ${accentColor}cc)`
+            : `linear-gradient(135deg, ${accentColor}88, ${accentColor}44)`,
+        transition: "background 0.35s ease",
+    };
+
+    const avatarWrap: CSSProperties = {
+        display: "flex",
+        justifyContent: "center",
+        marginTop: -44,
+        position: "relative",
+        zIndex: 1,
+    };
+
+    const avatarBase: CSSProperties = {
+        width: 88,
+        height: 88,
+        borderRadius: "50%",
+        border: `3.5px solid ${highlighted ? accentColor : "#fff"}`,
+        boxShadow: highlighted
+            ? `0 0 0 3px ${accentColor}33`
+            : "0 2px 8px rgba(0,0,0,0.10)",
+        objectFit: "cover" as const,
+        transition: "all 0.35s ease",
+    };
+
+    const initialsCircle: CSSProperties = {
+        ...avatarBase,
+        background: `linear-gradient(135deg, ${accentColor}33, ${accentColor}66)`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: accentColor,
+        fontSize: 28,
+        fontWeight: 700,
+        letterSpacing: 1,
+        userSelect: "none",
+    };
+
+    const btn: CSSProperties = {
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        padding: "10px 22px",
+        borderRadius: 12,
+        border: "none",
+        fontSize: 14,
+        fontWeight: 600,
+        cursor: "pointer",
+        transition: "all 0.25s ease",
+        background: highlighted ? accentColor : `${accentColor}14`,
+        color: highlighted ? "#fff" : accentColor,
+    };
+
+    const removeBtn: CSSProperties = {
+        position: "absolute",
+        top: 10,
+        right: 10,
+        width: 28,
+        height: 28,
+        borderRadius: "50%",
+        border: "none",
+        background: "rgba(0,0,0,0.35)",
+        color: "#fff",
+        fontSize: 16,
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        opacity: hovered ? 1 : 0,
+        transition: "opacity 0.2s ease",
+        zIndex: 2,
+    };
+
+    const tag: CSSProperties = {
+        display: "inline-block",
+        padding: "3px 10px",
+        borderRadius: 99,
+        fontSize: 11,
+        fontWeight: 600,
+        background: highlighted ? `${accentColor}22` : "transparent",
+        color: accentColor,
+        opacity: highlighted ? 1 : 0,
+        transform: highlighted ? "translateY(0)" : "translateY(6px)",
+        transition: "all 0.3s ease",
+        marginTop: 12,
+        letterSpacing: 0.5,
+    };
+
+    return (
+        <div
+            style={card}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+        >
+            <button style={removeBtn} onClick={() => onRemove(id)} title="Remove">
+                ×
+            </button>
+
+            <div style={banner} />
+
+            <div style={avatarWrap}>
+                {avatarUrl ? (
+                    <img src={avatarUrl} alt={name} style={avatarBase} />
+                ) : (
+                    <div style={initialsCircle}>{initials}</div>
+                )}
+            </div>
+
+            <div style={{ padding: "12px 24px 24px", textAlign: "center" }}>
+                <h3
+                    style={{
+                        margin: 0,
+                        fontSize: 20,
+                        fontWeight: 700,
+                        color: highlighted ? accentColor : "#1f2937",
+                        transition: "color 0.3s ease",
+                    }}
+                >
+                    {name}
+                </h3>
+                <p
+                    style={{
+                        margin: "8px 0 20px",
+                        fontSize: 14,
+                        lineHeight: 1.6,
+                        color: "#6b7280",
+                    }}
+                >
+                    {bio}
+                </p>
+
+                <button
+                    style={btn}
+                    onClick={() => onToggleHighlight(id)}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "scale(1.05)";
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "scale(1)";
+                    }}
+                >
+                    <span style={{ fontSize: 15 }}>{highlighted ? "★" : "☆"}</span>
+                    {highlighted ? " Highlighted" : " Highlight"}
+                </button>
+
+                <div style={tag}>FEATURED PROFILE</div>
+            </div>
+        </div>
+    );
+};
+
+// Color presets for the profiles //
+
+const COLOR_PRESETS = [
+    "#e90e0e",
+    "#0ee948",
+    "#0e53e9",
+    "#e9830e",
+    "#e9d00e",
+    "#0ee99c",
+    "#830ee9",
+    "#0e8ee9",
+];
+
+// Add Profile Form //
+
+interface FormProps {
+    onAdd: (p: ProfileData) => void;
+}
+
+const AddProfileForm: FC<FormProps> = ({ onAdd }) => {
+    const [name, setName] = useState("");
+    const [bio, setBio] = useState("");
+    const [avatarUrl, setAvatarUrl] = useState("");
+    const [color, setColor] = useState(COLOR_PRESETS[0]);
+    const [open, setOpen] = useState(false);
+
+    const submit = (e: SyntheticEvent) => {
+        e.preventDefault();
+        if (!name.trim()) return;
+        onAdd({
+            name: name.trim(),
+            bio: bio.trim() || "No Bio Provided.",
+            avatarUrl: avatarUrl.trim() || null,
+            accentColor: color,
+        });
+        setName("");
+        setBio("");
+        setAvatarUrl("");
+        setColor(COLOR_PRESETS[0]);
+        setOpen(false);
+    };
+
+    const wrapper: CSSProperties = {
+        width: "100%",
+        maxWidth: 520,
+        borderRadius: 16,
+        border: "1.5px dashed #d1d5db",
+        background: "#fafafa",
+        overflow: "hidden",
+        transition: "all 0.3s ease",
+    };
+
+    const input: CSSProperties = {
+        width: "100%",
+        padding: "10px 14px",
+        borderRadius: 10,
+        border: "1.5px solid #e5e7eb",
+        fontSize: 14,
+        outline: "none",
+        transition: "border-color 0.2s",
+        boxSizing: "border-box",
+    };
+
+    if (!open) {
+        return (
+            <div style={wrapper}>
+                <button
+                    onClick={() => setOpen(true)}
+                    style={{
+                        width: "100%",
+                        padding: "18px",
+                        background: "none",
+                        border: "none",
+                        fontSize: 15,
+                        fontWeight: 600,
+                        color: "#6b7280",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
+                    }}
+                >
+                    <span style={{ fontSize: 22, lineHeight: 1 }}>+</span> Add New
+                    Profile
+                </button>
+            </div>
+        );
+    }
+
+    return (
+        <div style={wrapper}>
+            <div style={{ padding: 24 }}>
+                <h3 style={{ margin: "0 0 18px", fontSize: 17, fontWeight: 700, color: "#1f2937" }}>
+                    New Profile
+                </h3>
+
+                <div onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                    <input
+                        style={input}
+                        placeholder="Name *"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        onFocus={(e) => (e.currentTarget.style.borderColor = color)}
+                        onBlur={(e) => (e.currentTarget.style.borderColor = "#e5e7eb")}
+                    />
+                    <textarea
+                        style={{ ...input, resize: "vertical", minHeight: 60 }}
+                        placeholder="Short bio"
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
+                        onFocus={(e) => (e.currentTarget.style.borderColor = color)}
+                        onBlur={(e) => (e.currentTarget.style.borderColor = "#e5e7eb")}
+                    />
+                    <input
+                        style={input}
+                        placeholder="Avatar URL (optional)"
+                        value={avatarUrl}
+                        onChange={(e) => setAvatarUrl(e.target.value)}
+                        onFocus={(e) => (e.currentTarget.style.borderColor = color)}
+                        onBlur={(e) => (e.currentTarget.style.borderColor = "#e5e7eb")}
+                    />
+
+                    <div>
+                        <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", marginBottom: 6, display: "block" }}>
+                            Profile Color
+                        </label>
+                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                            {COLOR_PRESETS.map((c) => (
+                                <button
+                                key={c}
+                                type="button"
+                                onClick={() => setColor(c)}
+                                style={{
+                                    width: 32,
+                                    height: 32,
+                                    borderRadius: 10,
+                                    border: c === color ? `2.5px solid ${c}` : "2.5px solid transparent",
+                                    background: c,
+                                    cursor: "pointer",
+                                    outline: c === color ? `2px solid ${c}44` : "none",
+                                    outlineOffset: 2,
+                                    transition: "all 0.2s ease",
+                                }}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    <div style={{ display: "flex", gap: 10, marginTop: 4 }}>
+                        <button
+                            type="button"
+                            onClick={submit}
+                            style={{
+                                flex: 1,
+                                padding: "11px 0",
+                                borderRadius: 12,
+                                border: "none",
+                                background: color,
+                                color: "#fff",
+                                fontSize: 14,
+                                fontWeight: 600,
+                                cursor: name.trim() ? "pointer" : "not-allowed",
+                                opacity: name.trim() ? 1 : 0.5,
+                                transition: "all 0.2s ease",
+                            }}
+                        >
+                            Add Profile
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setOpen(false)}
+                            style={{
+                                padding: "11px 20px",
+                                borderRadius: 12,
+                                border: "1.5px solid #e5e7eb",
+                                background: "#fff",
+                                fontSize: 14,
+                                fontWeight: 600,
+                                color: "#6b7280",
+                                cursor: "pointer",
+                            }}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// ProfileList Component //
+
+let nextId = 0;
+const makeId = (): string => `profile-${++nextId}`;
+
+const toEntry = (p: ProfileData): ProfileEntry => ({
+    ...p,
+    id: makeId(),
+    highlighted: false,
+});
+
+const ProfileList: FC = () => {
+    const [entries, setEntries] = useState<ProfileEntry[]>(() =>
+        profiles.map(toEntry)
+    );
+
+    const toggleHighlight = useCallback((id: string) => {
+        setEntries((prev) =>
+        prev.map((e) => (e.id === id ? { ...e, highlighted: !e.highlighted } : e))
+        );
+    }, []);
+
+    const removeProfile = useCallback((id: string) => {
+        setEntries((prev) => prev.filter((e) => e.id !== id));
+    }, []);
+
+    const addProfile = useCallback((p: ProfileData) => {
+        setEntries((prev) => [...prev, toEntry(p)]);
+    }, []);
+
+    const highlightedCount = entries.filter((e) => e.highlighted).length;
+
+    return (
+        <div
+            style={{
+                minHeight: "100vh",
+                padding: "48px 24px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 24,
+                fontFamily:
+                '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            }}
+        >
+            <div style={{ textAlign: "center", marginBottom: 4 }}>
+                <h1 style={{ fontSize: 26, fontWeight: 800, color: "#1f2937", margin: 0 }}>
+                    Profile List
+                </h1>
+                <p style={{ fontSize: 14, color: "#6b7280", marginTop: 6 }}>
+                    {entries.length} profile{entries.length !== 1 && "s"}
+                    {highlightedCount > 0 && (
+                        <span style={{ color: "#6366f1", fontWeight: 600 }}>
+                            {" "}
+                            · {highlightedCount} highlighted
+                        </span>
+                    )}
+                </p>
+            </div>
+
+            <div
+                style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    gap: 28,
+                }}
+            >
+                {entries.map((entry) => (
+                    <ProfileCard
+                        key={entry.id}
+                        profile={entry}
+                        onToggleHighlight={toggleHighlight}
+                        onRemove={removeProfile}
+                    />
+                ))}
+
+                {entries.length === 0 && (
+                    <p style={{ fontSize: 15, color: "#9ca3af", padding: "40px 0" }}>
+                        No Profiles Yet
+                    </p>
+                )}
+            </div>
+
+            <AddProfileForm onAdd={addProfile} />
+
+            <div
+                style={{
+                    marginTop: 8,
+                    padding: "16px 24px",
+                    borderRadius: 14,
+                    background: "#f9fafb",
+                    border: "1px solid #e5e7eb",
+                    maxWidth: 520,
+                    fontSize: 13,
+                    lineHeight: 1.7,
+                    color: "#6b7280",
+                }}
+            >
+                <strong style={{ color: "#374151" }}>ProfileList Features</strong>
+                <br />
+                <code>Add</code> : create profiles via the form ·{" "}
+                <code>Remove</code> : hover a card and click × ·{" "}
+                <code>Highlight</code> : toggle per-card featured state ·{" "}
+                Initial data loaded from <code>profileData</code>
+            </div>
+        </div>
+    );
+};
+
+export default ProfileList;

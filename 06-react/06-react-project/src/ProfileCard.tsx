@@ -197,7 +197,7 @@ const ProfileCard: FC<ProfileCardProps> = ({
 
 export default ProfileCard;
 
-// ─── Demo Application ─── //
+// Demo Application //
 
 export function App(): React.ReactElement {
     // console.log(profiles); //
