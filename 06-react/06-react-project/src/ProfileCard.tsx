@@ -9,6 +9,9 @@ interface ProfileCardProps {
     bio?: string;
     avatarUrl?: string | null;
     accentColor?: string;
+    highlighted?: boolean;
+    onToggleHighlight?: () => void;
+    onRemove?: () => void;
 }
 
 export interface ProfileData {
@@ -25,8 +28,12 @@ const ProfileCard: FC<ProfileCardProps> = ({
     bio = "If you are seeing this something is wrong.",
     avatarUrl = null,
     accentColor = "#6366f1",
+    highlighted: highlightedProp,
+    onToggleHighlight,
+    onRemove,
 }) => {
-    const [highlighted, setHighlighted] = useState<boolean>(false);
+    const [internalHighlighted, setInternalHighlighted] = useState<boolean>(false);
+    const highlighted = highlightedProp ?? internalHighlighted;
     const [hovered, setHovered] = useState<boolean>(false);
 
     const initials: string = name.split(" ").map((w: string) => w[0]).join("").toUpperCase().slice(0, 2);
@@ -129,6 +136,26 @@ const ProfileCard: FC<ProfileCardProps> = ({
         color: highlighted ? "#fff" : accentColor,
     };
 
+    const removeBtn: CSSProperties = {
+        position: "absolute",
+        top: 10,
+        right: 10,
+        width: 28,
+        height: 28,
+        borderRadius: "50%",
+        border: "none",
+        background: "rgba(0,0,0,0.35)",
+        color: "#fff",
+        fontSize: 16,
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        opacity: hovered ? 1 : 0,
+        transition: "opacity 0.2s ease",
+        zIndex: 2,
+    };
+
     const tagStyle: CSSProperties = {
         display: "inline-block",
         padding: "3px 10px",
@@ -158,6 +185,9 @@ const ProfileCard: FC<ProfileCardProps> = ({
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
     >
+        {onRemove && (
+            <button style={removeBtn} onClick={onRemove} title="Remove">×</button>
+        )}
         <div style={bannerStyle} />
 
         <div style={avatarWrapperStyle}>
@@ -174,7 +204,10 @@ const ProfileCard: FC<ProfileCardProps> = ({
 
             <button
                 style={btnStyle}
-                onClick={() => setHighlighted((h: boolean) => !h)}
+                onClick={() => onToggleHighlight
+                    ? onToggleHighlight()
+                    : setInternalHighlighted(h => !h)
+                }
                 onMouseEnter={handleBtnEnter}
                 onMouseLeave={handleBtnLeave}
             >

@@ -2,204 +2,12 @@ import { useState, useCallback } from "react";
 import type { CSSProperties, FC, SyntheticEvent } from "react";
 import profiles from "./profileData";
 import type { ProfileData } from "./ProfileCard";
+import ProfileCard from "./ProfileCard";
 
 interface ProfileEntry extends ProfileData {
     id: string;
     highlighted: boolean;
 }
-
-interface CardProps {
-    profile: ProfileEntry;
-    onToggleHighlight: (id: string) => void;
-    onRemove: (id: string) => void;
-}
-
-const ProfileCard: FC<CardProps> = ({ profile, onToggleHighlight, onRemove }) => {
-    const { id, name, bio, avatarUrl, accentColor, highlighted } = profile;
-    const [hovered, setHovered] = useState(false);
-
-    const initials = name
-        .split(" ")
-        .map((w) => w[0])
-        .join("")
-        .toUpperCase()
-        .slice(0, 2);
-
-    const card: CSSProperties = {
-        position: "relative",
-        width: 320,
-        borderRadius: 20,
-        overflow: "hidden",
-        background: highlighted
-            ? `linear-gradient(135deg, ${accentColor}11, ${accentColor}22)`
-            : "#ffffff",
-        border: `1.5px solid ${highlighted ? accentColor : "#e5e7eb"}`,
-        boxShadow: hovered
-        ? highlighted
-            ? `0 20px 40px ${accentColor}33, 0 0 0 2px ${accentColor}44`
-            : "0 16px 32px rgba(0,0,0,0.10)"
-        : highlighted
-            ? `0 8px 24px ${accentColor}22`
-            : "0 2px 8px rgba(0,0,0,0.06)",
-        transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-        transform: hovered ? "translateY(-4px)" : "translateY(0)",
-        cursor: "default",
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    };
-
-    const banner: CSSProperties = {
-        height: 80,
-        background: highlighted
-            ? `linear-gradient(135deg, ${accentColor}, ${accentColor}cc)`
-            : `linear-gradient(135deg, ${accentColor}88, ${accentColor}44)`,
-        transition: "background 0.35s ease",
-    };
-
-    const avatarWrap: CSSProperties = {
-        display: "flex",
-        justifyContent: "center",
-        marginTop: -44,
-        position: "relative",
-        zIndex: 1,
-    };
-
-    const avatarBase: CSSProperties = {
-        width: 88,
-        height: 88,
-        borderRadius: "50%",
-        border: `3.5px solid ${highlighted ? accentColor : "#fff"}`,
-        boxShadow: highlighted
-            ? `0 0 0 3px ${accentColor}33`
-            : "0 2px 8px rgba(0,0,0,0.10)",
-        objectFit: "cover" as const,
-        transition: "all 0.35s ease",
-    };
-
-    const initialsCircle: CSSProperties = {
-        ...avatarBase,
-        background: `linear-gradient(135deg, ${accentColor}33, ${accentColor}66)`,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: accentColor,
-        fontSize: 28,
-        fontWeight: 700,
-        letterSpacing: 1,
-        userSelect: "none",
-    };
-
-    const btn: CSSProperties = {
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 6,
-        padding: "10px 22px",
-        borderRadius: 12,
-        border: "none",
-        fontSize: 14,
-        fontWeight: 600,
-        cursor: "pointer",
-        transition: "all 0.25s ease",
-        background: highlighted ? accentColor : `${accentColor}14`,
-        color: highlighted ? "#fff" : accentColor,
-    };
-
-    const removeBtn: CSSProperties = {
-        position: "absolute",
-        top: 10,
-        right: 10,
-        width: 28,
-        height: 28,
-        borderRadius: "50%",
-        border: "none",
-        background: "rgba(0,0,0,0.35)",
-        color: "#fff",
-        fontSize: 16,
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        opacity: hovered ? 1 : 0,
-        transition: "opacity 0.2s ease",
-        zIndex: 2,
-    };
-
-    const tag: CSSProperties = {
-        display: "inline-block",
-        padding: "3px 10px",
-        borderRadius: 99,
-        fontSize: 11,
-        fontWeight: 600,
-        background: highlighted ? `${accentColor}22` : "transparent",
-        color: accentColor,
-        opacity: highlighted ? 1 : 0,
-        transform: highlighted ? "translateY(0)" : "translateY(6px)",
-        transition: "all 0.3s ease",
-        marginTop: 12,
-        letterSpacing: 0.5,
-    };
-
-    return (
-        <div
-            style={card}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-        >
-            <button style={removeBtn} onClick={() => onRemove(id)} title="Remove">
-                ×
-            </button>
-
-            <div style={banner} />
-
-            <div style={avatarWrap}>
-                {avatarUrl ? (
-                    <img src={avatarUrl} alt={name} style={avatarBase} />
-                ) : (
-                    <div style={initialsCircle}>{initials}</div>
-                )}
-            </div>
-
-            <div style={{ padding: "12px 24px 24px", textAlign: "center" }}>
-                <h3
-                    style={{
-                        margin: 0,
-                        fontSize: 20,
-                        fontWeight: 700,
-                        color: highlighted ? accentColor : "#1f2937",
-                        transition: "color 0.3s ease",
-                    }}
-                >
-                    {name}
-                </h3>
-                <p
-                    style={{
-                        margin: "8px 0 20px",
-                        fontSize: 14,
-                        lineHeight: 1.6,
-                        color: "#6b7280",
-                    }}
-                >
-                    {bio}
-                </p>
-
-                <button
-                    style={btn}
-                    onClick={() => onToggleHighlight(id)}
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = "scale(1.05)";
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = "scale(1)";
-                    }}
-                >
-                    <span style={{ fontSize: 15 }}>{highlighted ? "★" : "☆"}</span>
-                    {highlighted ? " Highlighted" : " Highlight"}
-                </button>
-
-                <div style={tag}>FEATURED PROFILE</div>
-            </div>
-        </div>
-    );
-};
 
 // Color presets for the profiles //
 
@@ -464,9 +272,9 @@ const ProfileList: FC = () => {
                 {entries.map((entry) => (
                     <ProfileCard
                         key={entry.id}
-                        profile={entry}
-                        onToggleHighlight={toggleHighlight}
-                        onRemove={removeProfile}
+                        {...entry}
+                        onToggleHighlight={() => toggleHighlight(entry.id)}
+                        onRemove={() => removeProfile(entry.id)}
                     />
                 ))}
 
