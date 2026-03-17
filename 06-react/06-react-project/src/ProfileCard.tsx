@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { CSSProperties, MouseEvent, FC } from "react";
+import profiles from "./profileData";
 
 // TypeScript Format, Need Type Declarations //
 
@@ -10,7 +11,7 @@ interface ProfileCardProps {
     accentColor?: string;
 }
 
-interface ProfileData {
+export interface ProfileData {
     name: string;
     bio: string;
     avatarUrl: string | null;
@@ -194,30 +195,12 @@ const ProfileCard: FC<ProfileCardProps> = ({
     );
 };
 
+export default ProfileCard;
+
 // ─── Demo Application ─── //
 
-const profiles: ProfileData[] = [
-    {
-        name: "Amara Chen",
-        bio: "Full-stack engineer passionate about accessible design and open source tooling.",
-        avatarUrl: "https://i.pravatar.cc/200?img=47",
-        accentColor: "#6366f1",
-    },
-    {
-        name: "Leo Martinez",
-        bio: "Product designer crafting intuitive interfaces for complex data systems.",
-        avatarUrl: "https://i.pravatar.cc/200?img=12",
-        accentColor: "#0ea5e9",
-    },
-    {
-        name: "Priya Kapoor",
-        bio: "ML researcher exploring the intersection of language models and creativity.",
-        avatarUrl: null,
-        accentColor: "#f43f5e",
-    },
-];
-
-export default function App(): React.ReactElement {
+export function App(): React.ReactElement {
+    // console.log(profiles); //
     return (
         <div
             style={{
@@ -233,19 +216,19 @@ export default function App(): React.ReactElement {
             <div style={{ textAlign: "center", marginBottom: 12 }}>
                 <h1
                     style={{
-                    fontSize: 26,
-                    fontWeight: 800,
-                    color: "#1f2937",
-                    margin: 0,
+                        fontSize: 26,
+                        fontWeight: 800,
+                        color: "#1f2937",
+                        margin: 0,
                     }}
                 >
                     ProfileCard Component
                 </h1>
                 <p
                     style={{
-                    fontSize: 14,
-                    color: "#6b7280",
-                    marginTop: 6,
+                        fontSize: 14,
+                        color: "#6b7280",
+                        marginTop: 6,
                     }}
                 >
                     Hover to elevate · Click <strong>Highlight</strong> to toggle dynamic
@@ -281,9 +264,8 @@ export default function App(): React.ReactElement {
             >
                 <strong style={{ color: "#374151" }}>Props API</strong>
                 <br />
-                <code>name</code> — display name ·{" "}
-                <code>bio</code> — short description ·{" "}
-                <code>avatarUrl</code> — image URL or null (falls back to initials) ·{" "}
+                <code>name</code> — display name · <code>bio</code> — short description
+                · <code>avatarUrl</code> — image URL or null (falls back to initials) ·{" "}
                 <code>accentColor</code> — theme color per card
             </div>
         </div>
