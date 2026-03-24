@@ -22,10 +22,10 @@ const PROFILE_SCHEMA: FormSchema = {
             type: "url",
             label: "URL Link To Avatar Image",
             placeholder: "https://i.pravatar.cc/200?img=12",
-            validation: { required: true, pattern: "^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$", message: "Enter a valid url." },
+            validation: { required: true, pattern: "^(https?:\\/\\/)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$", message: "Enter a valid url." },
         },
         {
-            id: "colorScheme",
+            id: "accentColor",
             type: "select",
             label: "Profile Color",
             options: [
