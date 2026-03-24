@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import type { CSSProperties } from "react";
 
 // Type Declaration //
@@ -38,6 +38,77 @@ export interface FormSchema {
 export type FormValues = Record<string, string | boolean | number>;
 type FormErrors = Record<string, string>;
 
+export interface FormTheme {
+    // Colours //
+    primaryColor?: string;        // submit button + accent
+    errorColor?: string;          // border + text on error
+    errorBg?: string;             // input background on error
+    errorBorder?: string;         // input border on error
+    successColor?: string;        // success state text
+    successBg?: string;           // success state background
+    successBorder?: string;       // success state border
+    labelColor?: string;
+    inputBg?: string;
+    inputBorder?: string;
+    inputText?: string;
+    resetBg?: string;
+    resetBorder?: string;
+    resetText?: string;
+
+    // Shape + Padding //
+    borderRadius?: string;
+    inputPadding?: string;
+    fontSize?: string;
+    labelSize?: string;
+}
+
+const defaultTheme: Required<FormTheme> = {
+    primaryColor:   "#3b82f6",
+    errorColor:     "#ef4444",
+    errorBg:        "#fef2f2",
+    errorBorder:    "#f87171",
+    successColor:   "#15803d",
+    successBg:      "#f0fdf4",
+    successBorder:  "#bbf7d0",
+    labelColor:     "#374151",
+    inputBg:        "#ffffff",
+    inputBorder:    "#e5e7eb",
+    inputText:      "#111827",
+    resetBg:        "#ffffff",
+    resetBorder:    "#e5e7eb",
+    resetText:      "#6b7280",
+    borderRadius:   "10px",
+    inputPadding:   "10px 14px",
+    fontSize:       "14px",
+    labelSize:      "13px",
+};
+
+// Converting CSS Classes //
+
+function buildCSSVars(theme: FormTheme = {}): CSSProperties {
+    const t = { ...defaultTheme, ...theme };
+    return {
+        "--fb-primary":        t.primaryColor,
+        "--fb-error":          t.errorColor,
+        "--fb-error-bg":       t.errorBg,
+        "--fb-error-border":   t.errorBorder,
+        "--fb-success":        t.successColor,
+        "--fb-success-bg":     t.successBg,
+        "--fb-success-border": t.successBorder,
+        "--fb-label":          t.labelColor,
+        "--fb-input-bg":       t.inputBg,
+        "--fb-input-border":   t.inputBorder,
+        "--fb-input-text":     t.inputText,
+        "--fb-reset-bg":       t.resetBg,
+        "--fb-reset-border":   t.resetBorder,
+        "--fb-reset-text":     t.resetText,
+        "--fb-radius":         t.borderRadius,
+        "--fb-padding":        t.inputPadding,
+        "--fb-font-size":      t.fontSize,
+        "--fb-label-size":     t.labelSize,
+    } as CSSProperties;
+}
+
 // Input Validation //
 
 export function validateField(field: FormField, value: string | boolean | number): string {
@@ -72,11 +143,12 @@ interface FieldProps {
 function FieldRenderer({ field, value, error, onChange }: FieldProps) {
     const baseStyle: CSSProperties = {
         width: "100%",
-        padding: "10px 14px",
-        borderRadius: 10,
-        border: `1.5px solid ${error ? "#f87171" : "#e5e7eb"}`,
-        background: error ? "#fef2f2" : "#fff",
-        fontSize: 14,
+        padding: "var(--fb-padding)",
+        borderRadius: "var(--fb-radius)",
+        border: `1.5px solid ${error ? "var(--fb-error-border)" : "var(--fb-input-border)"}`,
+        background: error ? "var(--fb-error-bg)" : "var(--fb-input-bg)",
+        color: "var(--fb-input-text)",
+        fontSize: "var(--fb-font-size)",
         outline: "none",
         transition: "border-color 0.2s",
         boxSizing: "border-box",
@@ -100,22 +172,22 @@ function FieldRenderer({ field, value, error, onChange }: FieldProps) {
         case "textarea":
             return (
                 <textarea
-                  style={{ ...baseStyle, resize: "vertical", minHeight: 60 }}
-                  placeholder={field.placeholder}
-                  value={String(value)}
-                  onChange={change}
+                    style={{ ...baseStyle,resize: "vertical", minHeight: 60 }}
+                    placeholder={field.placeholder}
+                    value={String(value)}
+                    onChange={change}
                 />
             );
         case "checkbox":
             return (
                 <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", userSelect: "none" }}>
                     <input
-                      type="checkbox"
-                      style={{ width: 16, height: 16, accentColor: "#3b82f6" }}
-                      checked={Boolean(value)}
-                      onChange={change}
+                        type="checkbox"
+                        style={{ width: 16, height: 16, accentColor: "var(--fb-primary)" }}
+                        checked={Boolean(value)}
+                        onChange={change}
                     />
-                    <span style={{ fontSize: 14, color: "#374151" }}>{field.label}</span>
+                    <span style={{ fontSize: "var(--fb-font-size)", color: "var(--fb-label)" }}>{field.label}</span>
                 </label>
             );
         case "color-swatch":
@@ -132,7 +204,7 @@ function FieldRenderer({ field, value, error, onChange }: FieldProps) {
                                 style={{
                                     width: 32,
                                     height: 32,
-                                    borderRadius: 10,
+                                    borderRadius: "var(--fb-radius)",
                                     background: o.value,
                                     border: selected ? `2.5px solid ${o.value}` : "2.5px solid transparent",
                                     outline: selected ? `2px solid ${o.value}` : "none",
@@ -163,9 +235,12 @@ function FieldRenderer({ field, value, error, onChange }: FieldProps) {
 export interface DynamicFormProps {
     schema: FormSchema;
     onSubmit: (values: FormValues) => void;
+    theme?: FormTheme;
 }
 
-export function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
+export function DynamicForm({ schema, onSubmit, theme }: DynamicFormProps) {
+    const cssVars = useMemo(() => buildCSSVars(theme), [theme]);
+
     const initValues = (): FormValues =>
         Object.fromEntries(
             schema.fields.map(f => [f.id, f.defaultValue ?? (f.type === "checkbox" ? false : "")])
@@ -204,13 +279,41 @@ export function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
 
     if (submitted) {
         return (
-            <div style={{ borderRadius: 12, border: "1px solid #bbf7d0", background: "#f0fdf4", padding: 24, textAlign: "center" }}>
+            <div style={{
+                ...cssVars,
+                borderRadius: "var(--fb-radius)",
+                border: "1px solid var(--fb-success-border)",
+                background: "var(--fb-success-bg)",
+                padding: 24,
+                textAlign: "center",
+            }}>
                 <div style={{ fontSize: 36, marginBottom: 8 }}>✅</div>
-                <p style={{ fontWeight: 600, color: "#15803d", fontSize: 17, margin: "0 0 12px" }}>Form submitted!</p>
-                <pre style={{ textAlign: "left", fontSize: 12, background: "#fff", border: "1px solid #bbf7d0", borderRadius: 8, padding: 12, overflow: "auto", maxHeight: 192 }}>
+                <p style={{ fontWeight: 600, color: "var(--fb-success)", fontSize: 17, margin: "0 0 12px" }}>
+                    Form submitted!
+                </p>
+                <pre style={{
+                    textAlign: "left",
+                    fontSize: 12,
+                    background: "var(--fb-input-bg)",
+                    border: "1px solid var(--fb-success-border)",
+                    borderRadius: "var(--fb-radius)",
+                    padding: 12,
+                    overflow: "auto",
+                    maxHeight: 192,
+                }}>
                     {JSON.stringify(values, null, 2)}
                 </pre>
-                <button onClick={handleReset} style={{ marginTop: 12, padding: "8px 18px", borderRadius: 10, border: "none", background: "#16a34a", color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+                <button onClick={handleReset} style={{
+                    marginTop: 12,
+                    padding: "8px 18px",
+                    borderRadius: "var(--fb-radius)",
+                    border: "none",
+                    background: "var(--fb-success)",
+                    color: "#fff",
+                    fontSize: "var(--fb-font-size)",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                }}>
                     Submit another
                 </button>
             </div>
@@ -218,58 +321,56 @@ export function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
     }
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <div style={{ ...cssVars, display: "flex", flexDirection: "column", gap: 14 }}>
             {schema.fields.map(field => (
-                  <div key={field.id} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                      {field.type !== "checkbox" && (
-                          <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#374151" }}>
+                <div key={field.id} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                    {field.type !== "checkbox" && (
+                        <label style={{ display: "block", fontSize: "var(--fb-label-size)", fontWeight: 600, color: "var(--fb-label)" }}>
                             {field.label}
-                            {field.validation?.required && <span style={{ color: "#ef4444", marginLeft: 4 }}>*</span>}
-                          </label>
-                      )}
-                      <FieldRenderer
-                          field={field}
-                          value={values[field.id]}
-                          error={errors[field.id] ?? ""}
-                          onChange={handleChange}
-                      />
-                      {errors[field.id] && (
-                          <p style={{ fontSize: 12, color: "#ef4444", margin: "2px 0 0" }}>{errors[field.id]}</p>
-                      )}
-                  </div>
+                            {field.validation?.required && (
+                                <span style={{ color: "var(--fb-error)", marginLeft: 4 }}>*</span>
+                            )}
+                        </label>
+                    )}
+                    <FieldRenderer
+                        field={field}
+                        value={values[field.id]}
+                        error={errors[field.id] ?? ""}
+                        onChange={handleChange}
+                    />
+                    {errors[field.id] && (
+                        <p style={{ fontSize: 12, color: "var(--fb-error)", margin: "2px 0 0" }}>
+                            {errors[field.id]}
+                        </p>
+                    )}
+                </div>
             ))}
 
-            <div className="flex gap-[10px] pt-2">
-                <button
-                    onClick={handleSubmit}
-                    style={{
-                        flex: 1,
-                        padding: "11px 20px",
-                        borderRadius: 12,
-                        border: "none",
-                        background: "#3b82f6",
-                        color: "#fff",
-                        fontSize: 14,
-                        fontWeight: 600,
-                        cursor: "pointer",
-                        transition: "all 0.2s ease",
-                    }}
-                >
+            <div style={{ display: "flex", gap: 10, paddingTop: 8 }}>
+                <button onClick={handleSubmit} style={{
+                    flex: 1,
+                    padding: "11px 20px",
+                    borderRadius: "var(--fb-radius)",
+                    border: "none",
+                    background: "var(--fb-primary)",
+                    color: "#fff",
+                    fontSize: "var(--fb-font-size)",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                }}>
                     Submit
                 </button>
-                <button
-                    onClick={handleReset}
-                    style={{
-                        padding: "11px 20px",
-                        borderRadius: 12,
-                        border: "1.5px solid #e5e7eb",
-                        background: "#fff",
-                        fontSize: 14,
-                        fontWeight: 600,
-                        color: "#6b7280",
-                        cursor: "pointer",
-                    }}
-                >
+                <button onClick={handleReset} style={{
+                    padding: "11px 20px",
+                    borderRadius: "var(--fb-radius)",
+                    border: `1.5px solid var(--fb-reset-border)`,
+                    background: "var(--fb-reset-bg)",
+                    fontSize: "var(--fb-font-size)",
+                    fontWeight: 600,
+                    color: "var(--fb-reset-text)",
+                    cursor: "pointer",
+                }}>
                     Reset
                 </button>
             </div>
