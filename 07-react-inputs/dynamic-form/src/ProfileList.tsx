@@ -203,8 +203,10 @@ const AddProfileForm: FC<FormProps> = ({ onAdd }) => {
 
 // ProfileList Component //
 
-let nextId = 0;
-const makeId = (): string => `profile-${++nextId}`;
+const makeId = (() => {
+  let n = 0;
+  return () => `profile-${++n}`;
+})();
 
 const toEntry = (p: ProfileData): ProfileEntry => ({
     ...p,

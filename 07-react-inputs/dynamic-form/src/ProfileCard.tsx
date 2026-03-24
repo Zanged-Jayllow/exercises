@@ -1,6 +1,5 @@
 import { useState } from "react";
 import type { CSSProperties, MouseEvent, FC } from "react";
-import profiles from "./profileData";
 
 // TypeScript Format, Need Type Declarations //
 
@@ -229,78 +228,3 @@ const ProfileCard: FC<ProfileCardProps> = ({
 };
 
 export default ProfileCard;
-
-// Demo Application //
-
-export function App(): React.ReactElement {
-    // console.log(profiles); //
-    return (
-        <div
-            style={{
-                minHeight: "100vh",
-                padding: "48px 24px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 20,
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-            }}
-        >
-            <div style={{ textAlign: "center", marginBottom: 12 }}>
-                <h1
-                    style={{
-                        fontSize: 26,
-                        fontWeight: 800,
-                        color: "#1f2937",
-                        margin: 0,
-                    }}
-                >
-                    ProfileCard Component
-                </h1>
-                <p
-                    style={{
-                        fontSize: 14,
-                        color: "#6b7280",
-                        marginTop: 6,
-                    }}
-                >
-                    Hover to elevate · Click <strong>Highlight</strong> to toggle dynamic
-                    styling
-                </p>
-            </div>
-
-            <div
-                style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "center",
-                    gap: 28,
-                }}
-            >
-                {profiles.map((p: ProfileData) => (
-                    <ProfileCard key={p.name} {...p} />
-                ))}
-            </div>
-
-            <div
-                style={{
-                    marginTop: 24,
-                    padding: "16px 24px",
-                    borderRadius: 14,
-                    background: "#f9fafb",
-                    border: "1px solid #e5e7eb",
-                    maxWidth: 520,
-                    fontSize: 13,
-                    lineHeight: 1.7,
-                    color: "#6b7280",
-                }}
-            >
-                <strong style={{ color: "#374151" }}>Props API</strong>
-                <br />
-                <code>name</code> — display name · <code>bio</code> — short description
-                · <code>avatarUrl</code> — image URL or null (falls back to initials) ·{" "}
-                <code>accentColor</code> — theme color per card
-            </div>
-        </div>
-    );
-}
