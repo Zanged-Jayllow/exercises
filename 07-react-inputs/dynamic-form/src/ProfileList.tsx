@@ -3,6 +3,8 @@ import type { CSSProperties, FC, SyntheticEvent } from "react";
 import profiles from "./profileData";
 import type { ProfileData } from "./ProfileCard";
 import ProfileCard from "./ProfileCard";
+import { DynamicForm, type DynamicFormProps, type FormSchema, type FormValues } from "./FormBoiler";
+import PROFILE_SCHEMA from "./ProfileSchema";
 
 interface ProfileEntry extends ProfileData {
     id: string;
@@ -287,7 +289,30 @@ const ProfileList: FC = () => {
                 )}
             </div>
 
-            <AddProfileForm onAdd={addProfile} />
+            <div
+                style={{
+                    width: "100%",
+                    maxWidth: 520,
+                    borderRadius: 16,
+                    border: "1.5px dashed #d1d5db",
+                    background: "#fafafa",
+                    overflow: "hidden",
+                    padding: "24px 24px 20px",
+                }}
+            >
+                <h3 style={{ margin: "0 0 14px", fontSize: 17, fontWeight: 700, color: "#1f2937" }}>
+                    New Profile
+                </h3>
+                <DynamicForm
+                    schema={PROFILE_SCHEMA as FormSchema}
+                    onSubmit={(vals: FormValues) => addProfile({
+                        name:        String(vals.name),
+                        bio:         String(vals.bio),
+                        avatarUrl:   vals.avatarUrl ? String(vals.avatarUrl) : null,
+                        accentColor: String(vals.accentColor),
+                    })}
+                />
+            </div>
 
             <div
                 style={{

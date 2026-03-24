@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import type { CSSProperties } from "react";
 
 // Type Declaration //
 
@@ -34,7 +35,7 @@ export interface FormSchema {
     fields: FormField[];
 }
 
-type FormValues = Record<string, string | boolean | number>;
+export type FormValues = Record<string, string | boolean | number>;
 type FormErrors = Record<string, string>;
 
 // Input Validation //
@@ -121,11 +122,17 @@ interface FieldProps {
 }
 
 function FieldRenderer({ field, value, error, onChange }: FieldProps) {
-    const base =
-        "w-full rounded-lg border px-3 py-2 text-sm outline-none transition-all focus:ring-2 " +
-        (error
-          ? "border-red-400 focus:ring-red-300 bg-red-50"
-          : "border-gray-300 focus:ring-blue-300 bg-white");
+    const baseStyle: CSSProperties = {
+        width: "100%",
+        padding: "10px 14px",
+        borderRadius: 10,
+        border: `1.5px solid ${error ? "#f87171" : "#e5e7eb"}`,
+        background: error ? "#fef2f2" : "#fff",
+        fontSize: 14,
+        outline: "none",
+        transition: "border-color 0.2s",
+        boxSizing: "border-box",
+    };
 
     const change = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const t = e.target as HTMLInputElement;
@@ -135,7 +142,7 @@ function FieldRenderer({ field, value, error, onChange }: FieldProps) {
     switch (field.type) {
         case "select":
             return (
-                <select className={base} value={String(value)} onChange={change}>
+                <select style={baseStyle} value={String(value)} onChange={change}>
                     <option value="">— Select —</option>
                     {field.options?.map(o => (
                         <option key={o.value} value={o.value}>{o.label}</option>
@@ -145,7 +152,7 @@ function FieldRenderer({ field, value, error, onChange }: FieldProps) {
         case "textarea":
             return (
                 <textarea
-                  className={`${base} resize-none h-24`}
+                  style={{ ...baseStyle, resize: "vertical", minHeight: 60 }}
                   placeholder={field.placeholder}
                   value={String(value)}
                   onChange={change}
@@ -153,21 +160,21 @@ function FieldRenderer({ field, value, error, onChange }: FieldProps) {
             );
         case "checkbox":
             return (
-                <label className="flex items-center gap-2 cursor-pointer select-none">
+                <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", userSelect: "none" }}>
                     <input
                       type="checkbox"
-                      className="w-4 h-4 accent-blue-500"
+                      style={{ width: 16, height: 16, accentColor: "#3b82f6" }}
                       checked={Boolean(value)}
                       onChange={change}
                     />
-                    <span className="text-sm text-gray-700">{field.label}</span>
+                    <span style={{ fontSize: 14, color: "#374151" }}>{field.label}</span>
                 </label>
             );
         default:
             return (
                 <input
                     type={field.type}
-                    className={base}
+                    style={baseStyle}
                     placeholder={field.placeholder}
                     value={String(value)}
                     onChange={change}
@@ -178,12 +185,12 @@ function FieldRenderer({ field, value, error, onChange }: FieldProps) {
 
 // Dynamic Form //
 
-interface DynamicFormProps {
+export interface DynamicFormProps {
     schema: FormSchema;
     onSubmit: (values: FormValues) => void;
 }
 
-function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
+export function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
     const initValues = (): FormValues =>
         Object.fromEntries(
             schema.fields.map(f => [f.id, f.defaultValue ?? (f.type === "checkbox" ? false : "")])
@@ -222,16 +229,13 @@ function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
 
     if (submitted) {
         return (
-            <div className="rounded-xl border border-green-200 bg-green-50 p-6 text-center space-y-3">
-                <div className="text-4xl">✅</div>
-                <p className="font-semibold text-green-700 text-lg">Form submitted!</p>
-                <pre className="text-left text-xs bg-white border border-green-200 rounded-lg p-3 overflow-auto max-h-48">
+            <div style={{ borderRadius: 12, border: "1px solid #bbf7d0", background: "#f0fdf4", padding: 24, textAlign: "center" }}>
+                <div style={{ fontSize: 36, marginBottom: 8 }}>✅</div>
+                <p style={{ fontWeight: 600, color: "#15803d", fontSize: 17, margin: "0 0 12px" }}>Form submitted!</p>
+                <pre style={{ textAlign: "left", fontSize: 12, background: "#fff", border: "1px solid #bbf7d0", borderRadius: 8, padding: 12, overflow: "auto", maxHeight: 192 }}>
                     {JSON.stringify(values, null, 2)}
                 </pre>
-                <button
-                    onClick={handleReset}
-                    className="mt-2 px-4 py-2 rounded-lg bg-green-600 text-white text-sm hover:bg-green-700 transition"
-                >
+                <button onClick={handleReset} style={{ marginTop: 12, padding: "8px 18px", borderRadius: 10, border: "none", background: "#16a34a", color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
                     Submit another
                 </button>
             </div>
@@ -239,13 +243,13 @@ function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
     }
 
     return (
-        <div className="space-y-5">
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {schema.fields.map(field => (
-                  <div key={field.id} className="space-y-1">
+                  <div key={field.id} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                       {field.type !== "checkbox" && (
-                          <label className="block text-sm font-medium text-gray-700">
+                          <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#374151" }}>
                             {field.label}
-                            {field.validation?.required && <span className="text-red-500 ml-1">*</span>}
+                            {field.validation?.required && <span style={{ color: "#ef4444", marginLeft: 4 }}>*</span>}
                           </label>
                       )}
                       <FieldRenderer
@@ -255,21 +259,41 @@ function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
                           onChange={handleChange}
                       />
                       {errors[field.id] && (
-                          <p className="text-xs text-red-500">{errors[field.id]}</p>
+                          <p style={{ fontSize: 12, color: "#ef4444", margin: "2px 0 0" }}>{errors[field.id]}</p>
                       )}
                   </div>
             ))}
 
-            <div className="flex gap-3 pt-2">
+            <div className="flex gap-[10px] pt-2">
                 <button
                     onClick={handleSubmit}
-                    className="flex-1 rounded-lg bg-blue-600 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition"
+                    style={{
+                        flex: 1,
+                        padding: "11px 20px",
+                        borderRadius: 12,
+                        border: "none",
+                        background: "#3b82f6",   // swap for a dynamic accentColor if you thread it through
+                        color: "#fff",
+                        fontSize: 14,
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        transition: "all 0.2s ease",
+                    }}
                 >
                     Submit
                 </button>
                 <button
                     onClick={handleReset}
-                    className="px-4 rounded-lg border border-gray-300 py-2 text-sm text-gray-600 hover:bg-gray-50 transition"
+                    style={{
+                        padding: "11px 20px",
+                        borderRadius: 12,
+                        border: "1.5px solid #e5e7eb",
+                        background: "#fff",
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color: "#6b7280",
+                        cursor: "pointer",
+                    }}
                 >
                     Reset
                 </button>
