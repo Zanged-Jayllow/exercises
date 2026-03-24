@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+// Type Declaration //
 
 type FieldType = "text" | "email" | "number" | "select" | "checkbox" | "textarea" | "date";
 
@@ -29,7 +29,7 @@ interface FormField {
   defaultValue?: string | boolean | number;
 }
 
-interface FormSchema {
+export interface FormSchema {
   title: string;
   fields: FormField[];
 }
@@ -37,7 +37,7 @@ interface FormSchema {
 type FormValues = Record<string, string | boolean | number>;
 type FormErrors = Record<string, string>;
 
-// ─── Validation ──────────────────────────────────────────────────────────────
+// Input Validation //
 
 function validateField(field: FormField, value: string | boolean | number): string {
   const v = field.validation;
@@ -59,7 +59,7 @@ function validateField(field: FormField, value: string | boolean | number): stri
   return "";
 }
 
-// ─── Default Schema ───────────────────────────────────────────────────────────
+// Default Schema //
 
 const DEFAULT_SCHEMA: FormSchema = {
   title: "User Registration",
@@ -111,7 +111,7 @@ const DEFAULT_SCHEMA: FormSchema = {
   ],
 };
 
-// ─── Field Components ─────────────────────────────────────────────────────────
+// Field Components //
 
 interface FieldProps {
   field: FormField;
@@ -176,7 +176,7 @@ function FieldRenderer({ field, value, error, onChange }: FieldProps) {
   }
 }
 
-// ─── Dynamic Form ─────────────────────────────────────────────────────────────
+// Dynamic Form //
 
 interface DynamicFormProps {
   schema: FormSchema;
@@ -278,7 +278,7 @@ function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
   );
 }
 
-// ─── App ──────────────────────────────────────────────────────────────────────
+// Demo App //
 
 export default function App() {
   const [log, setLog] = useState<FormValues | null>(null);
