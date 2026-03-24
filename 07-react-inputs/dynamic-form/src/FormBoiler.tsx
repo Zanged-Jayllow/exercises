@@ -25,7 +25,7 @@ export interface FormField {
     type: FieldType;
     label: string;
     placeholder?: string;
-    options?: SelectOption[];       // for select fields
+    options?: SelectOption[];
     validation?: ValidationRule;
     defaultValue?: string | boolean | number;
 }
@@ -247,7 +247,7 @@ export function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
                         padding: "11px 20px",
                         borderRadius: 12,
                         border: "none",
-                        background: "#3b82f6",   // swap for a dynamic accentColor if you thread it through
+                        background: "#3b82f6",
                         color: "#fff",
                         fontSize: 14,
                         fontWeight: 600,
