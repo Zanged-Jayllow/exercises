@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 
 // Type Declaration //
 
-type FieldType = "text" | "email" | "number" | "select" | "checkbox" | "textarea" | "date" | "url";
+type FieldType = "text" | "email" | "number" | "select" | "checkbox" | "textarea" | "date" | "url" | "color-swatch";
 
 interface SelectOption {
     label: string;
@@ -169,6 +169,33 @@ function FieldRenderer({ field, value, error, onChange }: FieldProps) {
                     />
                     <span style={{ fontSize: 14, color: "#374151" }}>{field.label}</span>
                 </label>
+            );
+        case "color-swatch":
+            return (
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    {field.options?.map(o => {
+                        const selected = value === o.value;
+                        return (
+                            <button
+                                key={o.value}
+                                type="button"
+                                title={o.label}
+                                onClick={() => onChange(field.id, o.value)}
+                                style={{
+                                    width: 32,
+                                    height: 32,
+                                    borderRadius: 10,
+                                    background: o.value,
+                                    border: selected ? `2.5px solid ${o.value}` : "2.5px solid transparent",
+                                    outline: selected ? `2px solid ${o.value}` : "none",
+                                    outlineOffset: 2,
+                                    cursor: "pointer",
+                                    transition: "all 0.2s ease",
+                                }}
+                            />
+                        );
+                    })}
+                </div>
             );
         default:
             return (
