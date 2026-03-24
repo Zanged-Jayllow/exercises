@@ -3,7 +3,7 @@ import type { FC } from "react";
 import profiles from "./profileData";
 import type { ProfileData } from "./ProfileCard";
 import ProfileCard from "./ProfileCard";
-import { DynamicForm, type DynamicFormProps, type FormSchema, type FormValues } from "./FormBoiler";
+import { DynamicForm, type FormSchema, type FormValues } from "./FormBoiler";
 import PROFILE_SCHEMA from "./ProfileSchema";
 
 interface ProfileEntry extends ProfileData {
