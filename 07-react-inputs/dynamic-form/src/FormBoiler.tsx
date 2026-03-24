@@ -3,14 +3,14 @@ import type { CSSProperties } from "react";
 
 // Type Declaration //
 
-type FieldType = "text" | "email" | "number" | "select" | "checkbox" | "textarea" | "date" | "url" | "color-swatch";
+export type FieldType = "text" | "email" | "number" | "select" | "checkbox" | "textarea" | "date" | "url" | "color-swatch";
 
-interface SelectOption {
+export interface SelectOption {
     label: string;
     value: string;
 }
 
-interface ValidationRule {
+export interface ValidationRule {
     required?: boolean;
     minLength?: number;
     maxLength?: number;
@@ -20,7 +20,7 @@ interface ValidationRule {
     message?: string;
 }
 
-interface FormField {
+export interface FormField {
     id: string;
     type: FieldType;
     label: string;
@@ -40,7 +40,7 @@ type FormErrors = Record<string, string>;
 
 // Input Validation //
 
-function validateField(field: FormField, value: string | boolean | number): string {
+export function validateField(field: FormField, value: string | boolean | number): string {
     const v = field.validation;
     if (!v) return "";
     const strVal = String(value ?? "");
@@ -59,58 +59,6 @@ function validateField(field: FormField, value: string | boolean | number): stri
         return v.message ?? `Invalid format.`;
     return "";
 }
-
-// Default Schema //
-
-const DEFAULT_SCHEMA: FormSchema = {
-    title: "User Registration",
-    fields: [
-        {
-            id: "name",
-            type: "text",
-            label: "Full Name",
-            placeholder: "Jane Doe",
-            validation: { required: true, minLength: 2 },
-        },
-        {
-            id: "email",
-            type: "email",
-            label: "Email Address",
-            placeholder: "jane@example.com",
-            validation: { required: true, pattern: "^[^@]+@[^@]+\\.[^@]+$", message: "Enter a valid email." },
-        },
-        {
-            id: "age",
-            type: "number",
-            label: "Age",
-            validation: { required: true, min: 18, max: 120 },
-        },
-        {
-            id: "role",
-            type: "select",
-            label: "Role",
-            options: [
-                { label: "Developer", value: "dev" },
-                { label: "Designer", value: "design" },
-                { label: "Manager", value: "mgr" },
-            ],
-            validation: { required: true },
-        },
-        {
-            id: "bio",
-            type: "textarea",
-            label: "Short Bio",
-            placeholder: "Tell us about yourself…",
-            validation: { maxLength: 200 },
-        },
-        {
-            id: "agree",
-            type: "checkbox",
-            label: "I agree to the terms and conditions",
-            validation: { required: true, message: "You must agree to continue." },
-        },
-    ],
-};
 
 // Field Components //
 
@@ -324,31 +272,6 @@ export function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
                 >
                     Reset
                 </button>
-            </div>
-        </div>
-    );
-}
-
-// Demo App //
-
-export default function App() {
-    const [log, setLog] = useState<FormValues | null>(null);
-    console.log(log);
-
-    return (
-        <div className="min-h-screen bg-gray-100 flex items-start justify-center py-10 px-4">
-            <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg p-8 space-y-6">
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-800">{DEFAULT_SCHEMA.title}</h1>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Driven by a <code className="bg-gray-100 px-1 rounded">FormSchema</code> — swap in any schema to generate a new form.
-                    </p>
-                </div>
-
-                <DynamicForm
-                    schema={DEFAULT_SCHEMA}
-                    onSubmit={vals => setLog(vals)}
-                />
             </div>
         </div>
     );
