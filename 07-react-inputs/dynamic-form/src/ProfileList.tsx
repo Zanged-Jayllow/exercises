@@ -106,7 +106,7 @@ const AddProfileForm: FC<FormProps> = ({ onAdd }) => {
                     New Profile
                 </h3>
 
-                <div onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                     <input
                         style={input}
                         placeholder="Name *"
