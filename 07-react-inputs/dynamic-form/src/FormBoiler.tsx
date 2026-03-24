@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 
 // Type Declaration //
 
-type FieldType = "text" | "email" | "number" | "select" | "checkbox" | "textarea" | "date";
+type FieldType = "text" | "email" | "number" | "select" | "checkbox" | "textarea" | "date" | "url";
 
 interface SelectOption {
   label: string;
