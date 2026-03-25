@@ -1,21 +1,13 @@
 import { useState, useCallback } from "react";
-import type { CSSProperties, FC, ChangeEvent } from "react";
+import type { CSSProperties, FC } from "react";
+import { DynamicForm } from "./FormBoiler";
+import type { FormSchema, FieldType, SelectOption, ValidationRule } from "./FormBoiler";
 
-// ── Types ────────────────────────────────────────────────────────────────
+// Type Declaration //
 
-type FieldType = "text"|"email"|"number"|"select"|"checkbox"|"textarea"|"date"|"url"|"color-swatch";
-
-interface SelectOption { label: string; value: string; }
-
-interface ValidationRule {
-  required?: boolean;
-  minLength?: number | "";
-  maxLength?: number | "";
-  min?: number | "";
-  max?: number | "";
-  pattern?: string;
-  message?: string;
-}
+type BuilderValidation = {
+  [K in keyof ValidationRule]: K extends "required" ? boolean : ValidationRule[K] | "";
+};
 
 interface BuilderField {
   id: string;
@@ -24,26 +16,11 @@ interface BuilderField {
   label: string;
   placeholder: string;
   options: SelectOption[];
-  validation: ValidationRule;
+  validation: BuilderValidation;
   defaultValue: string;
 }
 
-interface PreviewFormField {
-  id: string;
-  type: FieldType;
-  label: string;
-  placeholder?: string;
-  options?: SelectOption[];
-  defaultValue?: string | boolean;
-  validation?: ValidationRule;
-}
-
-interface PreviewSchema { title: string; fields: PreviewFormField[]; }
-
-type FormValues = Record<string, string | boolean>;
-type FormErrors = Record<string, string>;
-
-// ── Constants ────────────────────────────────────────────────────────────
+// Constant Declaration //
 
 const FIELD_TYPES: FieldType[] = [
   "text","email","number","select","checkbox","textarea","date","url","color-swatch"
@@ -59,143 +36,7 @@ const defaultField = (): BuilderField => ({
   defaultValue: "",
 });
 
-// ── Validation ───────────────────────────────────────────────────────────
-
-function validateField(field: PreviewFormField, value: string | boolean): string {
-  const v = field.validation;
-  if (!v) return "";
-  const strVal = String(value ?? "");
-  if (v.required && (value === "" || value === false)) return v.message ?? `${field.label} is required.`;
-  if (v.minLength && strVal.length < Number(v.minLength)) return v.message ?? `Min ${v.minLength} characters.`;
-  if (v.maxLength && strVal.length > Number(v.maxLength)) return v.message ?? `Max ${v.maxLength} characters.`;
-  if (v.min !== "" && v.min !== undefined && Number(value) < Number(v.min)) return v.message ?? `Min value is ${v.min}.`;
-  if (v.max !== "" && v.max !== undefined && Number(value) > Number(v.max)) return v.message ?? `Max value is ${v.max}.`;
-  if (v.pattern && strVal && !new RegExp(v.pattern).test(strVal)) return v.message ?? "Invalid format.";
-  return "";
-}
-
-// ── PreviewField ─────────────────────────────────────────────────────────
-
-interface PreviewFieldProps {
-  field: PreviewFormField;
-  value: string | boolean;
-  error: string;
-  onChange: (id: string, val: string | boolean) => void;
-}
-
-const PreviewField: FC<PreviewFieldProps> = ({ field, value, error, onChange }) => {
-  const opts = field.options ?? [];
-  const base: CSSProperties = {
-    width: "100%", padding: "8px 12px", borderRadius: 8,
-    border: `1.5px solid ${error ? "#f87171" : "#e5e7eb"}`,
-    background: error ? "#fef2f2" : "#fff", fontSize: 13,
-    outline: "none", boxSizing: "border-box", color: "#111",
-  };
-  const chg = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const t = e.target as HTMLInputElement;
-    onChange(field.id, field.type === "checkbox" ? t.checked : t.value);
-  };
-  switch (field.type) {
-    case "select": return (
-      <select style={base} value={String(value)} onChange={chg}>
-        <option value="">— select —</option>
-        {opts.map((o, i) => <option key={i} value={o.value}>{o.label}</option>)}
-      </select>
-    );
-    case "textarea": return (
-      <textarea style={{...base, resize:"vertical", minHeight:56}}
-        placeholder={field.placeholder} value={String(value)} onChange={chg}/>
-    );
-    case "checkbox": return (
-      <label style={{display:"flex", alignItems:"center", gap:8, cursor:"pointer", fontSize:13}}>
-        <input type="checkbox" checked={Boolean(value)} onChange={chg} style={{width:14, height:14}}/>
-        <span style={{color:"#374151"}}>{field.label}</span>
-      </label>
-    );
-    case "color-swatch": return (
-      <div style={{display:"flex", gap:6, flexWrap:"wrap"}}>
-        {opts.map((o, i) => (
-          <button key={i} type="button" title={o.label} onClick={() => onChange(field.id, o.value)}
-            style={{width:26, height:26, borderRadius:8, background:o.value,
-              border:`2.5px solid ${value === o.value ? o.value : "transparent"}`,
-              outline: value === o.value ? `2px solid ${o.value}` : "none",
-              outlineOffset:2, cursor:"pointer"}}/>
-        ))}
-      </div>
-    );
-    default: return (
-      <input type={field.type} style={base}
-        placeholder={field.placeholder} value={String(value)} onChange={chg}/>
-    );
-  }
-};
-
-// ── FormPreview ──────────────────────────────────────────────────────────
-
-const FormPreview: FC<{ schema: PreviewSchema }> = ({ schema }) => {
-  const init = (): FormValues =>
-    Object.fromEntries(schema.fields.map(f => [f.id, f.defaultValue ?? (f.type === "checkbox" ? false : "")]));
-
-  const [vals, setVals] = useState<FormValues>(init);
-  const [errs, setErrs] = useState<FormErrors>({});
-  const [done, setDone] = useState(false);
-
-  const handleChange = (id: string, val: string | boolean) => {
-    setVals(p => ({...p, [id]: val}));
-    const f = schema.fields.find(x => x.id === id);
-    if (f) setErrs(p => ({...p, [id]: validateField(f, val)}));
-  };
-
-  const handleSubmit = () => {
-    const e: FormErrors = {};
-    schema.fields.forEach(f => { const err = validateField(f, vals[f.id]); if (err) e[f.id] = err; });
-    setErrs(e);
-    if (!Object.keys(e).length) setDone(true);
-  };
-
-  if (done) return (
-    <div style={{borderRadius:10, border:"1px solid #bbf7d0", background:"#f0fdf4", padding:20, textAlign:"center"}}>
-      <div style={{fontSize:28, marginBottom:6}}>✓</div>
-      <p style={{fontWeight:600, color:"#15803d", margin:"0 0 10px", fontSize:14}}>Submitted</p>
-      <pre style={{textAlign:"left", fontSize:11, background:"#fff", border:"1px solid #bbf7d0", borderRadius:7, padding:10, overflow:"auto", maxHeight:160}}>
-        {JSON.stringify(vals, null, 2)}
-      </pre>
-      <button onClick={() => { setVals(init()); setErrs({}); setDone(false); }}
-        style={{marginTop:10, padding:"6px 14px", borderRadius:8, border:"none", background:"#16a34a", color:"#fff", fontSize:12, fontWeight:600, cursor:"pointer"}}>
-        Reset
-      </button>
-    </div>
-  );
-
-  if (!schema.fields.length) return (
-    <div style={{textAlign:"center", padding:"32px 0", color:"#9ca3af", fontSize:13}}>
-      No fields yet — add one on the left.
-    </div>
-  );
-
-  return (
-    <div style={{display:"flex", flexDirection:"column", gap:12}}>
-      {schema.fields.map(f => (
-        <div key={f.id} style={{display:"flex", flexDirection:"column", gap:3}}>
-          {f.type !== "checkbox" && (
-            <label style={{fontSize:12, fontWeight:600, color:"#374151"}}>
-              {f.label || <span style={{color:"#9ca3af", fontStyle:"italic"}}>Untitled field</span>}
-              {f.validation?.required && <span style={{color:"#ef4444", marginLeft:3}}>*</span>}
-            </label>
-          )}
-          <PreviewField field={f} value={vals[f.id] ?? ""} error={errs[f.id] ?? ""} onChange={handleChange}/>
-          {errs[f.id] && <p style={{fontSize:11, color:"#ef4444", margin:"1px 0 0"}}>{errs[f.id]}</p>}
-        </div>
-      ))}
-      <button onClick={handleSubmit}
-        style={{marginTop:4, padding:"9px 16px", borderRadius:10, border:"none", background:"#3b82f6", color:"#fff", fontSize:13, fontWeight:600, cursor:"pointer"}}>
-        Submit
-      </button>
-    </div>
-  );
-};
-
-// ── OptionsEditor ────────────────────────────────────────────────────────
+// OptionsEditor //
 
 interface OptionsEditorProps {
   options: SelectOption[];
@@ -228,7 +69,7 @@ const OptionsEditor: FC<OptionsEditorProps> = ({ options, onChange }) => {
   );
 };
 
-// ── FieldEditor ──────────────────────────────────────────────────────────
+// FieldEditor //
 
 interface FieldEditorProps {
   field: BuilderField;
@@ -242,8 +83,8 @@ interface FieldEditorProps {
 const FieldEditor: FC<FieldEditorProps> = ({ field, idx, total, onUpdate, onRemove, onMove }) => {
   const [open, setOpen] = useState(false);
   const u = <K extends keyof BuilderField>(key: K, val: BuilderField[K]) => onUpdate({...field, [key]: val});
-  const uv = <K extends keyof ValidationRule>(key: K, val: ValidationRule[K]) =>
-    onUpdate({...field, validation: {...field.validation, [key]: val}});
+  const uv = <K extends keyof BuilderValidation>(key: K, val: BuilderValidation[K]) =>
+      onUpdate({...field, validation: {...field.validation, [key]: val}});
   const needsOpts = field.type === "select" || field.type === "color-swatch";
 
   const labelStyle: CSSProperties = {fontSize:11, color:"#6b7280", marginBottom:3, display:"block"};
@@ -333,7 +174,7 @@ const FieldEditor: FC<FieldEditorProps> = ({ field, idx, total, onUpdate, onRemo
   );
 };
 
-// ── App ──────────────────────────────────────────────────────────────────
+// App //
 
 export default function FormBuilderApp() {
   const [title, setTitle] = useState("My Form");
@@ -351,7 +192,7 @@ export default function FormBuilderApp() {
     });
   }, []);
 
-  const schema: PreviewSchema = {
+  const schema: FormSchema = {
     title,
     fields: fields.map(f => ({
       id: f.fieldId || f.id,
@@ -401,7 +242,7 @@ export default function FormBuilderApp() {
       <div style={{padding:20, background:"#fff", overflowY:"auto"}}>
         <h2 style={{margin:"0 0 16px", fontSize:15, fontWeight:700, color:"#1f2937"}}>Preview</h2>
         <p style={{margin:"0 0 14px", fontSize:16, fontWeight:700, color:"#1f2937"}}>{title}</p>
-        <FormPreview schema={schema}/>
+        <DynamicForm schema={schema} onSubmit={() => {}} />
       </div>
     </div>
   );
