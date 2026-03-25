@@ -44,29 +44,32 @@ interface OptionsEditorProps {
 }
 
 const OptionsEditor: FC<OptionsEditorProps> = ({ options, onChange }) => {
-  const update = (i: number, key: keyof SelectOption, val: string) => {
-    const o = [...options]; o[i] = {...o[i], [key]: val}; onChange(o);
-  };
-  const add = () => onChange([...options, {label: "", value: ""}]);
-  const remove = (i: number) => onChange(options.filter((_, idx) => idx !== i));
-  return (
-    <div style={{marginTop:6}}>
-      {options.map((o, i) => (
-        <div key={i} style={{display:"flex", gap:6, marginBottom:5, alignItems:"center"}}>
-          <input placeholder="Label" value={o.label} onChange={e => update(i, "label", e.target.value)}
-            style={{flex:1, padding:"5px 8px", borderRadius:6, border:"1px solid #e5e7eb", fontSize:12, color:"#111"}}/>
-          <input placeholder="Value" value={o.value} onChange={e => update(i, "value", e.target.value)}
-            style={{flex:1, padding:"5px 8px", borderRadius:6, border:"1px solid #e5e7eb", fontSize:12, color:"#111"}}/>
-          <button onClick={() => remove(i)}
-            style={{padding:"3px 7px", borderRadius:5, border:"1px solid #fca5a5", background:"#fef2f2", color:"#dc2626", fontSize:11, cursor:"pointer"}}>×</button>
+    const update = (i: number, key: keyof SelectOption, val: string) => {
+        const o = [...options]; o[i] = { ...o[i], [key]: val }; onChange(o);
+    };
+    const add = () => onChange([...options, { _id: makeId(), label: "", value: "" }]);
+    const remove = (i: number) => onChange(options.filter((_, idx) => idx !== i));
+    return (
+        <div style={{ marginTop: 6 }}>
+            {options.map((o, i) => (
+                <div key={(o as any)._id ?? i}   // ← stable identity; falls back to index for pre-existing rows
+                    style={{ display: "flex", gap: 6, marginBottom: 5, alignItems: "center" }}>
+                    <input placeholder="Label" value={o.label}
+                        onChange={e => update(i, "label", e.target.value)}
+                        style={{ flex: 1, padding: "5px 8px", borderRadius: 6, border: "1px solid #e5e7eb", fontSize: 12, color: "#111" }} />
+                    <input placeholder="Value" value={o.value}
+                        onChange={e => update(i, "value", e.target.value)}
+                        style={{ flex: 1, padding: "5px 8px", borderRadius: 6, border: "1px solid #e5e7eb", fontSize: 12, color: "#111" }} />
+                    <button onClick={() => remove(i)}
+                        style={{ padding: "3px 7px", borderRadius: 5, border: "1px solid #fca5a5", background: "#fef2f2", color: "#dc2626", fontSize: 11, cursor: "pointer" }}>×</button>
+                </div>
+            ))}
+            <button onClick={add}
+                style={{ padding: "4px 10px", borderRadius: 6, border: "1px solid #d1d5db", background: "#f9fafb", fontSize: 11, cursor: "pointer", color: "#374151" }}>
+                + option
+            </button>
         </div>
-      ))}
-      <button onClick={add}
-        style={{padding:"4px 10px", borderRadius:6, border:"1px solid #d1d5db", background:"#f9fafb", fontSize:11, cursor:"pointer", color:"#374151"}}>
-        + option
-      </button>
-    </div>
-  );
+    );
 };
 
 // FieldEditor //

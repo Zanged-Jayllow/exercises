@@ -6,6 +6,7 @@ import type { CSSProperties } from "react";
 export type FieldType = "text" | "email" | "number" | "select" | "checkbox" | "textarea" | "date" | "url" | "color-swatch";
 
 export interface SelectOption {
+    _id?: string;
     label: string;
     value: string;
 }
@@ -193,28 +194,30 @@ function FieldRenderer({ field, value, error, onChange }: FieldProps) {
         case "color-swatch":
             return (
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                    {field.options?.map(o => {
-                        const selected = value === o.value;
-                        return (
-                            <button
-                                key={o.value}
-                                type="button"
-                                title={o.label}
-                                onClick={() => onChange(field.id, o.value)}
-                                style={{
-                                    width: 32,
-                                    height: 32,
-                                    borderRadius: "var(--fb-radius)",
-                                    background: o.value,
-                                    border: selected ? `2.5px solid ${o.value}` : "2.5px solid transparent",
-                                    outline: selected ? `2px solid ${o.value}` : "none",
-                                    outlineOffset: 2,
-                                    cursor: "pointer",
-                                    transition: "all 0.2s ease",
-                                }}
-                            />
-                        );
-                    })}
+                    {field.options
+                        ?.filter(o => o.value.trim() !== "" && o.label.trim() !== "")
+                        .map(o => {
+                            const selected = value !== "" && value === o.value;
+                            return (
+                                <button
+                                    key={o.value}
+                                    type="button"
+                                    title={o.label}
+                                    onClick={() => onChange(field.id, o.value)}
+                                    style={{
+                                        width: 32,
+                                        height: 32,
+                                        borderRadius: "var(--fb-radius)",
+                                        background: o.value,
+                                        border: `2.5px solid transparent`,
+                                        outline: selected ? `3px solid ${o.value}` : "3px solid transparent",
+                                        outlineOffset: 2,
+                                        cursor: "pointer",
+                                        transition: "outline-color 0.15s ease",
+                                    }}
+                                />
+                            );
+                        })}
                 </div>
             );
         default:
