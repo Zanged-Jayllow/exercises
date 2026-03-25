@@ -1,7 +1,8 @@
 import { useState, useCallback } from "react";
 import type { CSSProperties, FC } from "react";
 import { DynamicForm } from "./FormBoiler";
-import type { FormSchema, FieldType, SelectOption, ValidationRule } from "./FormBoiler";
+import type { SelectOption, ValidationRule, FormSchema } from "./formBoiler.utils";
+import type { FieldType } from "./formBoiler.utils";
 
 // Type Declaration //
 

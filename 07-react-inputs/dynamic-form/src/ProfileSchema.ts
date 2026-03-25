@@ -1,4 +1,4 @@
-import type { FormSchema } from "./FormBoiler";
+import type { FormSchema } from "./formBoiler.utils";
 
 const PROFILE_SCHEMA: FormSchema = {
     title: "Add New Profile",
