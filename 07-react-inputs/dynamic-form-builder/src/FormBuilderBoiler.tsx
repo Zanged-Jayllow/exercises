@@ -3,6 +3,8 @@ import type { CSSProperties, FC } from "react";
 import { DynamicForm } from "./FormBoiler";
 import type { SelectOption, ValidationRule, FormSchema } from "./formBoiler.utils";
 import type { FieldType } from "./formBoiler.utils";
+import ProfileList from "./ProfileList";
+import PROFILE_SCHEMA from "./ProfileSchema";
 
 import {
     createRouter,
@@ -251,6 +253,11 @@ function BuilderPage() {
         <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:16}}>
           <h2 style={{margin:0, fontSize:15, fontWeight:700, color:"#1f2937"}}>Builder</h2>
           <div style={{display:"flex", gap:8}}>
+            {/* See Demo button */}
+            <button onClick={() => navigate({ to: "/demo" })}
+              style={{padding:"5px 12px", borderRadius:7, border:"1px solid #d1d5db", background:"#fff", fontSize:12, cursor:"pointer", color:"#374151"}}>
+              See Demo
+            </button>
             <button onClick={() => setShowExport(s => !s)}
               style={{padding:"5px 12px", borderRadius:7, border:"1px solid #d1d5db", background:"#fff", fontSize:12, cursor:"pointer", color:"#374151"}}>
               {showExport ? "Hide" : "Export"} schema
@@ -307,14 +314,51 @@ function PreviewPage() {
     );
 }
 
+// Minimal JSON syntax highlighter — no dependencies needed
+function SchemaViewer({ schema }: { schema: object }) {
+  return (
+    <details style={{ marginBottom: 24, textAlign: "center" }}>
+      <summary style={{
+        cursor: "pointer", fontSize: 12, fontWeight: 600,
+        color: "#6b7280", userSelect: "none", marginBottom: 8,
+        letterSpacing: "0.05em", textTransform: "uppercase",
+      }}>
+        Show Schema
+      </summary>
+      <pre style={{ background: "#1e1e1e", color: "#d4d4d4", padding: 16, borderRadius: 8, fontSize: 12.5, textAlign: "left" }}>
+        {JSON.stringify(schema, null, 2)}
+      </pre>
+    </details>
+  );
+}
+
+// Thin wrapper so ProfileList gets a back button
+function DemoPage() {
+    const navigate = useNavigate();
+    return (
+      <div style={{fontFamily:'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif'}}>
+        <div style={{padding:"12px 20px", borderBottom:"1px solid #e5e7eb", display:"flex", alignItems:"center", gap:12}}>
+          <button onClick={() => navigate({ to: "/" })}
+            style={{padding:"5px 12px", borderRadius:7, border:"1px solid #d1d5db", background:"#fff", fontSize:12, cursor:"pointer", color:"#374151"}}>
+            ← Back
+          </button>
+          <span style={{fontSize:14, fontWeight:600, color:"#1f2937"}}>Demo</span>
+        </div>
+        <ProfileList />
+        <SchemaViewer schema={PROFILE_SCHEMA} />
+      </div>
+    );
+}
+
 // Router (created once, outside any component) //
 
 const rootRoute = createRootRoute();
 const indexRoute = createRoute({ getParentRoute: () => rootRoute, path: "/", component: BuilderPage });
 const previewRoute = createRoute({ getParentRoute: () => rootRoute, path: "/preview", component: PreviewPage });
+const demoRoute = createRoute({ getParentRoute: () => rootRoute, path: "/demo", component: DemoPage }); // 👈
 
 const router = createRouter({
-    routeTree: rootRoute.addChildren([indexRoute, previewRoute]),
+    routeTree: rootRoute.addChildren([indexRoute, previewRoute, demoRoute]), // 👈
 });
 
 // App //
