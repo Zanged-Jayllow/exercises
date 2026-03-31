@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, createContext, useContext } from "react";
 import type { CSSProperties, FC } from "react";
 import { DynamicForm } from "./FormBoiler";
 import type { SelectOption, ValidationRule, FormSchema } from "./formBoiler.utils";
@@ -11,7 +11,7 @@ import {
     RouterProvider,
     useNavigate,
     useSearch,
-} from "@tanstack/react-router"
+} from "@tanstack/react-router";
 
 // Type Declaration //
 
@@ -30,6 +30,17 @@ interface BuilderField {
     defaultValue: string;
 }
 
+interface BuilderContextValue {
+    title: string;
+    setTitle: (t: string) => void;
+    fields: BuilderField[];
+    setFields: React.Dispatch<React.SetStateAction<BuilderField[]>>;
+    openFields: Set<string>;
+    removeField: (id: string) => void;
+    updateField: (id: string, updated: BuilderField) => void;
+    toggleField: (id: string) => void;
+}
+
 // Constant Declaration //
 
 const FIELD_TYPES: FieldType[] = [
@@ -45,6 +56,15 @@ const defaultField = (): BuilderField => ({
     validation: { required: false, minLength: "", maxLength: "", min: "", max: "", pattern: "", message: "" },
     defaultValue: "",
 });
+
+// Context //
+
+const BuilderContext = createContext<BuilderContextValue | null>(null);
+const useBuilder = () => {
+    const ctx = useContext(BuilderContext);
+    if (!ctx) throw new Error("useBuilder must be used within BuilderContext");
+    return ctx;
+};
 
 // OptionsEditor //
 
@@ -190,18 +210,8 @@ const FieldEditor: FC<FieldEditorProps> = ({ field, idx, total, open, onToggle, 
 
 // Pages //
 
-interface BuilderPageProps {
-    title: string;
-    setTitle: (t: string) => void;
-    fields: BuilderField[];
-    setFields: React.Dispatch<React.SetStateAction<BuilderField[]>>;
-    openFields: Set<string>;
-    removeField: (id: string) => void;
-    updateField: (id: string, updated: BuilderField) => void;
-    toggleField: (id: string) => void;
-}
-
-function BuilderPage({ title, setTitle, fields, setFields, openFields, removeField, updateField, toggleField }: BuilderPageProps) {
+function BuilderPage() {
+    const { title, setTitle, fields, setFields, openFields, removeField, updateField, toggleField } = useBuilder();
     const navigate = useNavigate();
     const [showExport, setShowExport] = useState(false);
 
@@ -212,7 +222,7 @@ function BuilderPage({ title, setTitle, fields, setFields, openFields, removeFie
         if (to < 0 || to >= a.length) return a;
         [a[idx], a[to]] = [a[to], a[idx]]; return a;
       });
-    }, []);
+    }, [setFields]);
 
     const schema: FormSchema = {
       title,
@@ -297,10 +307,15 @@ function PreviewPage() {
     );
 }
 
-// Router //
+// Router (created once, outside any component) //
 
 const rootRoute = createRootRoute();
+const indexRoute = createRoute({ getParentRoute: () => rootRoute, path: "/", component: BuilderPage });
 const previewRoute = createRoute({ getParentRoute: () => rootRoute, path: "/preview", component: PreviewPage });
+
+const router = createRouter({
+    routeTree: rootRoute.addChildren([indexRoute, previewRoute]),
+});
 
 // App //
 
@@ -325,27 +340,9 @@ export default function FormBuilderApp() {
         });
     }, []);
 
-    const router = createRouter({
-        routeTree: rootRoute.addChildren([
-            createRoute({
-                getParentRoute: () => rootRoute,
-                path: "/",
-                component: () => (
-                    <BuilderPage
-                        title={title}
-                        setTitle={setTitle}
-                        fields={fields}
-                        setFields={setFields}
-                        openFields={openFields}
-                        removeField={removeField}
-                        updateField={updateField}
-                        toggleField={toggleField}
-                    />
-                ),
-            }),
-            previewRoute,
-        ]),
-    });
-
-    return <RouterProvider router={router} />;
+    return (
+        <BuilderContext.Provider value={{ title, setTitle, fields, setFields, openFields, removeField, updateField, toggleField }}>
+            <RouterProvider router={router} />
+        </BuilderContext.Provider>
+    );
 }
