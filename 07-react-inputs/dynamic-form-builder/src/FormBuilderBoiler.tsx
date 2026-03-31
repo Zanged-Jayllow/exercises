@@ -307,6 +307,23 @@ const previewRoute = createRoute({ getParentRoute: () => rootRoute, path: "/prev
 export default function FormBuilderApp() {
     const [title, setTitle] = useState("My Form");
     const [fields, setFields] = useState<BuilderField[]>([]);
+    const [openFields, setOpenFields] = useState<Set<string>>(new Set());
+
+    const removeField = useCallback((id: string) => {
+        setFields(f => f.filter(field => field.id !== id));
+    }, []);
+
+    const updateField = useCallback((id: string, updated: BuilderField) => {
+        setFields(f => f.map(field => field.id === id ? updated : field));
+    }, []);
+
+    const toggleField = useCallback((id: string) => {
+        setOpenFields(s => {
+            const next = new Set(s);
+            next.has(id) ? next.delete(id) : next.add(id);
+            return next;
+        });
+    }, []);
 
     const router = createRouter({
         routeTree: rootRoute.addChildren([
