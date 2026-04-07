@@ -112,7 +112,7 @@ export type AppDispatch = typeof store.dispatch;
 
 // Memoized selectors //
 
-const selectSchema    = (s: RootState) => s.schema;
+// const selectSchema    = (s: RootState) => s.schema;//
 export const selectTitle      = (s: RootState) => s.schema.title;
 export const selectFields     = (s: RootState) => s.schema.fields;
 export const selectSaveStatus = (s: RootState) => s.schema.saveStatus;

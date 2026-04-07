@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "./hooks";
 import { OpenFieldsProvider, useOpenFields,
          SelectionProvider, useSelection } from "./contexts";
 import type { BuilderField, BuilderValidation } from "./types";
-import type { FieldType, SelectOption, ValidationRule } from "./formBoiler.utils";
+import type { FieldType, SelectOption } from "./formBoiler.utils";
 import { DynamicForm } from "./FormBoiler";
 import ProfileList from "./ProfileList";
 import PROFILE_SCHEMA from "./ProfileSchema";
