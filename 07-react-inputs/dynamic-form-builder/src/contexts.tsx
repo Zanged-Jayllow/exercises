@@ -2,9 +2,9 @@ import { createContext, useContext, useState, useCallback } from "react";
 import type { FC, ReactNode } from "react";
 import type { OpenFieldsContextValue, SelectionContextValue } from "./types";
 
-// ─── Context A: accordion open/close ─────────────────────────────────────────
-// Completely independent of schema data — toggling a field open/closed must
-// not cause the Redux-connected title or field-list to re-render.
+// Context A: accordion open/close //
+// Completely independent of schema data — toggling a field open/closed must //
+// not cause the Redux-connected title or field-list to re-render. //
 
 const OpenFieldsCtx = createContext<OpenFieldsContextValue | null>(null);
 
@@ -32,9 +32,9 @@ export function useOpenFields(): OpenFieldsContextValue {
   return ctx;
 }
 
-// ─── Context B: selected field (mirrors ?field= URL param) ───────────────────
-// Kept in context (not just useSearch) so non-router-aware components like
-// FieldEditor can read it without being coupled to TanStack Router's API.
+// Context B: selected field (mirrors ?field= URL param) //
+// Kept in context (not just useSearch) so non-router-aware components like //
+// FieldEditor can read it without being coupled to TanStack Router's API. //
 
 const SelectionCtx = createContext<SelectionContextValue | null>(null);
 

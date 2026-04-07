@@ -18,7 +18,7 @@ import {
   RouterProvider, useNavigate, useSearch,
 } from "@tanstack/react-router";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+// Constants //
 
 const FIELD_TYPES: FieldType[] = [
   "text","email","number","select","checkbox","textarea","date","url","color-swatch",
@@ -34,7 +34,7 @@ const defaultField = (): BuilderField => ({
   defaultValue: "",
 });
 
-// ─── OptionsEditor ────────────────────────────────────────────────────────────
+// OptionsEditor //
 
 interface OptionsEditorProps {
   options: SelectOption[];
@@ -67,7 +67,7 @@ const OptionsEditor: FC<OptionsEditorProps> = memo(({ options, onChange }) => {
   );
 });
 
-// ─── FieldEditor ──────────────────────────────────────────────────────────────
+// FieldEditor //
 // Reads open-state from OpenFieldsContext; dispatches field updates to Redux.
 // memo() ensures it only re-renders when its own field data changes.
 
@@ -199,7 +199,7 @@ const FieldEditor: FC<FieldEditorProps> = memo(({ field, idx, total }) => {
   );
 });
 
-// ─── SaveBadge ────────────────────────────────────────────────────────────────
+// SaveBadge //
 
 const SaveBadge: FC = () => {
   const status = useAppSelector(selectSaveStatus);
@@ -218,7 +218,7 @@ const SaveBadge: FC = () => {
   );
 };
 
-// ─── BuilderPage ──────────────────────────────────────────────────────────────
+// BuilderPage //
 // URL shape: /?mode=edit&field=<id>
 // mode=edit is the default; switching to preview navigates to /preview.
 
@@ -312,7 +312,7 @@ function BuilderPage() {
   );
 }
 
-// ─── PreviewPage ──────────────────────────────────────────────────────────────
+// PreviewPage //
 // Reads compiled schema from URL search param — completely stateless,
 // shareable, and bookmarkable.
 
@@ -342,7 +342,7 @@ function PreviewPage() {
   );
 }
 
-// ─── DemoPage ─────────────────────────────────────────────────────────────────
+// DemoPage //
 
 function SchemaViewer({ schema }: { schema: object }) {
   return (
@@ -379,7 +379,7 @@ function DemoPage() {
   );
 }
 
-// ─── Router (module-level singleton) ─────────────────────────────────────────
+// Router (module-level singleton) //
 
 const rootRoute    = createRootRoute();
 const indexRoute   = createRoute({ getParentRoute: () => rootRoute, path: "/",        component: BuilderPage  });
@@ -390,12 +390,10 @@ const router = createRouter({
   routeTree: rootRoute.addChildren([indexRoute, previewRoute, demoRoute]),
 });
 
-// ─── App root ─────────────────────────────────────────────────────────────────
-// Provider order (outer → inner):
-//   Redux store  →  OpenFieldsProvider  →  SelectionProvider  →  Router
-//
-// Redux is outermost so the store is available to every component.
-// The two UI contexts are separate so their state changes don't cross-pollute.
+// App root //
+// Redux store  →  OpenFieldsProvider  →  SelectionProvider  →  Router //
+// Redux is outermost so the store is available to every component. //
+// The two UI contexts are separate so their state changes don't cross-pollute. //
 
 export default function FormBuilderApp() {
   return (
@@ -409,7 +407,7 @@ export default function FormBuilderApp() {
   );
 }
 
-// ─── Shared inline styles (defined once, not recreated per render) ────────────
+// Shared inline styles (defined once, not recreated per render) //
 
 const sansSerif = '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif';
 

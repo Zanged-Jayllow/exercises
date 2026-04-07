@@ -2,19 +2,43 @@ import { configureStore, createSlice, createSelector } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { BuilderField } from "../types";
 
+// Persistence helpers //
+
+const STORAGE_KEY = "formbuilder_schema";
+
+function loadFromStorage(): { title: string; fields: BuilderField[] } | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeToStorage(title: string, fields: BuilderField[]) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ title, fields }));
+  } catch {
+    // storage quota exceeded or private-browsing restrictions //
+    console.log("Write To Storage Failed");
+  }
+}
+
 // State //
 
 interface SchemaState {
   title: string;
   fields: BuilderField[];
   saveStatus: "idle" | "saving" | "saved" | "error";
-  // snapshot used for optimistic rollback
   _committed: { title: string; fields: BuilderField[] } | null;
 }
 
+// Rehydrate from localStorage on startup so state survives page reloads //
+const persisted = loadFromStorage();
+
 const initial: SchemaState = {
-  title: "My Form",
-  fields: [],
+  title:      persisted?.title  ?? "My Form",
+  fields:     persisted?.fields ?? [],
   saveStatus: "idle",
   _committed: null,
 };
@@ -49,7 +73,6 @@ const schemaSlice = createSlice({
     },
 
     // Optimistic persistence //
-    // 1. Snapshot current state before the async save
     savePending(s) {
       s._committed = { title: s.title, fields: s.fields };
       s.saveStatus = "saving";
@@ -58,7 +81,6 @@ const schemaSlice = createSlice({
       s._committed = null;
       s.saveStatus = "saved";
     },
-    // 2. On failure, roll back to the snapshot
     saveRejected(s) {
       if (s._committed) {
         s.title  = s._committed.title;
@@ -90,27 +112,24 @@ export type AppDispatch = typeof store.dispatch;
 
 // Memoized selectors //
 
-const selectSchema = (s: RootState) => s.schema;
-
+const selectSchema    = (s: RootState) => s.schema;
 export const selectTitle      = (s: RootState) => s.schema.title;
 export const selectFields     = (s: RootState) => s.schema.fields;
 export const selectSaveStatus = (s: RootState) => s.schema.saveStatus;
 
-// Derives the final FormSchema consumed by DynamicForm — only recomputes when //
-// title or fields reference changes (not on unrelated state updates). //
 export const selectCompiledSchema = createSelector(
   selectTitle,
   selectFields,
   (title, fields) => ({
     title,
     fields: fields.map(f => ({
-      id:          f.fieldId || f.id,
-      type:        f.type,
-      label:       f.label,
-      placeholder: f.placeholder || undefined,
-      options:     f.options.length ? f.options : undefined,
+      id:           f.fieldId || f.id,
+      type:         f.type,
+      label:        f.label,
+      placeholder:  f.placeholder || undefined,
+      options:      f.options.length ? f.options : undefined,
       defaultValue: f.defaultValue || undefined,
-      validation:  Object.fromEntries(
+      validation:   Object.fromEntries(
         Object.entries(f.validation).filter(([, v]) => v !== "" && v !== false && v !== undefined)
       ),
     })),
@@ -118,28 +137,29 @@ export const selectCompiledSchema = createSelector(
 );
 
 // Async thunk — optimistic save //
-// Replace the fetch() body with your real API call.
-// The pattern: snapshot → mutate → attempt save → rollback on error.
 
 export function saveSchema() {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(savePending());
     const { title, fields } = getState().schema;
     try {
-      await fakeApiSave({ title, fields });   // swap for real endpoint
+      await persistSchema(title, fields);
       dispatch(saveFulfilled());
     } catch {
-      dispatch(saveRejected());               // UI reverts automatically
+      dispatch(saveRejected());   // UI reverts to committed snapshot
     }
-    // auto-clear badge after 2 s
     setTimeout(() => dispatch(resetSaveStatus()), 2000);
   };
 }
 
-// Simulated network call (200 ms, 10 % failure rate for demo purposes)
-async function fakeApiSave(payload: unknown) {
+// Writes to localStorage and simulates a network round-trip //
+async function persistSchema(title: string, fields: BuilderField[]) {
+  // write locally first so the data is never lost even if the API call fails //
+  writeToStorage(title, fields);
+
+  // simulate network //
+  // Because there is no actual server right now //
   await new Promise<void>((res, rej) =>
     setTimeout(() => Math.random() < 0.1 ? rej(new Error("network")) : res(), 200)
   );
-  console.log("[store] schema saved", payload);
 }
