@@ -14,7 +14,7 @@
 }
 
 .header::after {
-  content: '❧';
+  content: '∏';
   position: absolute;
   bottom: -0.7rem;
   left: 50%;
@@ -50,11 +50,13 @@
 }
 
 .filter {
+  font-family: 'Source Serif 4', serif;
   font-size: 0.7rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 5px 14px;
   border: 1px solid var(--rule);
+  background: none;
   color: var(--muted);
   cursor: pointer;
   transition: all 0.2s;
@@ -70,6 +72,33 @@
   background-color: var(--ink);
   border-color: var(--ink);
   color: var(--paper);
+}
+
+.resultCount {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.empty {
+  text-align: center;
+  padding: 5rem 2rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.emptyGlyph {
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.4;
 }
 
 /* ── Cards ── */

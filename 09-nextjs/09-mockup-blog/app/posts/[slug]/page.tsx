@@ -79,7 +79,7 @@ export default async function PostPage({ params }: Props) {
         <div className={styles.postNavInner}>
           {prev ? (
             <Link href={`/posts/${prev.slug}`} className={styles.navPrev}>
-              <span className={styles.navLabel}>← Previous</span>
+              <span className={styles.navLabel}>Previous</span>
               <span className={styles.navTitle}>{prev.title}</span>
             </Link>
           ) : (
@@ -87,7 +87,7 @@ export default async function PostPage({ params }: Props) {
           )}
           {next ? (
             <Link href={`/posts/${next.slug}`} className={styles.navNext}>
-              <span className={styles.navLabel}>Next →</span>
+              <span className={styles.navLabel}>Next</span>
               <span className={styles.navTitle}>{next.title}</span>
             </Link>
           ) : (
@@ -99,7 +99,7 @@ export default async function PostPage({ params }: Props) {
       {/* Back to archive */}
       <div className={styles.backRow}>
         <Link href="/posts" className={styles.backLink}>
-          ← Back to archive
+          Back to archive
         </Link>
       </div>
     </article>

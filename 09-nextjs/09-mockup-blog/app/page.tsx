@@ -33,7 +33,7 @@ export default function HomePage() {
               <span>{featured.date}</span>
             </div>
             <Link href={`/posts/${featured.slug}`} className={styles.heroLink}>
-              Read the piece →
+              Read the piece
             </Link>
           </div>
         </div>
@@ -96,7 +96,7 @@ export default function HomePage() {
       {/* CTA */}
       <div className={styles.cta}>
         <Link href="/posts" className={styles.ctaLink}>
-          Browse the full archive →
+          Browse the full archive
         </Link>
       </div>
     </div>

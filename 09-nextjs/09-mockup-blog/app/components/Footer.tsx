@@ -4,14 +4,14 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
-        <div className={styles.ornament}>❦</div>
-        <p className={styles.title}>The Long Read</p>
+        <div className={styles.ornament}>∏</div>
+        <p className={styles.title}>Mockup Blog</p>
         <p className={styles.tagline}>
-          Good writing takes time. So does reading it.
+          NextJS is confusing.
         </p>
         <div className={styles.rule} />
         <p className={styles.copy}>
-          © {new Date().getFullYear()} The Long Read. All rights reserved.
+          © {new Date().getFullYear()} Mockup Blog. No rights involved.
         </p>
       </div>
     </footer>

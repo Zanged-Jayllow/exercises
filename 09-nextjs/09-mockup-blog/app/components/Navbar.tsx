@@ -10,7 +10,6 @@ export default function Navbar() {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        {/* Left nav links */}
         <nav className={styles.navLeft}>
           <Link
             href="/posts"
@@ -23,28 +22,16 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        {/* Masthead */}
         <Link href="/" className={styles.masthead}>
-          <span className={styles.mastheadMain}>The Long Read</span>
-          <span className={styles.mastheadSub}>est. mmxxvi</span>
+          <span className={styles.mastheadMain}>Mockup Blog</span>
+          <span className={styles.mastheadSub}>written in nextjs</span>
         </Link>
 
-        {/* Right nav links */}
         <nav className={styles.navRight}>
-          <Link href="/subscribe" className={styles.navLink}>
-            Subscribe
-          </Link>
           <Link href="/submit" className={styles.navLinkAccent}>
             Submit Work
           </Link>
         </nav>
-      </div>
-
-      {/* Issue line */}
-      <div className={styles.issueLine}>
-        <span>Vol. I, No. 4 &nbsp;·&nbsp; Spring 2026</span>
-        <span className={styles.issueLineCenter}>❧</span>
-        <span>Six new pieces this issue</span>
       </div>
     </header>
   );
