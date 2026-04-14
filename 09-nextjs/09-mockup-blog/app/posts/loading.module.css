@@ -1,0 +1,154 @@
+@keyframes shimmer {
+  0% { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.06) 25%,
+    rgba(0, 0, 0, 0.12) 50%,
+    rgba(0, 0, 0, 0.06) 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: 2px;
+}
+
+.shimmerDark {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.18) 25%,
+    rgba(0, 0, 0, 0.28) 50%,
+    rgba(0, 0, 0, 0.18) 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.6s infinite linear;
+}
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.headingLine {
+  height: 56px;
+  width: 280px;
+  border-radius: 3px;
+}
+
+.subLine {
+  height: 12px;
+  width: 140px;
+}
+
+/* ── Filter row ── */
+.filterRow {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.filterChip {
+  height: 28px;
+  border-radius: 2px;
+}
+
+/* ── Cards ── */
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  border-top: 1px solid var(--rule);
+  min-height: 140px;
+}
+
+.card:last-child { border-bottom: 1px solid var(--rule); }
+
+.swatch {
+  min-height: 140px;
+}
+
+.content {
+  padding: 1.75rem 1.75rem 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.metaRow {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.15rem;
+}
+
+.categoryChip {
+  height: 10px;
+  width: 60px;
+}
+
+.dateChip {
+  height: 10px;
+  width: 90px;
+}
+
+.titleLine {
+  height: 22px;
+  width: 75%;
+}
+
+.titleLineShort {
+  height: 22px;
+  width: 50%;
+}
+
+.excerptLine {
+  height: 13px;
+  width: 95%;
+  margin-top: 0.25rem;
+}
+
+.excerptLineMed {
+  height: 13px;
+  width: 70%;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.authorChip {
+  height: 12px;
+  width: 100px;
+}
+
+.readChip {
+  height: 12px;
+  width: 60px;
+}
+
+@media (max-width: 600px) {
+  .card { grid-template-columns: 80px 1fr; }
+  .content { padding: 1.25rem 1rem; }
+  .headingLine { width: 200px; height: 40px; }
+}

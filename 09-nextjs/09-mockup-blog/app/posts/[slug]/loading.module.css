@@ -1,0 +1,145 @@
+@keyframes shimmer {
+  0% { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.06) 25%,
+    rgba(0, 0, 0, 0.12) 50%,
+    rgba(0, 0, 0, 0.06) 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: 2px;
+}
+
+/* ── Cover skeleton ── */
+.cover {
+  padding: 5rem 2rem 4rem;
+  background-color: #1a1a2a;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover .shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 600px 100%;
+}
+
+.coverInner {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.category {
+  height: 12px;
+  width: 80px;
+  border-radius: 2px;
+}
+
+.titleLine1 {
+  height: 52px;
+  width: 85%;
+  border-radius: 3px;
+}
+
+.titleLine2 {
+  height: 52px;
+  width: 60%;
+  border-radius: 3px;
+}
+
+.excerpt {
+  height: 16px;
+  width: 100%;
+  margin-top: 0.25rem;
+  border-radius: 2px;
+}
+
+.excerptShort {
+  height: 16px;
+  width: 72%;
+  border-radius: 2px;
+}
+
+.metaRow {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.25rem;
+}
+
+.metaChip {
+  height: 12px;
+  width: 80px;
+  border-radius: 2px;
+}
+
+/* ── Body skeleton ── */
+.body {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.paraFull {
+  height: 14px;
+  width: 100%;
+  margin-bottom: 0.85rem;
+  border-radius: 2px;
+}
+
+.paraMed {
+  height: 14px;
+  width: 78%;
+  margin-bottom: 1.75rem;
+  border-radius: 2px;
+}
+
+.paraShort {
+  height: 14px;
+  width: 55%;
+  margin-bottom: 1.75rem;
+  border-radius: 2px;
+}
+
+.gap {
+  height: 1.75rem;
+}
+
+/* ── Pull quote skeleton ── */
+.pullQuote {
+  border-left: 3px solid rgba(0, 0, 0, 0.08);
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pullLine {
+  height: 20px;
+  width: 92%;
+  border-radius: 2px;
+}
+
+.pullLineShort {
+  height: 20px;
+  width: 65%;
+  border-radius: 2px;
+}
+
+@media (max-width: 600px) {
+  .cover { padding: 3rem 1.5rem 2.5rem; }
+  .body { padding: 2.5rem 1.5rem; }
+  .titleLine1, .titleLine2 { height: 36px; }
+}

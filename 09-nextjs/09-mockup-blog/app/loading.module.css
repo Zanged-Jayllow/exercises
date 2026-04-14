@@ -1,0 +1,116 @@
+@keyframes shimmer {
+  0% { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.06) 25%,
+    rgba(0, 0, 0, 0.12) 50%,
+    rgba(0, 0, 0, 0.06) 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: 2px;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem 0;
+}
+
+/* ── Hero ── */
+.hero { margin-bottom: 4rem; }
+
+.heroInner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--rule);
+  overflow: hidden;
+  min-height: 480px;
+}
+
+.heroCover {
+  background: linear-gradient(
+    135deg,
+    rgba(0,0,0,0.12) 25%,
+    rgba(0,0,0,0.2) 50%,
+    rgba(0,0,0,0.12) 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 2s infinite linear;
+  min-height: 480px;
+}
+
+.heroContent {
+  padding: 3rem;
+  background-color: var(--paper-warm);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.eyebrow { height: 10px; width: 120px; }
+.heroTitle1 { height: 40px; width: 90%; }
+.heroTitle2 { height: 40px; width: 65%; }
+.heroExcerpt { height: 14px; width: 100%; margin-top: 0.25rem; }
+.heroExcerptShort { height: 14px; width: 75%; }
+
+.metaRow {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.25rem;
+}
+
+.metaChip { height: 12px; }
+
+/* ── Secondary ── */
+.secondary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background-color: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 4rem;
+  overflow: hidden;
+}
+
+.secCard {
+  background-color: var(--paper);
+  display: flex;
+  flex-direction: column;
+}
+
+.secCover {
+  height: 200px;
+  background: linear-gradient(
+    135deg,
+    rgba(0,0,0,0.1) 25%,
+    rgba(0,0,0,0.18) 50%,
+    rgba(0,0,0,0.1) 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+.secBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.secTitle { height: 22px; width: 85%; }
+.secTitleShort { height: 22px; width: 60%; }
+.secExcerpt { height: 13px; width: 100%; margin-top: 0.25rem; }
+.secExcerptShort { height: 13px; width: 78%; }
+
+@media (max-width: 768px) {
+  .heroInner { grid-template-columns: 1fr; }
+  .heroCover { min-height: 200px; }
+  .heroContent { padding: 2rem 1.5rem; }
+  .secondary { grid-template-columns: 1fr; }
+}

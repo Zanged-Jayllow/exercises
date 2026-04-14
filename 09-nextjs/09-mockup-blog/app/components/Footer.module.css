@@ -1,0 +1,52 @@
+.footer {
+  background-color: var(--ink);
+  color: var(--paper);
+  padding: 4rem 2rem 3rem;
+  margin-top: 6rem;
+  text-align: center;
+}
+
+.inner {
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ornament {
+  font-size: 2rem;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.875rem;
+  font-style: italic;
+  color: rgba(245, 240, 232, 0.5);
+  font-weight: 300;
+}
+
+.rule {
+  width: 40px;
+  height: 1px;
+  background-color: var(--accent);
+  margin: 0.5rem 0;
+}
+
+.copy {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 232, 0.35);
+}

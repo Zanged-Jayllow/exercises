@@ -1,0 +1,140 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  box-shadow: 0 1px 0 var(--paper-warm);
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: var(--nav-height);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navLeft {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.navRight {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.navLink {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+
+.navLink:hover,
+.navLink.active {
+  color: var(--ink);
+}
+
+.navLinkAccent {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  transition: color 0.2s;
+}
+
+.navLinkAccent:hover {
+  color: var(--ink);
+}
+
+.masthead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  gap: 3px;
+}
+
+.mastheadMain {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  transition: color 0.2s;
+}
+
+.masthead:hover .mastheadMain {
+  color: var(--accent);
+}
+
+.mastheadSub {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.625rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.issueLine {
+  background-color: var(--ink);
+  color: var(--paper);
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%;
+}
+
+.issueLineCenter {
+  color: var(--accent);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .inner {
+    grid-template-columns: auto 1fr auto;
+    gap: 0.5rem;
+    padding: 0 1rem;
+  }
+
+  .navLeft,
+  .navRight {
+    gap: 1rem;
+  }
+
+  .navLink,
+  .navLinkAccent {
+    font-size: 0.7rem;
+  }
+
+  .mastheadMain {
+    font-size: 1.2rem;
+  }
+
+  .issueLine {
+    font-size: 0.6rem;
+    padding: 5px 1rem;
+  }
+
+  .issueLineCenter {
+    display: none;
+  }
+}
